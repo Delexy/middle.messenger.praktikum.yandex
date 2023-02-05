@@ -11,7 +11,7 @@ block content
     a.profile-page__back(href="../index.pug")
       include ../../../imgs/icons/arrow-back.svg
     .profile-page__content
-      +photo('Поменять аватар', 'https://i.pinimg.com/236x/14/47/14/144714db6b6c2ee70e77273691de5f50.jpg', true)
+      +photo('Поменять аватар', 'https://i.pinimg.com/236x/14/47/14/144714db6b6c2ee70e77273691de5f50.jpg', true)(alt="Ваш аватар")
       .profile-list.profile-page__data
         each data in userData
           .profile-list__el

@@ -1,8 +1,9 @@
 const express = require('express');
 const server = express();
 
+const PORT = process.env.PORT || 3000;
 server.use('/', express.static(__dirname + '/static'));
 
-server.listen(3000, () => {
-  console.log('Server start on 3000 port');
+server.listen(PORT, () => {
+  console.log(`Server start on ${PORT} port`);
 });
