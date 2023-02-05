@@ -1,0 +1,30 @@
+{
+  "name": "first-sprint",
+  "version": "1.0.0",
+  "description": "Yandex education project",
+  "engine": "14.19.1",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "parcel src/pages/index.pug --no-cache",
+    "build": "parcel build src/pages/**/*.pug --no-cache"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Delexy/sprint_1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Delexy/sprint_1/issues"
+  },
+  "homepage": "https://github.com/Delexy/sprint_1#readme",
+  "devDependencies": {
+    "@parcel/transformer-pug": "^2.8.3",
+    "@parcel/transformer-sass": "^2.8.3",
+    "parcel": "^2.8.3",
+    "pug": "^3.0.2"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

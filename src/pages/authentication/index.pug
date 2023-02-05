@@ -1,0 +1,15 @@
+extends ../../layouts/base
+
+block append styles
+	link(href="/src/pages/authentication/styles.scss" rel="stylesheet")
+
+block content
+	.auth-page
+		.auth-page__content 
+			+form('Вход').auth-form
+				.auth-form__inputs
+					+input('Логин', 'Неверный логин')(placeholder="Логин" type="text" name="login" class="auth-form__input")
+					+input('Пароль', 'Неверный пароль')(placeholder="Пароль" type='password' name="password" class="auth-form__input input_error")
+				.auth-form__btns 
+					+button('Авторизоваться')(type="submit")
+					a.auth-form__register(href="../registration/index.pug") Нет аккаунта?

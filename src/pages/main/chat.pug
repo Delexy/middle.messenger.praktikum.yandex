@@ -1,0 +1,84 @@
+extends ../../layouts/base
+
+block append styles 
+  link(rel="stylesheet" href="/src/pages/main/style.scss")
+
+
+block content
+  .chat-wrapper
+    .chats-sidebar
+      a.chat-profile(href="../profile/index.pug")
+        +photo('', 'https://i.pinimg.com/236x/14/47/14/144714db6b6c2ee70e77273691de5f50.jpg').chat-profile__img
+        p.chat-profile__name Иван
+      label.chat-search
+        .chat-search__icon
+          include ../../imgs/icons/search.svg
+        input.chat-search__input(type="text" name="search" placeholder="Поиск")
+      .chat-add 
+        .chat-add__icon 
+          include ../../imgs/icons/plus.svg
+        span.chat-add__text Добавить новый чат
+      .chats-list 
+        - let n = 0;
+        - let msgText = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, omnis cum? Autem aspernatur quam ea exercitationem unde eius vitae sequi ipsam";        
+        while n < 20
+          +chatElement('Андрей', msgText, '15:24', '5', 'https://i.pinimg.com/236x/14/47/14/144714db6b6c2ee70e77273691de5f50.jpg', (n == 5 ? true : false), (n % 2 == 0 ? true : false))
+          - n++;
+
+    .chat
+      .chat-active 
+        .chat-user
+          a.chat-profile.chat-user__profile(href="../profile/index.pug")
+            +photo('', 'https://i.pinimg.com/236x/14/47/14/144714db6b6c2ee70e77273691de5f50.jpg').chat-profile__img
+            p.chat-profile__name Андрей
+          .chat-user__menu 
+            .chat-user__icon
+              include ../../imgs/icons/vertical-elipsis.svg
+            .chat-user__actions   
+              button.chat-user__action
+                span.chat-user__action-image 
+                  include ../../imgs/icons/image.svg
+                span.chat-user__action-text Изменить изображение
+              button.chat-user__action
+                span.chat-user__action-image 
+                  include ../../imgs/icons/plus.svg
+                span.chat-user__action-text Добавить пользователя
+              button.chat-user__action
+                span.chat-user__action-image 
+                  include ../../imgs/icons/cross.svg
+                span.chat-user__action-text Удалить пользователя
+              button.chat-user__action.chat-user__action_remove
+                span.chat-user__action-image
+                  include ../../imgs/icons/remove.svg
+                span.chat-user__action-text Удалить чат
+        .chat-messages
+          - 
+            let longMessage = `Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.
+            Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.`;
+          div.chat-messages__row
+            span.chat-messages__date  19 июня
+          +message(longMessage, '11:55', true)
+          +message("", '11:57', true, true, "/src/imgs/temp/chat-message-img.png")
+          +message("Круто!", '11:59')
+          +message("", '11:57', false, true, "/src/imgs/temp/chat-message-img.png")
+
+        form.chat-message
+          .chat-message__menu 
+            .chat-message__icon
+              include ../../imgs/icons/clip.svg
+            .chat-message__actions   
+              button.chat-message__action
+                span.chat-message__action-image 
+                  include ../../imgs/icons/image.svg
+                span.chat-message__action-text Фото или видео
+              button.chat-message__action
+                span.chat-message__action-image 
+                  include ../../imgs/icons/file.svg
+                span.chat-message__action-text Файл
+              button.chat-message__action
+                span.chat-message__action-image 
+                  include ../../imgs/icons/location.svg
+                span.chat-message__action-text Локация
+          input.chat-message__input(name="message")
+          button.chat-message__submit 
+            include ../../imgs/icons/send.svg
