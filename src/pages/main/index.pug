@@ -1,0 +1,32 @@
+extends ../../layouts/base
+
+block append styles 
+  link(rel="stylesheet" href="/src/pages/main/style.scss")
+
+
+block content
+  .chat-wrapper
+    .chats-sidebar
+      a.chat-profile(href="../profile/index.pug")
+        +photo('', 'https://i.pinimg.com/236x/14/47/14/144714db6b6c2ee70e77273691de5f50.jpg').chat-profile__img(alt="Фото профиля")
+        p.chat-profile__name Иван
+      label.chat-search
+        .chat-search__icon
+          include ../../imgs/icons/search.svg
+        input.chat-search__input(type="text" name="search" placeholder="Поиск")
+      .chat-add 
+        .chat-add__icon 
+          include ../../imgs/icons/plus.svg
+        span.chat-add__text Добавить новый чат
+      .chats-list 
+        - let n = 0;
+        - let msgText = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, omnis cum? Autem aspernatur quam ea exercitationem unde eius vitae sequi ipsam";        
+        while n < 20
+          +chatElement('Андрей', msgText, '15:24', '5', 'https://i.pinimg.com/236x/14/47/14/144714db6b6c2ee70e77273691de5f50.jpg', (n == 5 ? true : false), (n % 2 == 0 ? true : false))
+          - n++;
+    
+    .chat 
+      .chat-inactive 
+        p.chat-inactive__text Выберите чат чтобы отправить сообщение
+      
+    

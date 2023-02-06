@@ -1,0 +1,8 @@
+.modals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 340px);
+  grid-gap: 2rem;
+  align-items: start;
+  margin-bottom: 4rem;
+  padding-left: 2rem;
+}

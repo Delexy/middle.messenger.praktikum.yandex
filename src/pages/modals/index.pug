@@ -1,0 +1,31 @@
+extends ../../layouts/base
+
+block append styles 
+  link(rel="stylesheet", href="/src/pages/modals/style.scss")
+
+block content
+  .modals
+    h1(style="grid-column: 1 / -1") Загрузка файла
+    +formImage('Загрузите файл')
+    +formImage('Файл загружен', {src: 'https://i.pinimg.com/236x/14/47/14/144714db6b6c2ee70e77273691de5f50.jpg', name: 'Белочка.jpg'})
+    +formImage('Загрузите файл', {}, 'Нужно выбрать файл')
+    +formImage('Ошибка, попробуйте ещё раз').form-image_error
+  .modals
+    h1(style="grid-column: 1 / -1") Подтверждение действия
+    +form('Вы уверены?').form-confirm
+      .form-confirm__btns 
+        +button("Удалить").btn_cancel.form-confirm__btn
+        +button("Оставить").form-confirm__btn
+  .modals
+    h1(style="grid-column: 1 / -1") Добавить/Удалить пользователя
+    +form('Добавить пользователя').form-user
+      +input('Логин', 'Неверный логин').form-user__input(placeholder="Логин")
+      +button("Добавить").form-user__btn
+    +form('Удалить пользователя').form-user
+      +input('Логин', 'Неверный логин').form-user__input(placeholder="Логин")
+      +button("Удалить").form-user__btn
+  .modals
+    h1(style="grid-column: 1 / -1") Добавить чат
+    +form('Добавить чат').form-add-chat
+      +input('Название чата', 'Неверное название').form-add-chat__input(placeholder="Название чата")
+      +button("Добавить").form-add-chat__btn

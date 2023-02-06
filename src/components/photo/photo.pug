@@ -1,0 +1,3 @@
+mixin photo(title, photoSrc, canChange, modalOpen)
+  .photo(class=canChange ? 'photo_change' : '', class=attributes.class)
+    img.photo__img(src=photoSrc, alt=attributes.alt)

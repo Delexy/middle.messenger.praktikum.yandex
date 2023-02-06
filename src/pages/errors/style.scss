@@ -1,0 +1,21 @@
+.error-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+
+  &__status {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  &__text {
+    font-size: 2rem;
+    margin-bottom: 4rem;
+  }
+
+  &__link {
+    max-width: 280px;
+  }
+}
