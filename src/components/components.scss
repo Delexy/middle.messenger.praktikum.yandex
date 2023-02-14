@@ -1,8 +1,8 @@
-@import '_global/normalize.css';
-@import '_global/variables';
-@import '_global/fonts';
-@import '_global/global';
-@import '_global/mixins';
+@import '/src/components/_global/normalize.css';
+@import './_global/variables';
+@import './_global/fonts';
+@import './_global/global';
+@import './_global/mixins';
 @import './button/button';
 @import './input/input';
 @import './photo-input/photo-input';

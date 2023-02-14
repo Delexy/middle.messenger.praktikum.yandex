@@ -5,8 +5,8 @@
   "engine": "14.19.1",
   "scripts": {
     "start": "node server.js",
-    "dev": "parcel src/pages/index.pug --no-cache --open",
-    "build": "parcel build src/pages/**/*.pug --no-cache"
+    "dev": "parcel src/pages/index.html --no-cache --open",
+    "build": "parcel build src/pages/**/*.html --no-cache"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "@parcel/transformer-pug": "2.8.3",
     "@parcel/transformer-sass": "2.8.3",
     "parcel": "2.8.3",
+    "parcel-transformer-pug-precompile": "1.0.6",
     "pug": "3.0.2"
   },
   "dependencies": {
