@@ -5,6 +5,7 @@
     align-items: center;
     justify-content: center;
   }
+
   @media screen and (max-height: 600px) {
     &__content {
       align-items: initial;
@@ -13,9 +14,6 @@
 }
 
 .auth-form {
-  &__inputs {
-  }
-
   &__input {
 		margin-bottom: 3rem;
   }

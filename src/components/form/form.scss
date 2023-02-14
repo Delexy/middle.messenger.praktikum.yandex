@@ -1,12 +1,12 @@
 .form {
 		@include shadow;
+
 		max-width: 340px;
 		padding: 4rem 3rem;
 		border-radius: 12px;
 		width: 100%;
 
 		&__title {
-			font-size: 2rem;
 			margin-bottom: 4rem;
 			text-align: center;
 			font-weight: 600;
@@ -36,9 +36,11 @@
 	}
 
 	&_error {
+		/* stylelint-disable */
 		.form__title {
 			color: var(--color-error);
 		}
+		/* stylelint-enable */
 	}
 }
 
