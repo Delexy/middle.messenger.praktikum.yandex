@@ -1,11 +1,5 @@
 extends ../../../layouts/base.pug
 
-block append variables
-  - var userData = [['Почта', 'pochta@yandex.ru', 'email', 'email'], ['Логин', 'ivanivanov', 'login', 'text'], ['Имя', 'Иван', 'first_name', 'text'], ['Фамилия', 'Иванов', 'second_name', 'text'], ['Имя в чате', 'Иван', 'display_name', 'text'], ['Телефон', '+7 (909) 967 30 30', 'phone', 'tel']]
-
-block append styles 
-  link(rel="stylesheet" href="/src/pages/profile/style.scss")
-
 block content
   .profile-page 
     a.profile-page__back(href="../index.pug")
@@ -18,4 +12,3 @@ block content
             p.profile-list__name= data[0]
             input.profile-list__input(value=data[1] name=data[2] type=data[3] placeholder=data[0])
         +button('Сохранить').profile-page__btn-save
-

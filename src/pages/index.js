@@ -1,5 +1,8 @@
-import compileTemplate from "./profile/index.pug";
+import test from "./registration/index.pug";
 
+console.dir(test.toString());
+
+/*
 const app = document.body;
 
 const pageProps = {
@@ -14,10 +17,5 @@ const pageProps = {
   userImg: "https://i.pinimg.com/236x/14/47/14/144714db6b6c2ee70e77273691de5f50.jpg",
 };
 
-app.insertAdjacentHTML('beforeend', compileTemplate(pageProps));
-
-pageProps.userData[0][1] = "Почта";
-
-setTimeout(() => {
-  app.insertAdjacentHTML('beforeend', compileTemplate(pageProps));
-}, 2000);
+app.innerHTML = compileTemplate(pageProps);
+*/

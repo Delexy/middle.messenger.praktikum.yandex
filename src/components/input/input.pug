@@ -7,4 +7,5 @@ mixin input(label, error)
 			button.input__eye
 				include ../../imgs/icons/eye.svg
 		span.input__error-text= error
-		
+	block append scripts 
+		script(src="/src/components/input/input.ts") 

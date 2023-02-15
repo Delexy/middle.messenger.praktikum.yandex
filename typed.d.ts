@@ -1,4 +1,4 @@
 declare module '*.pug' {
-  const classes: function
+  const classes: () => unknown
   export default classes
 }
