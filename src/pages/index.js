@@ -1,6 +1,25 @@
-import test from "./registration/index.pug";
+// import Button from "../components/button/Button";
 
-console.dir(test.toString());
+// const btn = new Button("button", {
+//   text: "Hello"
+// });
+
+// const app = document.body;
+// app.appendChild(btn.getContent())
+
+// setTimeout(() => {
+//   btn.setProps({
+//     text: 'newHello',
+//     events: {
+//       click: function(event) {
+//         console.log(event.target);
+//       }
+//     }
+//   });
+// }, 1000);
+
+// import test from "./registration/index.pug";
+
 
 /*
 const app = document.body;

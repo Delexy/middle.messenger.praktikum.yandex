@@ -1,6 +1,6 @@
 import EventBus from "../EventBus/EventBus";
 import { v4 as createId } from "uuid";
-import Pug from "pug";
+import { compileTemplate } from "pug";
 
 enum EVENTS {
   INIT = "init",
@@ -19,7 +19,7 @@ class Block {
   children: { [key: string]: Block };
   eventBus: () => EventBus;
 
-  constructor({ tagName = "div", propsAndChildren = {} }: { tagName: string; propsAndChildren: PropsObj }) {
+  constructor(tagName = "div", propsAndChildren = {}) {
     const eventBus = new EventBus();
     const { children, props } = this._getChildren(propsAndChildren);
 
@@ -49,21 +49,25 @@ class Block {
   private _addEvents() {
     const { events } = this.props;
 
-    Object.keys(events).forEach((eventName) => {
-      if (this._element) {
-        this._element.addEventListener(eventName, events[eventName]);
-      }
-    });
+    if (events) {
+      Object.keys(events).forEach((eventName) => {
+        if (this._element) {
+          this._element.addEventListener(eventName, events[eventName]);
+        }
+      });
+    }
   }
 
   private _removeEvents() {
     const { events } = this.props;
 
-    Object.keys(events).forEach((eventName) => {
-      if (this._element) {
-        this._element.removeEventListener(eventName, events[eventName]);
-      }
-    });
+    if (events) {
+      Object.keys(events).forEach((eventName) => {
+        if (this._element) {
+          this._element.removeEventListener(eventName, events[eventName]);
+        }
+      });
+    }
   }
 
   private _createResources() {
@@ -136,8 +140,7 @@ class Block {
 
   _render() {
     const block = this.render();
-
-    if (this._element !== null && typeof block === "string") {
+    if (this._element !== null) {
       this._removeEvents();
       this._element.innerHTML = "";
       this._element.appendChild(block);
@@ -145,25 +148,22 @@ class Block {
     }
   }
 
-  render() {
-    // Может переопределять пользователь, необязательно трогать
+  render(template?: compileTemplate, props?: PropsObj): DocumentFragment {
+		return this.compile(template, props);
   }
 
-  compile(template: string, props: PropsObj) {
+  compile(template?: compileTemplate, props?: PropsObj): DocumentFragment {
     const propsAndStubs = { ...props };
 
     Object.entries(this.children).forEach(([key, child]) => {
       propsAndStubs[key] = `<div data-id="${child.id}"></div>`;
     });
 
-    const fragment = this._createDocumentElement("template");
+    const fragment = this._createDocumentElement("template") as HTMLTemplateElement;
 
-		
-    fragment.innerHTML = Pug.compileClient(template, propsAndStubs);
-		
-    if (!(fragment instanceof HTMLTemplateElement)) {
-      return fragment;
-    }
+		if(template) {
+			fragment.innerHTML = template(propsAndStubs);
+		}
 
     Object.values(this.children).forEach((child: Block) => {
       const stub = fragment.content.querySelector(`[data-id="${child.id}"]`);
@@ -207,7 +207,7 @@ class Block {
     return props;
   }
 
-  _createDocumentElement(tagName: string): HTMLElement | HTMLTemplateElement {
+  _createDocumentElement(tagName: string): HTMLElement {
     // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
     return document.createElement(tagName);
   }
