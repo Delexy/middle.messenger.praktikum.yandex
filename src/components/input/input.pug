@@ -1,11 +1,9 @@
-mixin input(label, error)
-	label.input(class!=attributes.class)
-		input.input__el(type!=attributes.type autocomplete!=attributes.autocomplete placeholder=attributes.placeholder name=attributes.name)
-		if label
-			span.input__title= label
-		if attributes.type === "password"
-			button.input__eye
-				include ../../imgs/icons/eye.svg
-		span.input__error-text= error
-	block append scripts 
-		script(src="/src/components/input/input.ts") 
+//- mixin input(label, error)
+label.input(class!=attributes.class)
+	input.input__el(type!=attributes.type autocomplete!=attributes.autocomplete placeholder=attributes.placeholder name=attributes.name)
+	if label
+		span.input__title= label
+	if attributes.type === "password"
+		button.input__eye
+			include ../../imgs/icons/eye.svg
+	span.input__error-text= error

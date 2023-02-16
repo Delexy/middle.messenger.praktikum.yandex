@@ -19,14 +19,13 @@ class Block {
   children: { [key: string]: Block };
   eventBus: () => EventBus;
 
-  constructor(tagName = "div", propsAndChildren = {}) {
+  constructor(propsAndChildren = {}) {
     const eventBus = new EventBus();
     const { children, props } = this._getChildren(propsAndChildren);
 
     this.id = createId();
     this._element;
     this._meta = {
-      tagName,
       props,
     };
 
@@ -70,11 +69,6 @@ class Block {
     }
   }
 
-  private _createResources() {
-    const { tagName } = this._meta;
-    this._element = this._createDocumentElement(tagName);
-  }
-
   private _getChildren(propsAndChildren: PropsObj) {
     const children: PropsObj = {};
     const props: PropsObj = {};
@@ -91,7 +85,6 @@ class Block {
   }
 
   init() {
-    this._createResources();
     this.eventBus().emit(EVENTS.FLOW_CDM);
   }
 
@@ -140,12 +133,9 @@ class Block {
 
   _render() {
     const block = this.render();
-    if (this._element !== null) {
-      this._removeEvents();
-      this._element.innerHTML = "";
-      this._element.appendChild(block);
-      this._addEvents();
-    }
+    this._removeEvents();
+    this._element = block.firstChild as HTMLElement;
+    this._addEvents();
   }
 
   render(template?: compileTemplate, props?: PropsObj): DocumentFragment {
