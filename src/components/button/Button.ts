@@ -1,4 +1,4 @@
-import template from './button.pug';
+import template from './template.pug';
 import Block from "../Block/Block";
 
 class Button extends Block {

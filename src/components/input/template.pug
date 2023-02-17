@@ -1,0 +1,8 @@
+label.input(class=className)
+	input.input__el(type='text')&attributes(attributes)
+	if label
+		span.input__title= label
+	if attributes.type === "password"
+		button.input__eye(type="button")
+			include ../../imgs/icons/eye.svg
+	span.input__error-text= error
