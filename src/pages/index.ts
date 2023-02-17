@@ -1,6 +1,7 @@
 import renderDOM from "../utils/renderDOM";
+import { PAGES } from "../utils/renderDOM"
 
-renderDOM(document.body, '/authentication');
+renderDOM(document.body, PAGES.profile);
 
 document.addEventListener("click", function(event: Event) {
   const target = event.target as HTMLElement;

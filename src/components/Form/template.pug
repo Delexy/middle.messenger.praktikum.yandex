@@ -7,12 +7,3 @@ form.form(class=isModal ? 'form_modal' : '' class=className id=id)
 		.auth-form__btns 
 			| !{ActionBtn}
 			|	!{Link}
-
-	
-
-
-//- mixin formImage(title, img = {}, errorText)
-//- 	+form(title, true).form-image(id=attributes.id class=attributes.class)
-//- 		+photoInput('Выбрать файл на компьютере', 'avatar', img.src, img.name).form-image__input
-//- 		+button('Поменять').form-image__btn
-//- 		span.form-image__error= errorText

@@ -1,0 +1,15 @@
+.profile-page 
+  a.profile-page__back(href=backUrl)
+    include ../../imgs/icons/arrow-back.svg
+  .profile-page__content
+    | !{Photo}
+    p.profile-page__name #{user.first_name}
+    .profile-list.profile-page__data
+      | !{userData}
+    nav.profile-list.profile-page__links
+      .profile-list__el
+        a(href=changeProfileUrl) Изменить данные
+      .profile-list__el
+        a(href=changePasswordUrl) Изменить пароль
+      .profile-list__el
+        a.profile-page__exit Выйти      

@@ -1,7 +1,7 @@
 import template from "./template.pug";
 import { default as Block, PropsObjT } from "../Block/Block";
 
-interface InputPropsT extends PropsObjT {
+interface InputProps extends PropsObjT {
   label?: string;
   className?: string;
   attributes?: any;
@@ -11,7 +11,7 @@ interface InputPropsT extends PropsObjT {
 class Input extends Block {
   value: string;
 
-  constructor(props: InputPropsT) {
+  constructor(props: InputProps) {
     super(props);
     this.props.attributes.type = props.attributes.type || "text";
     this.value = "";
@@ -49,4 +49,4 @@ class Input extends Block {
   }
 }
 
-export { Input as default, InputPropsT };
+export { Input as default, InputProps };

@@ -1,0 +1,14 @@
++form(title, true).form-image(id=attributes.id class=attributes.class)
+  +photoInput('Выбрать файл на компьютере', 'avatar', img.src, img.name).form-image__input
+  +button('Поменять').form-image__btn
+  span.form-image__error= errorText
+
+form.form(class=isModal ? 'form_modal' : '' class=className id=id)
+  if isModal 
+    button.form__close
+  p.form__title= title
+  .auth-form__inputs
+    | !{inputs}
+    .auth-form__btns 
+      | !{ActionBtn}
+      |	!{Link}

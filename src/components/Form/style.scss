@@ -14,36 +14,6 @@
 		}
 }
 
-
-.form-image {
-	&__input {
-		display: block;
-		margin: 0 auto;
-		text-align: center;
-	}
-
-	&__btn {
-		margin-top: 2rem;
-
-	}
-
-	&__error {
-		display: block;
-		margin-top: 1rem;
-		color: var(--color-error);
-		text-align: center;
-		font-size: 1.2rem;
-	}
-
-	&_error {
-		/* stylelint-disable */
-		.form__title {
-			color: var(--color-error);
-		}
-		/* stylelint-enable */
-	}
-}
-
 .form-confirm {
 	&__btns {
 		display: grid;

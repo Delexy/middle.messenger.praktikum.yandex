@@ -1,5 +1,6 @@
 import template from "./template.pug";
 import Block from "../../components/Block/Block";
+import { PAGES } from "../../utils/renderDOM"
 import Input from "../../components/Input/Input";
 import Form from "../../components/Form/Form";
 import Button from "../../components/Button/Button";
@@ -21,7 +22,7 @@ class AuthPage extends Block {
             type: "submit",
           },
         }),
-        Link: `<a class="auth-form__register" href="/registration">Зарегистрироваться</a>`,
+        Link: `<a class="auth-form__register" href="${PAGES.registration}">Зарегистрироваться</a>`,
         events: {
           submit: (event: SubmitEvent) => {
             event.preventDefault();
