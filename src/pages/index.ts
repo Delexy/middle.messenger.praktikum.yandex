@@ -1,8 +1,12 @@
-import RegistrationPage from './registration/RegistrationPage';
-const page = new RegistrationPage();
+import renderDOM from "../utils/renderDOM";
 
+renderDOM(document.body, '/authentication');
 
-const app = document.body;
-app.appendChild(page.getContent());
-page.dispatchComponentDidMount();
-
+document.addEventListener("click", function(event: Event) {
+  const target = event.target as HTMLElement;
+  const link = target.getAttribute('href');
+  if(target && target.nodeName === "A" &&  link !== null) {
+    event.preventDefault();
+    renderDOM(document.body, link);
+  }
+});

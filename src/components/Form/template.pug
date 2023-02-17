@@ -4,16 +4,9 @@ form.form(class=isModal ? 'form_modal' : '' class=className id=id)
 	p.form__title= title
 	.auth-form__inputs
 		| !{inputs}
-		//- +input('Почта', 'Введите корректную почту')(placeholder="Почта" type="email" name="email" class="auth-form__input")
-		//- +input('Логин', 'Введите корректный логин')(placeholder="Логин" type="text" name="login" class="auth-form__input")
-		//- +input('Имя', 'Введите корректное имя')(placeholder="Имя" type="text" name="first_name" class="auth-form__input")
-		//- +input('Фамилия', 'Введите корректную фамилию')(placeholder="Фамилия" type="text" name="second_name" class="auth-form__input")
-		//- +input('Телефон', 'Введите корректный телефон')(placeholder="Телефон" type="tel" name="phone" class="auth-form__input")
-		//- +input('Пароль', 'Неверный пароль')(placeholder="Пароль" type='password' name="password" class="auth-form__input input_error")
-		//- +input('Пароль (еще раз)', 'Пароли не совпадают')(placeholder="Пароль (еще раз)" type='password' class="auth-form__input input_error")
 		.auth-form__btns 
 			| !{ActionBtn}
-			a.auth-form__register(href="../authentication") Войти
+			|	!{Link}
 
 	
 

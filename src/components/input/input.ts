@@ -14,33 +14,35 @@ class Input extends Block {
   constructor(props: InputPropsT) {
     super(props);
     this.props.attributes.type = props.attributes.type || "text";
+    this.value = "";
   }
 
   init() {
-    const blurEvent: ((e: InputEvent) => void) = (event: InputEvent) => {
+    const blurEvent: (e: InputEvent) => void = (event: InputEvent) => {
       if (event.target && (event.target as Element).nodeName === "INPUT") this.value = (event.target as HTMLInputElement).value;
     };
     this.props.events = this.props.events || {};
-    this.props.events.focusout = blurEvent;
+    this.props.events.change = blurEvent;
+
+    this.props.events.click = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (target && (target.classList.contains("input__eye") || target.closest(".input__eye"))) {
+        const input = this.element.querySelector(".input__el") as HTMLInputElement;
+        input.type = input.type === "password" ? "text" : "password";
+      }
+    };
   }
 
   componentUpdated(): void {
     if (this.value && this.element) {
       const input: HTMLInputElement | null = this.element.querySelector(".input__el");
-      if(input) {
+      if (input) {
         input.value = this.value;
       }
     }
   }
 
-  componentDidMount(): void {
-    if (this.props?.attributes?.type === "password") {
-      this.element.querySelector(".input__eye")?.addEventListener("click", () => {
-        const input = this.element.querySelector(".input__el") as HTMLInputElement;
-        input.type = input.type === "password" ? "text" : "password";
-      });
-    }
-  }
+  componentDidMount(): void {}
 
   render() {
     return this.compile(template, this.props);

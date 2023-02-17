@@ -4,9 +4,11 @@ import Input from "../Input/Input";
 
 type FormPropsT = {
   title: string;
-  isModal: boolean;
-  inputs: Block[];
-  actionBtn: Block;
+  isModal?: boolean;
+  inputs?: Block[];
+  ActionBtn?: Block;
+  events?: Record<string, unknown>,
+  [key: string]: any,
 };
 
 const INPUT_VALIDATION_REGEXP: Record<string, RegExp> = {
@@ -26,24 +28,26 @@ const INPUT_ERRORS: Record<string, string> = {
 class Form extends Block {
   isValid: boolean;
 
+  constructor(props: FormPropsT) {
+    super(props);
+  }
+
   validation(): boolean {
     this.isValid = true;
     const inputs = Array.isArray(this.children.inputs) ? [...this.children.inputs] : [this.children.inputs];
     inputs.forEach((input: Input) => {
       const currentType: string = input.props.attributes.type;
-      const inputIsValid = INPUT_VALIDATION_REGEXP[currentType].exec(input.value);
-
-      console.log(INPUT_VALIDATION_REGEXP[currentType], input.value);
+      const inputIsValid = `${input.value}`.match(INPUT_VALIDATION_REGEXP[currentType]);
 
       if (!inputIsValid) {
         input.setProps({
-          className: "input_error",
+          className: `${input.props.className} input_error`,
           error: INPUT_ERRORS[currentType],
         });
         this.isValid = false;
       } else {
         input.setProps({
-          className: undefined,
+          className: input.props.className.replace(" input_error", ""),
           error: undefined,
         });
       }
