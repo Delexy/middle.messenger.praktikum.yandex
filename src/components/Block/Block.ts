@@ -39,7 +39,7 @@ class Block {
   }
 
   private _registerEvents(eventBus: EventBus) {
-    eventBus.on(EVENTS.INIT, this.init.bind(this));
+    eventBus.on(EVENTS.INIT, this._init.bind(this));
     eventBus.on(EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     eventBus.on(EVENTS.FLOW_RENDER, this._render.bind(this));
@@ -84,8 +84,13 @@ class Block {
     return { children, props };
   }
 
+  _init() {
+    this.init();
+    this.eventBus().emit(EVENTS.FLOW_RENDER);
+  }
+
   init() {
-    this.eventBus().emit(EVENTS.FLOW_CDM);
+    // Переопределяется пользователем
   }
 
   private _componentDidMount() {
@@ -94,8 +99,6 @@ class Block {
     Object.values(this.children).forEach((child) => {
       child.dispatchComponentDidMount();
     });
-
-    this._render();
   }
 
   componentDidMount() {
@@ -110,7 +113,7 @@ class Block {
     const response = this.componentDidUpdate(oldProps, newProps);
 
     if (response) {
-      this._render();
+      this.eventBus().emit(EVENTS.FLOW_RENDER);
     }
   }
 
@@ -132,17 +135,25 @@ class Block {
   }
 
   _render() {
-    const block = this.render();
+    const block = this.render() as DocumentFragment;
     this._removeEvents();
-    this._element = block.firstChild as HTMLElement;
+
+    const newElement = block.firstChild;
+    if(this._element) {
+      this._element.replaceWith(block);
+    }
+
+    
+    this._element = newElement as HTMLElement;
     this._addEvents();
   }
 
-  render(template?: compileTemplate, props?: PropsObj): DocumentFragment {
-		return this.compile(template, props);
+  render() {
+    // Может переопределить пользователь
+    return "" as any;
   }
 
-  compile(template?: compileTemplate, props?: PropsObj): DocumentFragment {
+  compile(template: compileTemplate, props: PropsObj): DocumentFragment {
     const propsAndStubs = { ...props };
 
     Object.entries(this.children).forEach(([key, child]) => {
@@ -151,12 +162,11 @@ class Block {
 
     const fragment = this._createDocumentElement("template") as HTMLTemplateElement;
 
-		if(template) {
-			fragment.innerHTML = template(propsAndStubs);
-		}
+		fragment.innerHTML = template(propsAndStubs);
 
     Object.values(this.children).forEach((child: Block) => {
       const stub = fragment.content.querySelector(`[data-id="${child.id}"]`);
+
       if (stub) {
         stub.replaceWith(child.getContent());
       }
@@ -172,26 +182,16 @@ class Block {
   private _makePropsProxy(props: PropsObj) {
     props = new Proxy(props, {
       get: (target: PropsObj, property: string) => {
-        if (this.isPrivateProp(property)) {
-          throw new Error("Нет доступа");
-        }
-
         return typeof target[property] === "function" ? target[property].bind(target) : target[property];
       },
       set: (target: PropsObj, property: string, value, receiver) => {
-        if (this.isPrivateProp(property)) {
-          throw new Error("Нет доступа");
-        }
-
+        const oldProps = {...target.props};
         const isUpdated = Reflect.set(target, property, value, receiver);
 
-        this.eventBus().emit(EVENTS.FLOW_CDU, this.props, target);
+        this.eventBus().emit(EVENTS.FLOW_CDU, this.props, oldProps);
 
         return isUpdated;
-      },
-      deleteProperty: () => {
-        throw new Error("Нет доступа");
-      },
+      }
     });
 
     return props;
@@ -212,10 +212,6 @@ class Block {
     if (this.element) {
       this.element.style.display = "none";
     }
-  }
-
-  isPrivateProp(propName: string) {
-    return propName.startsWith("_");
   }
 }
 
