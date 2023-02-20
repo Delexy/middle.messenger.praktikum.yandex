@@ -1,4 +1,5 @@
 import template from "./template.pug";
+import { INPUT_VALIDATION_REGEXP } from '../../utils/projectVariables';
 import Block from "../Block/Block";
 import Input from "../Input/Input";
 
@@ -9,13 +10,6 @@ type FormProps = {
   ActionBtn?: Block;
   events?: Record<string, unknown>,
   [key: string]: any,
-};
-
-const INPUT_VALIDATION_REGEXP: Record<string, RegExp> = {
-  text: new RegExp(/.+/gi),
-  password: new RegExp(/.{8,}/g),
-  email: new RegExp(/^\S+@\S+\.\S+$/gi),
-  phone: new RegExp(/^\+?[1-9][0-9]{7,14}$/gi),
 };
 
 const INPUT_ERRORS: Record<string, string> = {

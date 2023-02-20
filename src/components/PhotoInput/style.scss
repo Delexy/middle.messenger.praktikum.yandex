@@ -7,8 +7,10 @@
   }
 
   &__title {
+    display: block;
     color: var(--color-primary);
     text-decoration: underline;
+    text-align: center;
   }
 
   &__img {

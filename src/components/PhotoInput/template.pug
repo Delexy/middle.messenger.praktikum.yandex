@@ -1,6 +1,5 @@
-//- mixin photoInput(title, name, currentImg, imgName)
 label.photo-input(class=attributes.class)
-  input.photo-input__input(type="file", name=name)
+  input.photo-input__input(type="file", name=name, accept="image/*")
   if !currentImg
     span.photo-input__title= title 
   else

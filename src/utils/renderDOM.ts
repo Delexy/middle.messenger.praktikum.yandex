@@ -3,6 +3,8 @@ import AuthPage from '../pages/authentication/AuthPage';
 import ErrorPage from '../pages/errors/ErrorPage';
 import PaginationPage from '../pages/pagination/Pagination';
 import ProfilePage from '../pages/profile/Profile';
+import ProfileEditPage from '../pages/profileEdit/ProfileEdit';
+import ChangePasswordPage from '../pages/changePassword/ChangePassword';
 
 export const enum PAGES {
   index = '/index',
@@ -24,6 +26,8 @@ const PAGES_ROUTES: Record<string, any> = {
   [PAGES.registration]: new RegistrationPage(),
   [PAGES.pagination]: new PaginationPage(),
   [PAGES.profile]: new ProfilePage({backUrl: PAGES.index, changeProfileUrl: PAGES.profileEdit, changePasswordUrl: PAGES.changePassword}),
+  [PAGES.profileEdit]: new ProfileEditPage({ backUrl: PAGES.index }),
+  [PAGES.changePassword]: new ChangePasswordPage({ backUrl: PAGES.index }),
 }
 
 export default function renderDOM(root: Element, pageName: string): void {

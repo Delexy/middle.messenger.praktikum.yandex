@@ -17,7 +17,7 @@ class RegistrationPage extends Block {
           new Input({ label: "Логин", className: INPUT_CLASS, attributes: { placeholder: "Логин", name: "login" } }),
           new Input({ label: "Имя", className: INPUT_CLASS, attributes: { placeholder: "Имя", name: "first_name" } }),
           new Input({ label: "Фамилия", className: INPUT_CLASS, attributes: { placeholder: "Фамилия", name: "second_name" } }),
-          new Input({ label: "Телефон", className: INPUT_CLASS, attributes: { placeholder: "Телефон", type: "phone", name: "phone" } }),
+          new Input({ label: "Телефон", className: INPUT_CLASS, attributes: { placeholder: "Телефон", type: "tel", name: "phone" } }),
           new Input({ label: "Пароль", className: INPUT_CLASS, attributes: { placeholder: "Пароль", type: "password", name: "password" } }),
         ],
         ActionBtn: new Button({

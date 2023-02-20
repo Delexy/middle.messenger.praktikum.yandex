@@ -1,0 +1,16 @@
+.profile-page 
+  a.profile-page__back(href=backUrl)
+    include ../../imgs/icons/arrow-back.svg
+  .profile-page__content
+    | !{Photo}
+    form.profile-list.profile-page__data
+      .profile-list__el
+        p.profile-list__name Старый пароль
+        input.profile-list__input(value="" name='oldPassword' type='password' placeholder="Старый пароль")
+      .profile-list__el
+        p.profile-list__name Новый пароль
+        input.profile-list__input(value="" name='newPassword' type='password' placeholder="Новый пароль")
+      .profile-list__el
+        p.profile-list__name Подтверждение пароль
+        input.profile-list__input(value="" name='confirmPassword' type='password' placeholder="Подтверждение пароля")
+      | !{SaveBtn}

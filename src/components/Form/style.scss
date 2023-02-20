@@ -1,49 +1,79 @@
 .form {
-		@include shadow;
+  @include shadow;
 
-		max-width: 340px;
-		padding: 4rem 3rem;
-		border-radius: 12px;
-		width: 100%;
+  max-width: 340px;
+  padding: 4rem 3rem;
+  border-radius: 12px;
+  width: 100%;
 
-		&__title {
-			margin-bottom: 4rem;
-			text-align: center;
-			font-weight: 600;
-			font-size: 1.5rem;
-		}
+  &__title {
+    margin-bottom: 4rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.5rem;
+  }
+
+  &__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IS0tIFVwbG9hZGVkIHRvOiBTVkcgUmVwbywgd3d3LnN2Z3JlcG8uY29tLCBHZW5lcmF0b3I6IFNWRyBSZXBvIE1peGVyIFRvb2xzIC0tPg0KPHN2ZyB3aWR0aD0iODAwcHgiIGhlaWdodD0iODAwcHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTE5LjIwNyA2LjIwN2ExIDEgMCAwIDAtMS40MTQtMS40MTRMMTIgMTAuNTg2IDYuMjA3IDQuNzkzYTEgMSAwIDAgMC0xLjQxNCAxLjQxNEwxMC41ODYgMTJsLTUuNzkzIDUuNzkzYTEgMSAwIDEgMCAxLjQxNCAxLjQxNEwxMiAxMy40MTRsNS43OTMgNS43OTNhMSAxIDAgMCAwIDEuNDE0LTEuNDE0TDEzLjQxNCAxMmw1Ljc5My01Ljc5M3oiIGZpbGw9IiMwMDAwMDAiLz48L3N2Zz4=");
+		background-size: 75%;
+		background-position: center;
+		background-repeat: no-repeat;
+		cursor: pointer;
+	}
 }
 
 .form-confirm {
-	&__btns {
-		display: grid;
-		grid-template-columns: repeat(2, auto);
-		grid-gap: 2rem;
-		align-items: center;
-		justify-content: space-between;
-	}
+  &__btns {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-gap: 2rem;
+    align-items: center;
+    justify-content: space-between;
+  }
 
-	&__btn {
-		max-width: 180px;
-	}
+  &__btn {
+    max-width: 180px;
+  }
 }
 
 .form-user {
-	&__input {
-		margin-top: 4rem;
-	}
+  &__input {
+    margin-top: 4rem;
+  }
 
-	&__btn {
-		margin-top: 2rem;
-	}
+  &__btn {
+    margin-top: 2rem;
+  }
 }
 
 .form-add-chat {
-	&__input {
-		margin-top: 4rem;
-	}
+  &__input {
+    margin-top: 4rem;
+  }
 
-	&__btn {
-		margin-top: 2rem;
-	}
+  &__btn {
+    margin-top: 2rem;
+  }
+}
+
+.form_modal {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 101;
+  background-color: var(--color-light);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--anim-fast);
+
+  &.is-active {
+    opacity: 1;
+    visibility: visible;
+  }
 }

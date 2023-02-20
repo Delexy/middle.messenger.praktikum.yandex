@@ -1,4 +1,5 @@
 import template from './template.pug';
+import { userData, fieldsNaming } from '../../utils/projectVariables';
 import Block from '../../components/Block/Block';
 import Photo from '../../components/Photo/Photo';
 
@@ -8,34 +9,27 @@ type ProfileProps = {
   backUrl: string,
   changeProfileUrl: string,
   changePasswordUrl: string,
+  fieldsNaming?: Record<string, string>
 }
-
-const userData = {
-  email: 'pochta@yandex.ru',
-  login: 'ivanivanov',
-  first_name: 'Иван',
-  second_name: 'Иванов',
-  phone: '+79099673030',
-}
-
-
-// .profile-list__el
-// p.profile-list__name= data[0]
-// p.profile-list__value= data[1]
 
 class ProfilePage extends Block {
 	constructor(props?: ProfileProps) {
+    if(props) {
+      props.user = userData;
+      props.fieldsNaming = fieldsNaming;
+    }
+
 		super(props);
+    
 	}
 
   init() {
-    this.props.user = userData;
-    this.props.userData = this.compileUserData(),
     this.children = {
       Photo: new Photo({
-        title: userData.first_name,
+        title: this.props.user.first_name,
+        photoSrc: this.props.user.avatar,
         attributes: {
-          alt: userData.first_name
+          alt: this.props.user.first_name
         }
       }),
     }
@@ -45,27 +39,27 @@ class ProfilePage extends Block {
     return `
       <div class = "profile-list__el">
         <p class = "profile-list__name">Почта</p>
-        <p class = "profile-list__value">${this.props.user.email}</p>
+        <p class = "profile-list__value">${this.props.fieldsNaming.email}</p>
       </div>
       <div class = "profile-list__el">
         <p class = "profile-list__name">Логин</p>
-        <p class = "profile-list__value">${this.props.user.login}</p>
+        <p class = "profile-list__value">${this.props.fieldsNaming.login}</p>
       </div>
       <div class = "profile-list__el">
         <p class = "profile-list__name">Имя</p>
-        <p class = "profile-list__value">${this.props.user.first_name}</p>
+        <p class = "profile-list__value">${this.props.fieldsNaming.first_name}</p>
       </div>
       <div class = "profile-list__el">
         <p class = "profile-list__name">Фамилия</p>
-        <p class = "profile-list__value">${this.props.user.second_name}</p>
+        <p class = "profile-list__value">${this.props.fieldsNaming.second_name}</p>
       </div>
       <div class = "profile-list__el">
         <p class = "profile-list__name">Имя в чате</p>
-        <p class = "profile-list__value">${this.props.user.login}</p>
+        <p class = "profile-list__value">${this.props.fieldsNaming.login}</p>
       </div>
       <div class = "profile-list__el">
         <p class = "profile-list__name">Телефон</p>
-        <p class = "profile-list__value">${this.props.user.phone}</p>
+        <p class = "profile-list__value">${this.props.fieldsNaming.phone}</p>
       </div>
     `;
   }

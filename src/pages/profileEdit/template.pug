@@ -1,0 +1,12 @@
+.profile-page 
+	a.profile-page__back(href=backUrl)
+		include ../../imgs/icons/arrow-back.svg
+	.profile-page__content
+		| !{Photo}
+		p.profile-page__name #{user.first_name}
+		form.profile-list.profile-page__data
+			each val, key in user
+				.profile-list__el
+					p.profile-list__name #{fieldsNaming[key]}
+					input.profile-list__input(value=val name=key type=(key === 'email' ? 'email' : (key === 'phone' ? 'tel' : 'text')) placeholder=fieldsNaming[key])
+			| !{SaveBtn}

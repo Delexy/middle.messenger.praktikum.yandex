@@ -42,8 +42,6 @@ class Input extends Block {
     }
   }
 
-  componentDidMount(): void {}
-
   render() {
     return this.compile(template, this.props);
   }
