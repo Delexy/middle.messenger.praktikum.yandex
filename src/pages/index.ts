@@ -1,12 +1,14 @@
-import renderDOM from "../utils/renderDOM";
-import { PAGES } from "../utils/renderDOM"
+import { PAGES, default as renderDOM } from "../utils/renderDOM"
 
-renderDOM(document.body, PAGES.profile);
+renderDOM(document.body, PAGES.index);
 
 document.addEventListener("click", function(event: Event) {
-  const target = event.target as HTMLElement;
+  let target = event.target as HTMLElement;
+  if(target.nodeName !== "A") {
+    target = target.closest("a") || target;
+  }
   const link = target.getAttribute('href');
-  if(target && target.nodeName === "A" &&  link !== null) {
+  if(target && (target.closest("a") || target.nodeName === "A") &&  link !== null) {
     event.preventDefault();
     renderDOM(document.body, link);
   }

@@ -1,13 +1,12 @@
-mixin message(text, time, isIncoming, isMedia, src)
-  if isMedia
-    .chat-messages__message.chat-messages__media(class=(isIncoming ? "chat-messages__message_in" : "chat-messages__message_out"))
+if isMedia
+  .chat-messages__message.chat-messages__media(class=(isIncoming ? "chat-messages__message_in" : "chat-messages__message_out"))
+    span.chat-messages__time= time
+    img.chat-messages__img(src=src alt="Изображение в чате")
+else 
+  div.chat-messages__row
+    .chat-messages__message(class=(isIncoming ? "chat-messages__message_in" : "chat-messages__message_out"))
       span.chat-messages__time= time
-      img.chat-messages__img(src=src alt="Изображение в чате")
-  else 
-    div.chat-messages__row
-      .chat-messages__message(class=(isIncoming ? "chat-messages__message_in" : "chat-messages__message_out"))
-        span.chat-messages__time= time
-        p.chat-messages__text= text
+      p.chat-messages__text= text
 
 
 

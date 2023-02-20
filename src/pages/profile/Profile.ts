@@ -3,8 +3,9 @@ import { userData, fieldsNaming } from '../../utils/projectVariables';
 import Block from '../../components/Block/Block';
 import Photo from '../../components/Photo/Photo';
 
+
 type ProfileProps = {
-  user?: Record<string, string>,
+  user?: Record<string, string | null>,
   userData?: string
   backUrl: string,
   changeProfileUrl: string,
@@ -24,9 +25,10 @@ class ProfilePage extends Block {
 	}
 
   init() {
+    delete userData['avatar'];
+    
     this.children = {
       Photo: new Photo({
-        title: this.props.user.first_name,
         photoSrc: this.props.user.avatar,
         attributes: {
           alt: this.props.user.first_name

@@ -4,14 +4,13 @@ import defaultSrc from "../../utils/defaultPhoto";
 import FormImage from "../FormImage/FormImage";
 
 type PhotoProps = {
-  title: string;
   photoSrc?: string;
   canChange?: boolean;
   attributes: {
     class?: string;
     alt: string;
   };
-  events: any;
+  events?: any;
 };
 
 class Photo extends Block {

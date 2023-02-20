@@ -1,7 +1,7 @@
 import template from "./template.pug";
-import { default as Block, PropsObjT } from "../Block/Block";
+import Block from "../Block/Block";
 
-interface InputProps extends PropsObjT {
+interface InputProps {
   label?: string;
   className?: string;
   attributes?: any;
@@ -21,16 +21,27 @@ class Input extends Block {
     const blurEvent: (e: InputEvent) => void = (event: InputEvent) => {
       if (event.target && (event.target as Element).nodeName === "INPUT") this.value = (event.target as HTMLInputElement).value;
     };
-    this.props.events = this.props.events || {};
-    this.props.events.change = blurEvent;
-
-    this.props.events.click = (event: MouseEvent) => {
+    const clickEvent = (event: MouseEvent) => {
       const target = event.target as Element;
       if (target && (target.classList.contains("input__eye") || target.closest(".input__eye"))) {
         const input = this.element.querySelector(".input__el") as HTMLInputElement;
         input.type = input.type === "password" ? "text" : "password";
       }
     };
+
+    this.props.events = this.props.events || {};
+    if(this.props.events.change) {
+      this.props.events.change = Array.isArray(this.props.events.change) ? [...this.props.events.change, blurEvent] : [this.props.events.change, blurEvent];
+    } else {
+      this.props.events.change = blurEvent;
+    }
+
+    
+    if(this.props.events.click) {
+      this.props.events.click = Array.isArray(this.props.events.click) ? [...this.props.events.click, clickEvent] : [this.props.events.click, clickEvent];
+    } else {
+      this.props.events.click = clickEvent;
+    }
   }
 
   componentUpdated(): void {

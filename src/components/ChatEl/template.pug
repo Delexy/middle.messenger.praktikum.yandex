@@ -1,8 +1,9 @@
-mixin chatElement(name, text, time, messageCount, imgSrc, isActive, isUserMessageLast)
-  .chat-el(class=(isActive ? 'is-active' : ''))
-    +photo('', imgSrc).chat-el__img(alt=name)
-    .chat-el__content 
-      span.chat-el__name= name
-      span.chat-el__text(class=(isUserMessageLast ? 'chat-el__text_last-user' : ''))= text 
-    span.chat-el__time= time 
+//- mixin chatElement(name, text, time, messageCount, imgSrc, isActive, isUserMessageLast)
+.chat-el(class=(isActive ? 'is-active' : ''))
+  | !{UserPhoto}
+  .chat-el__content 
+    span.chat-el__name= user.display_name
+    span.chat-el__text(class=(isUserMessageLast ? 'chat-el__text_last-user' : ''))= text 
+  span.chat-el__time= time
+  if messageCount > 0
     span.chat-el__msg-count= messageCount

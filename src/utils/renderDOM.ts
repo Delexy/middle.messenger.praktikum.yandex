@@ -5,6 +5,7 @@ import PaginationPage from '../pages/pagination/Pagination';
 import ProfilePage from '../pages/profile/Profile';
 import ProfileEditPage from '../pages/profileEdit/ProfileEdit';
 import ChangePasswordPage from '../pages/changePassword/ChangePassword';
+import ChatsPage from '../pages/main/Chats';
 
 export const enum PAGES {
   index = '/index',
@@ -19,7 +20,7 @@ export const enum PAGES {
 }
 
 const PAGES_ROUTES: Record<string, any> = {
-  [PAGES.index]: 123,
+  [PAGES.index]: new ChatsPage({ profileUrl: PAGES["profile"] }),
   [PAGES.unknown]: new ErrorPage({ status: 404, statusText: "Страница ушла, но обещала вернуться"}), 
   [PAGES.serverError]: new ErrorPage({ status: 500, statusText: "У нас что-то поломалось, уже чиним"}), 
 	[PAGES.auth]: new AuthPage(),

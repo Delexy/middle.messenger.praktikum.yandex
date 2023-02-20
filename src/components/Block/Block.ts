@@ -10,12 +10,12 @@ enum EVENTS {
   FLOW_RENDER = "flow:render",
 }
 
-interface PropsObjT {
+interface BlockProps {
   [key: string]: any;
 }
 
 class Block {
-  props: PropsObjT;
+  props: BlockProps;
   _element: HTMLElement;
   _meta;
   id: string;
@@ -55,7 +55,11 @@ class Block {
     if (events) {
       Object.keys(events).forEach((eventName) => {
         if (this._element) {
-          this._element.addEventListener(eventName, events[eventName]);
+          if (Array.isArray(events[eventName])) {
+            events[eventName].forEach((event: () => void) => this._element.addEventListener(eventName, event));
+          } else {
+            this._element.addEventListener(eventName, events[eventName]);
+          }
         }
       });
     }
@@ -67,15 +71,19 @@ class Block {
     if (events) {
       Object.keys(events).forEach((eventName) => {
         if (this._element) {
-          this._element.removeEventListener(eventName, events[eventName]);
+          if (Array.isArray(events[eventName])) {
+            events[eventName].forEach((event: () => void) => this._element.removeEventListener(eventName, event));
+          } else {
+            this._element.removeEventListener(eventName, events[eventName]);
+          }
         }
       });
     }
   }
 
-  private _getChildren(propsAndChildren: PropsObjT) {
-    const children: PropsObjT = {};
-    const props: PropsObjT = {};
+  private _getChildren(propsAndChildren: BlockProps) {
+    const children: BlockProps = {};
+    const props: BlockProps = {};
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
       if ((Array.isArray(value) && value[0] instanceof Block) || value instanceof Block) {
@@ -101,8 +109,8 @@ class Block {
     this.componentDidMount();
 
     Object.values(this.children).forEach((child) => {
-      if(Array.isArray(child)) {
-        child.forEach(subChild => subChild.dispatchComponentDidMount());
+      if (Array.isArray(child)) {
+        child.forEach((subChild) => subChild.dispatchComponentDidMount());
       } else {
         child.dispatchComponentDidMount();
       }
@@ -117,7 +125,7 @@ class Block {
     this.eventBus().emit(EVENTS.FLOW_CDM);
   }
 
-  _componentDidUpdate(oldProps?: PropsObjT | unknown, newProps?: PropsObjT | unknown) {
+  _componentDidUpdate(oldProps?: BlockProps | unknown, newProps?: BlockProps | unknown) {
     const response = this.componentDidUpdate(oldProps, newProps);
 
     if (response) {
@@ -127,11 +135,14 @@ class Block {
     this.eventBus().emit(EVENTS.FLOW_CU);
   }
 
-  componentDidUpdate(oldProps?: PropsObjT | unknown, newProps?: PropsObjT | unknown): boolean {
+  componentDidUpdate(oldProps?: BlockProps | unknown, newProps?: BlockProps | unknown): boolean {
     // Может переопределять пользователь, необязательно трогать
+    if (oldProps == newProps) {
+      return false;
+    }
     return true;
   }
-  
+
   _componentUpdated(): void {
     this.componentUpdated();
   }
@@ -140,7 +151,7 @@ class Block {
     // Может переопределять пользователь, необязательно трогать
   }
 
-  setProps = (nextProps: PropsObjT) => {
+  setProps = (nextProps: BlockProps) => {
     if (!nextProps) {
       return;
     }
@@ -170,12 +181,12 @@ class Block {
     return "" as any;
   }
 
-  compile(template: compileTemplate, props: PropsObjT): DocumentFragment {
+  compile(template: compileTemplate, props: BlockProps): DocumentFragment {
     const propsAndStubs = { ...props };
 
     Object.entries(this.children).forEach(([key, child]) => {
       if (Array.isArray(child)) {
-        propsAndStubs[key] = child.map((subChild) => `<div data-id="${subChild.id}"></div>`).join('');
+        propsAndStubs[key] = child.map((subChild) => `<div data-id="${subChild.id}"></div>`).join("");
       } else {
         propsAndStubs[key] = `<div data-id="${child.id}"></div>`;
       }
@@ -208,12 +219,12 @@ class Block {
     return this.element;
   }
 
-  private _makePropsProxy(props: PropsObjT) {
+  private _makePropsProxy(props: BlockProps) {
     props = new Proxy(props, {
-      get: (target: PropsObjT, property: string) => {
+      get: (target: BlockProps, property: string) => {
         return typeof target[property] === "function" ? target[property].bind(target) : target[property];
       },
-      set: (target: PropsObjT, property: string, value, receiver) => {
+      set: (target: BlockProps, property: string, value, receiver) => {
         const oldProps = { ...target.props };
         const isUpdated = Reflect.set(target, property, value, receiver);
 
@@ -244,4 +255,4 @@ class Block {
   }
 }
 
-export { Block as default, PropsObjT };
+export { Block as default, BlockProps };

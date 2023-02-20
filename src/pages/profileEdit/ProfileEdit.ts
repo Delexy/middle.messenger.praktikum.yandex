@@ -52,7 +52,6 @@ class ProfileEditPage extends Block {
   init() {
     this.children = {
       Photo: new Photo({
-        title: this.props.user.first_name,
         photoSrc: this.props.user.avatar,
         canChange: true,
         attributes: {

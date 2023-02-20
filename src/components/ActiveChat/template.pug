@@ -1,0 +1,47 @@
+.chat
+	.chat-active 
+		.chat-user
+			a.chat-profile.chat-user__profile(href=profileUrl)
+				| !{UserPhoto}
+				p.chat-profile__name= user.display_name
+			.chat-user__menu 
+				.chat-user__icon
+					include ../../imgs/icons/vertical-elipsis.svg
+				.chat-user__actions   
+					button.chat-user__action
+						span.chat-user__action-image 
+							include ../../imgs/icons/image.svg
+						span.chat-user__action-text Изменить изображение
+					button.chat-user__action
+						span.chat-user__action-image 
+							include ../../imgs/icons/plus.svg
+						span.chat-user__action-text Добавить пользователя
+					button.chat-user__action
+						span.chat-user__action-image 
+							include ../../imgs/icons/cross.svg
+						span.chat-user__action-text Удалить пользователя
+					button.chat-user__action.chat-user__action_remove
+						span.chat-user__action-image
+							include ../../imgs/icons/remove.svg
+						span.chat-user__action-text Удалить чат
+		.chat-messages
+			div.chat-messages__row
+				span.chat-messages__date  19 июня
+			| !{Messages}
+
+		form.chat-message
+			.chat-message__menu 
+				.chat-message__icon
+					include ../../imgs/icons/clip.svg
+				.chat-message__actions   
+					button.chat-message__action
+						span.chat-message__action-image 
+							include ../../imgs/icons/image.svg
+						span.chat-message__action-text Фото или видео
+					button.chat-message__action
+						span.chat-message__action-image 
+							include ../../imgs/icons/file.svg
+						span.chat-message__action-text Файл
+			input.chat-message__input(name="message")
+			button.chat-message__submit 
+				include ../../imgs/icons/send.svg
