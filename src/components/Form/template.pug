@@ -1,7 +1,8 @@
 form.form(class=isModal ? 'form_modal' : '' class=className id=id)
 	if isModal 
 		button.form__close(type="button")
-	p.form__title= title
+	if title
+		p.form__title= title
 	.auth-form__inputs
 		| !{inputs}
 		.auth-form__btns 

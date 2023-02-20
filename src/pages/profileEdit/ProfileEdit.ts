@@ -3,51 +3,27 @@ import { userData, fieldsNaming, INPUT_VALIDATION_REGEXP } from '../../utils/pro
 import Block from '../../components/Block/Block';
 import Photo from '../../components/Photo/Photo';
 import Button from '../../components/Button/Button';
+import Form from '../../components/Form/Form';
+import Input from '../../components/Input/Input';
 
 type ProfileEditProps = {
-  user?: Record<string, string>,
+  user?: Record<string, string | null>,
   userData?: string
   backUrl: string,
   fieldsNaming?: Record<string, string>
   events?: any,
 }
 
+const INPUT_CLASS = "auth-form__input";
+
 class ProfileEditPage extends Block {
 	constructor(props?: ProfileEditProps) {
     if(props) {
       props.user = userData;
       props.fieldsNaming = fieldsNaming;
-      props.events = {
-        submit: (event: Event) => {
-          event.preventDefault();
-          const formIsValid = this.validate();
-          if(formIsValid && event.target) {
-            const formData = new FormData(event.target as HTMLFormElement);
-            console.log(Object.fromEntries(formData));
-          }
-        }
-      }
     }
 		super(props);
 	}
-
-  validate(): boolean {
-    let isValid = true;
-    const inputs = this.element.querySelectorAll("input[name]");
-    inputs.forEach((input: HTMLInputElement) => {
-      const currentType: string = input.type;
-      const inputIsValid = `${input.value}`.match(INPUT_VALIDATION_REGEXP[currentType]);
-
-      if (!inputIsValid) {
-        input.parentElement?.classList.add('is-error');
-        isValid = false;
-      } else {
-        input.parentElement?.classList.remove('is-error');
-      }
-    });
-
-    return isValid;
-  }
 
   init() {
     this.children = {
@@ -57,6 +33,32 @@ class ProfileEditPage extends Block {
         attributes: {
           alt: this.props.user.first_name
         }
+      }),
+      EditForm: new Form({
+        inputs: [
+          new Input({ label: "Почта", className: INPUT_CLASS, attributes: { value: this.props.user.email, placeholder: "Почта", type: "email", name: "email" } }),
+          new Input({ label: "Логин", className: INPUT_CLASS, attributes: { value: this.props.user.login, placeholder: "Логин", name: "login" } }),
+          new Input({ label: "Имя", className: INPUT_CLASS, attributes: { value: this.props.user.first_name, placeholder: "Имя", name: "first_name" } }),
+          new Input({ label: "Имя в чате", className: INPUT_CLASS, attributes: { value: this.props.user.first_name, placeholder: "Имя", name: "display_name" } }),
+          new Input({ label: "Фамилия", className: INPUT_CLASS, attributes: { value: this.props.user.second_name, placeholder: "Фамилия", name: "second_name" } }),
+          new Input({ label: "Телефон", className: INPUT_CLASS, attributes: { value: this.props.user.phone, placeholder: "Телефон", type: "tel", name: "phone" } }),
+        ],
+        ActionBtn: new Button({
+          text: "Изменить",
+          attributes: {
+            type: "submit",
+          },
+        }),
+        Link: ``,
+        events: {
+          submit: (event: SubmitEvent) => {
+            event.preventDefault();
+            if ((this.children.EditForm as Form).validation()) {
+              const data = new FormData(event.target as HTMLFormElement);
+              console.log(Object.fromEntries(data));
+            }
+          },
+        },
       }),
       SaveBtn: new Button({ text: 'Сохранить', attributes: { class: "profile-page__btn-save", type: "submit" }})
     }

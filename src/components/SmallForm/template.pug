@@ -1,0 +1,7 @@
+form.form.form_modal(class=className id=id)
+	button.form__close(type="button", data-close="true")
+	if title
+		p.form__title= title
+	| !{input}
+	| !{Button}
+	| !{content}

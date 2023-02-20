@@ -1,7 +1,7 @@
 import template from "./template.pug";
 import Block from "../Block/Block";
 import defaultSrc from "../../utils/defaultPhoto";
-import FormImage from "../FormImage/FormImage";
+import FormImage from "../FormFile/FormFile";
 
 type PhotoProps = {
   photoSrc?: string;
@@ -33,6 +33,7 @@ class Photo extends Block {
             event.stopPropagation();
             event.preventDefault();
             const ModalEl = this.children.ChangePhotoModal as FormImage;
+            ModalEl.props.attributes.class = "is-active";
             if (ModalEl.validation()) {
               const formData = new FormData();
               formData.append("avatar", ModalEl.getFile());

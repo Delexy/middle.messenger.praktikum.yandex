@@ -1,9 +1,9 @@
 import template from "./template.pug";
 import Block from "../Block/Block";
-import PhotoInput from "../PhotoInput/PhotoInput";
+import FileInput from "../FileInput/FileInput";
 import Button from "../Button/Button";
 
-type FormImageProps = {
+type FormFileProps = {
   title: string;
   isModal?: boolean;
   errorText?: string;
@@ -16,27 +16,27 @@ type FormImageProps = {
   [key: string]: any;
 };
 
-class FormImage extends Block {
-  constructor(props: FormImageProps) {
+class FormFile extends Block {
+  constructor(props: FormFileProps) {
     super(props);
   }
 
   init(): void {
     this.children = {
-      PhotoInput: new PhotoInput({ title: "Выбрать файл на компьютере", name: "avatar", attributes: { class: "form-image__input" } }),
+      FileInput: new FileInput({ title: "Выбрать файл на компьютере", name: "avatar", attributes: { class: "form-image__input" } }),
       SaveBtn: new Button({ text: "Поменять", attributes: { class: "form-image__btn" } })
     };
   }
 
   validation(): boolean {
-    if(!(this.children.PhotoInput as PhotoInput).value) {
+    if(!(this.children.FileInput as FileInput).value) {
       return false;
     }
     return true;
   }
 
   getFile() {
-    return (this.children.PhotoInput as PhotoInput).value;
+    return (this.children.FileInput as FileInput).value;
   }
 
   render(): DocumentFragment {
@@ -44,4 +44,4 @@ class FormImage extends Block {
   }
 }
 
-export default FormImage;
+export default FormFile;

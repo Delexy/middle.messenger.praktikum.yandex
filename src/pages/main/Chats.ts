@@ -4,6 +4,9 @@ import Block from "../../components/Block/Block";
 import Photo from "../../components/Photo/Photo";
 import ChatEl from "../../components/ChatEl/ChatEl";
 import ActiveChatPage from "../../components/ActiveChat/ActiveChat";
+import SmallForm from "../../components/SmallForm/SmallForm";
+import Input from "../../components/Input/Input";
+import Button from "../../components/Button/Button";
 
 type ChatsPageProps = {
   profileUrl: string;
@@ -19,25 +22,112 @@ class ChatsPage extends Block {
 
   init() {
     this.props.user = userData;
-    this.props.events = {
-      click: [
-        this.openMenu,
-      ]
-    }
 
     this.children = {
       UserPhoto: new Photo({ photoSrc: this.props.user.avatar, attributes: { class: "chat-profile__img", alt: this.props.user.first_name } }),
       ChatsList: [
-        new ChatEl({ isActive: false, user: userData, isUserMessageLast: false, time: "16:45", messageCount: 0, text: chatText, events: { click: this.chooseChat.bind(this) } }),
-        new ChatEl({ isActive: false, user: userData, isUserMessageLast: false, time: "16:45", messageCount: 5, text: chatText, events: { click: this.chooseChat.bind(this) } }),
-        new ChatEl({ isActive: false, user: userData, isUserMessageLast: false, time: "16:45", messageCount: 0, text: chatText, events: { click: this.chooseChat.bind(this) } }),
-        new ChatEl({ isActive: false, user: userData, isUserMessageLast: false, time: "16:45", messageCount: 3, text: chatText, events: { click: this.chooseChat.bind(this) } }),
-        new ChatEl({ isActive: false, user: userData, isUserMessageLast: false, time: "16:45", messageCount: 0, text: chatText, events: { click: this.chooseChat.bind(this) } }),
-        new ChatEl({ isActive: false, user: userData, isUserMessageLast: false, time: "16:45", messageCount: 2, text: chatText, events: { click: this.chooseChat.bind(this) } }),
-        new ChatEl({ isActive: false, user: userData, isUserMessageLast: false, time: "16:45", messageCount: 0, text: chatText, events: { click: this.chooseChat.bind(this) } }),
-        new ChatEl({ isActive: false, user: userData, isUserMessageLast: false, time: "16:45", messageCount: 1, text: chatText, events: { click: this.chooseChat.bind(this) } }),
+        new ChatEl({
+          isActive: false,
+          user: userData,
+          isUserMessageLast: false,
+          time: "16:45",
+          messageCount: 0,
+          text: chatText,
+          events: { click: this.chooseChat.bind(this) },
+        }),
+        new ChatEl({
+          isActive: false,
+          user: userData,
+          isUserMessageLast: false,
+          time: "16:45",
+          messageCount: 5,
+          text: chatText,
+          events: { click: this.chooseChat.bind(this) },
+        }),
+        new ChatEl({
+          isActive: false,
+          user: userData,
+          isUserMessageLast: false,
+          time: "16:45",
+          messageCount: 0,
+          text: chatText,
+          events: { click: this.chooseChat.bind(this) },
+        }),
+        new ChatEl({
+          isActive: false,
+          user: userData,
+          isUserMessageLast: false,
+          time: "16:45",
+          messageCount: 3,
+          text: chatText,
+          events: { click: this.chooseChat.bind(this) },
+        }),
+        new ChatEl({
+          isActive: false,
+          user: userData,
+          isUserMessageLast: false,
+          time: "16:45",
+          messageCount: 0,
+          text: chatText,
+          events: { click: this.chooseChat.bind(this) },
+        }),
+        new ChatEl({
+          isActive: false,
+          user: userData,
+          isUserMessageLast: false,
+          time: "16:45",
+          messageCount: 2,
+          text: chatText,
+          events: { click: this.chooseChat.bind(this) },
+        }),
+        new ChatEl({
+          isActive: false,
+          user: userData,
+          isUserMessageLast: false,
+          time: "16:45",
+          messageCount: 0,
+          text: chatText,
+          events: { click: this.chooseChat.bind(this) },
+        }),
+        new ChatEl({
+          isActive: false,
+          user: userData,
+          isUserMessageLast: false,
+          time: "16:45",
+          messageCount: 1,
+          text: chatText,
+          events: { click: this.chooseChat.bind(this) },
+        }),
+      ],
+      Modals: [
+        new SmallForm({
+          title: "Добавить чат",
+          id: "add-chat-modal",
+          input: new Input({ label: "Название чата", attributes: { type: "text" } }),
+          Button: new Button({ text: "Добавить", attributes: { class: "form-user__btn" } }),
+        }),
       ],
     };
+
+    if (!this.props.events) {
+      this.props.events = {};
+    }
+
+    this.props.events.click = [
+      this.openMenu,
+      (event: Event) => {
+        let target = event.target as HTMLElement;
+        target = target.closest("[data-modal]") || target;
+        document.querySelector(`#${target.dataset.modal}`)?.classList.add("is-active");
+      },
+      (event: Event) => {
+        let target = event.target as Element;
+        const actionBtn = target.closest("[data-close]");
+        if (!!actionBtn) {
+          actionBtn.parentElement?.classList.remove("is-active");
+        }
+      },
+    ];
   }
 
   chooseChat(event: Event): void {
@@ -56,8 +146,10 @@ class ChatsPage extends Block {
   openMenu(event: Event): void {
     let target = event.target as HTMLElement;
     target = target.closest(".chat-message__menu") || target.closest(".chat-user__menu") || target;
-    target = target.querySelector(`.${Array.from(target.classList).join('.')} > [class*=actions]`) || target;
-    target.classList.toggle('is-active');
+    const menuBtn = target.querySelector(`.${Array.from(target.classList).join(".")} > [class*=actions]`) || null;
+    if (menuBtn) {
+      menuBtn.classList.toggle("is-active");
+    }
   }
 
   render() {

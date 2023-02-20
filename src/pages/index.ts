@@ -1,6 +1,6 @@
 import { PAGES, default as renderDOM } from "../utils/renderDOM"
 
-renderDOM(document.body, PAGES.index);
+renderDOM(document.body, PAGES.pagination);
 
 document.addEventListener("click", function(event: Event) {
   let target = event.target as HTMLElement;

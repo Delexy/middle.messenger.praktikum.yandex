@@ -8,19 +8,19 @@
 				.chat-user__icon
 					include ../../imgs/icons/vertical-elipsis.svg
 				.chat-user__actions   
-					button.chat-user__action
+					button.chat-user__action(data-modal="change-photo-modal")
 						span.chat-user__action-image 
 							include ../../imgs/icons/image.svg
 						span.chat-user__action-text Изменить изображение
-					button.chat-user__action
+					button.chat-user__action(data-modal="add-user-modal")
 						span.chat-user__action-image 
 							include ../../imgs/icons/plus.svg
 						span.chat-user__action-text Добавить пользователя
-					button.chat-user__action
-						span.chat-user__action-image 
+					button.chat-user__action(data-modal="remove-user-modal")
+						span.chat-user__action-image
 							include ../../imgs/icons/cross.svg
 						span.chat-user__action-text Удалить пользователя
-					button.chat-user__action.chat-user__action_remove
+					button.chat-user__action.chat-user__action_remove(data-modal="confirm-modal")
 						span.chat-user__action-image
 							include ../../imgs/icons/remove.svg
 						span.chat-user__action-text Удалить чат
@@ -34,14 +34,15 @@
 				.chat-message__icon
 					include ../../imgs/icons/clip.svg
 				.chat-message__actions   
-					button.chat-message__action
+					button.chat-message__action(type="button" data-modal="add-photo-modal")
 						span.chat-message__action-image 
 							include ../../imgs/icons/image.svg
 						span.chat-message__action-text Фото или видео
-					button.chat-message__action
+					button.chat-message__action(type="button" data-modal="add-file-modal")
 						span.chat-message__action-image 
 							include ../../imgs/icons/file.svg
 						span.chat-message__action-text Файл
 			input.chat-message__input(name="message")
-			button.chat-message__submit 
+			button.chat-message__submit(type="submit")
 				include ../../imgs/icons/send.svg
+	| !{Modals}

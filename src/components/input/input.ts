@@ -14,12 +14,15 @@ class Input extends Block {
   constructor(props: InputProps) {
     super(props);
     this.props.attributes.type = props.attributes.type || "text";
-    this.value = "";
+    this.value = this.props.attributes.value || "";
   }
 
   init() {
     const blurEvent: (e: InputEvent) => void = (event: InputEvent) => {
-      if (event.target && (event.target as Element).nodeName === "INPUT") this.value = (event.target as HTMLInputElement).value;
+      if (event.target && (event.target as Element).nodeName === "INPUT") {
+        this.value = (event.target as HTMLInputElement).value;
+        this.props.attributes.value = this.value;
+      }
     };
     const clickEvent = (event: MouseEvent) => {
       const target = event.target as Element;
@@ -34,6 +37,12 @@ class Input extends Block {
       this.props.events.change = Array.isArray(this.props.events.change) ? [...this.props.events.change, blurEvent] : [this.props.events.change, blurEvent];
     } else {
       this.props.events.change = blurEvent;
+    }
+
+    if(this.props.events.focusout) {
+      this.props.events.focusout = Array.isArray(this.props.events.focusout) ? [...this.props.events.focusout, blurEvent] : [this.props.events.focusout, blurEvent];
+    } else {
+      this.props.events.focusout = blurEvent;
     }
 
     

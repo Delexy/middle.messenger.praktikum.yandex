@@ -1,7 +1,7 @@
 import template from "./template.pug";
 import Block from "../Block/Block";
 
-type PhotoInputProps = {
+type FileInputProps = {
   title: string;
   name: string;
   currentImg?: string;
@@ -12,10 +12,10 @@ type PhotoInputProps = {
   events?: any;
 };
 
-class PhotoInput extends Block {
+class FileInput extends Block {
   value: File;
 
-  constructor(props: PhotoInputProps) {
+  constructor(props: FileInputProps) {
 		if(!props.events) {
 			props.events = {};
 		}
@@ -25,16 +25,19 @@ class PhotoInput extends Block {
       if (input && input.files) {
         const file = input.files[0];
         this.value = file;
-        let fileBase64 = null;
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          fileBase64 = e.target ? e.target.result : null;
-          this.setProps({
-            imgName: file.name,
-            currentImg: fileBase64
-          });
-        };
-        reader.readAsDataURL(file);
+
+        if(file.type.startsWith('image')) {
+          let fileBase64 = null;
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            fileBase64 = e.target ? e.target.result : null;
+            this.setProps({
+              imgName: file.name,
+              currentImg: fileBase64
+            });
+          };
+          reader.readAsDataURL(file);
+        }
       }
     };
 		
@@ -54,4 +57,4 @@ class PhotoInput extends Block {
   }
 }
 
-export default PhotoInput;
+export default FileInput;

@@ -7,7 +7,7 @@
         .chat-search__icon
           include ../../imgs/icons/search.svg
         input.chat-search__input(type="text" name="search" placeholder="Поиск")
-      .chat-add 
+      .chat-add(data-modal="add-chat-modal")
         .chat-add__icon 
           include ../../imgs/icons/plus.svg
         span.chat-add__text Добавить новый чат
@@ -20,3 +20,4 @@
       .chat 
         .chat-inactive 
           p.chat-inactive__text Выберите чат чтобы отправить сообщение
+    | !{Modals}

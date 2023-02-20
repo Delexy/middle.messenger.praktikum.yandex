@@ -1,8 +1,8 @@
 form.form.from-image(class=isModal ? 'form_modal' : '' class=attributes.class id=attributes.id)
   if isModal 
-    button.form__close(type="button")
+    button.form__close(type="button" data-close="true")
   p.form__title= title
   .auth-form__inputs
-    | !{PhotoInput}
+    | !{FileInput}
     | !{SaveBtn}
     span.form-image__error= errorText

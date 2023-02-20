@@ -1,22 +1,22 @@
 import template from "./template.pug";
-import { INPUT_VALIDATION_REGEXP } from '../../utils/projectVariables';
+import { INPUT_VALIDATION_REGEXP } from "../../utils/projectVariables";
 import Block from "../Block/Block";
 import Input from "../Input/Input";
 
 type FormProps = {
-  title: string;
+  title?: string;
   isModal?: boolean;
   inputs?: Block[];
   ActionBtn?: Block;
-  events?: Record<string, unknown>,
-  [key: string]: any,
+  events?: Record<string, unknown>;
+  [key: string]: any;
 };
 
 const INPUT_ERRORS: Record<string, string> = {
   text: "Поле не должно быть пустым",
   password: "Пароль должен быть не менее 8 символов",
   email: "Email введён неверно",
-  phone: "Телефон введён неверно",
+  tel: "Телефон введён неверно",
 };
 
 class Form extends Block {
@@ -31,19 +31,14 @@ class Form extends Block {
     const inputs = Array.isArray(this.children.inputs) ? [...this.children.inputs] : [this.children.inputs];
     inputs.forEach((input: Input) => {
       const currentType: string = input.props.attributes.type;
-      const inputIsValid = `${input.value}`.match(INPUT_VALIDATION_REGEXP[currentType]);
+      const inputIsValid = !!`${input.value}`.match(INPUT_VALIDATION_REGEXP[currentType]);
 
       if (!inputIsValid) {
-        input.setProps({
-          className: `${input.props.className} input_error`,
-          error: INPUT_ERRORS[currentType],
-        });
+        input.props.className = `${input.props.className} input_error`;
+        input.props.error = INPUT_ERRORS[currentType];
         this.isValid = false;
       } else {
-        input.setProps({
-          className: input.props.className.replace(" input_error", ""),
-          error: undefined,
-        });
+        input.props.className = input.props.className.replace(" input_error", "");
       }
     });
 

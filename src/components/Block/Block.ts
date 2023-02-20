@@ -18,6 +18,7 @@ class Block {
   props: BlockProps;
   _element: HTMLElement;
   _meta;
+  _needUpdate: boolean;
   id: string;
   children: { [key: string]: Block | Block[] };
   eventBus: () => EventBus;
@@ -225,10 +226,9 @@ class Block {
         return typeof target[property] === "function" ? target[property].bind(target) : target[property];
       },
       set: (target: BlockProps, property: string, value, receiver) => {
-        const oldProps = { ...target.props };
         const isUpdated = Reflect.set(target, property, value, receiver);
 
-        this.eventBus().emit(EVENTS.FLOW_CDU, this.props, oldProps);
+        this.eventBus().emit(EVENTS.FLOW_CDU, this.props, target);
 
         return isUpdated;
       },
