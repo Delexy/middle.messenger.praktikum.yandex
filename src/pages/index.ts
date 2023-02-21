@@ -1,6 +1,8 @@
 import { PAGES, default as renderDOM } from "../utils/renderDOM"
 
-renderDOM(document.body, PAGES.pagination);
+const globalRoot = document.querySelector("#app") as HTMLElement;
+
+renderDOM(globalRoot, PAGES.pagination);
 
 document.addEventListener("click", function(event: Event) {
   let target = event.target as HTMLElement;
@@ -10,6 +12,6 @@ document.addEventListener("click", function(event: Event) {
   const link = target.getAttribute('href');
   if(target && (target.closest("a") || target.nodeName === "A") &&  link !== null) {
     event.preventDefault();
-    renderDOM(document.body, link);
+    renderDOM(globalRoot, link);
   }
 });
