@@ -20,11 +20,11 @@
     width: 30px;
     height: 30px;
     background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IS0tIFVwbG9hZGVkIHRvOiBTVkcgUmVwbywgd3d3LnN2Z3JlcG8uY29tLCBHZW5lcmF0b3I6IFNWRyBSZXBvIE1peGVyIFRvb2xzIC0tPg0KPHN2ZyB3aWR0aD0iODAwcHgiIGhlaWdodD0iODAwcHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTE5LjIwNyA2LjIwN2ExIDEgMCAwIDAtMS40MTQtMS40MTRMMTIgMTAuNTg2IDYuMjA3IDQuNzkzYTEgMSAwIDAgMC0xLjQxNCAxLjQxNEwxMC41ODYgMTJsLTUuNzkzIDUuNzkzYTEgMSAwIDEgMCAxLjQxNCAxLjQxNEwxMiAxMy40MTRsNS43OTMgNS43OTNhMSAxIDAgMCAwIDEuNDE0LTEuNDE0TDEzLjQxNCAxMmw1Ljc5My01Ljc5M3oiIGZpbGw9IiMwMDAwMDAiLz48L3N2Zz4=");
-		background-size: 75%;
-		background-position: center;
-		background-repeat: no-repeat;
-		cursor: pointer;
-	}
+    background-size: 75%;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
 }
 
 .form-confirm {
@@ -60,7 +60,8 @@
     margin-top: 2rem;
   }
 }
-
+/* stylelint-disable */
+// Модификатор класса form
 .form_modal {
   position: fixed;
   top: 20%;
@@ -71,9 +72,10 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity var(--anim-fast);
-
+  
   &.is-active {
     opacity: 1;
     visibility: visible;
   }
+  /* stylelint-enable */
 }

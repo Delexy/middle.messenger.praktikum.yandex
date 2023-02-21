@@ -5,7 +5,7 @@ import Photo from '../../components/Photo/Photo';
 import Button from '../../components/Button/Button';
 
 type ChangePasswordProps = {
-  user?: Record<string, string>,
+  user?: Record<string, string | null>,
   userData?: string
   backUrl: string,
   fieldsNaming?: Record<string, string>
@@ -34,7 +34,6 @@ class ChangePasswordPage extends Block {
   init() {
     this.children = {
       Photo: new Photo({
-        title: this.props.user.first_name,
         photoSrc: this.props.user.avatar,
         canChange: false,
         attributes: {

@@ -64,6 +64,7 @@
     border: 1px solid var(--color-dark-bg);
 
     /* stylelint-disable */
+		// Удобнее сделать это стилями в зависимости от родителя    
     .chat-messages__time {
       padding: 0.1rem 0.6rem;
       background: rgb(82 82 82 / 50%);

@@ -22,7 +22,7 @@ class ChatsPage extends Block {
 
   init() {
     this.props.user = userData;
-    
+
     const addChatModal = new SmallForm({
       title: "Добавить чат",
       id: "add-chat-modal",
@@ -31,8 +31,8 @@ class ChatsPage extends Block {
       events: {
         submit: (event: Event) => {
           addChatModal.submit(event);
-        }
-      }
+        },
+      },
     });
 
     this.children = {
@@ -72,9 +72,9 @@ class ChatsPage extends Block {
         document.querySelector(`#${target.dataset.modal}`)?.classList.add("is-active");
       },
       (event: Event) => {
-        let target = event.target as Element;
+        const target = event.target as Element;
         const actionBtn = target.closest("[data-close]");
-        if (!!actionBtn) {
+        if (actionBtn) {
           actionBtn.parentElement?.classList.remove("is-active");
         }
       },
@@ -97,7 +97,7 @@ class ChatsPage extends Block {
   openMenu(event: Event): void {
     let target = event.target as HTMLElement;
     target = target.closest(".chat-message__menu") || target.closest(".chat-user__menu") || target;
-    if(target.classList.length > 0) {
+    if (target.classList.length > 0) {
       const menuBtn = target.querySelector(`.${Array.from(target.classList).join(".")} > [class*=actions]`) || null;
       if (menuBtn) {
         menuBtn.classList.toggle("is-active");

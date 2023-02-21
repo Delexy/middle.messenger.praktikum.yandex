@@ -1,6 +1,7 @@
 @import '../authentication/style';
 
 /* stylelint-disable */
+// Одинокий блок, а линтёр на него ругается =(
 .auth-form__btns {
 	margin-top: 3rem;
 }

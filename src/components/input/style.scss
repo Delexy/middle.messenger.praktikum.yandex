@@ -20,6 +20,7 @@
     border-bottom: 1px solid var(--color-primary);
 
 		/* stylelint-disable */
+		// Удобнее сделать это стилями в зависимости от родителя
 		&:not(&:placeholder-shown) ~ .input__title {
 			pointer-events: initial;
 			transform: translateY(-110%);
@@ -40,6 +41,7 @@
   }
 
 	/* stylelint-disable */
+	// Удобнее сделать это стилями в зависимости от родителя
 	&__error-text {
 		position: absolute;
 		bottom: 0;
@@ -56,6 +58,7 @@
 		padding-bottom: 2rem;
 
 		/* stylelint-disable */
+		// Удобнее сделать это стилями в зависимости от родителя
 		.input__el {
 			border-color: var(--color-error);
 		}

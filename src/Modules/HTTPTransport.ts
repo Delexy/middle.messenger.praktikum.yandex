@@ -32,7 +32,8 @@ class HTTPTransport {
 
   request = (url: string, options: Record<string, any> = { method: METHODS.GET, data: ""}, timeout = 5000) => {
     return new Promise((resolve, reject) => {
-      let { method, data, headers } = options;
+      const { headers } = options;
+      let { method, data } = options;
       if (!method) {
         method = METHODS.GET;
       }

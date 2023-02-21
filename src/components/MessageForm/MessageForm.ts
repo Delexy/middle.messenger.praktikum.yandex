@@ -10,9 +10,6 @@ class MessageForm extends Block {
     super(props);
   }
 
-  init(): void {
-  }
-
   submit(): void {
     const form = this.element as HTMLFormElement;
     const formData = new FormData(form);
