@@ -1,7 +1,7 @@
 import template from "./template.pug";
 import Block from "../../components/Block/Block";
 import { PAGES } from "../../utils/renderDOM";
-import Button from "../../components/Button1/Button";
+import Button from "../../components/Button/Button";
 
 const btnStyle = "margin-bottom: 2rem;";
 

@@ -1,7 +1,7 @@
 import template from "./template.pug";
 import Block from "../Block/Block";
 import FileInput from "../FileInput/FileInput";
-import Button from "../Button1/Button";
+import Button from "../Button/Button";
 
 type FormFileProps = {
   title: string;

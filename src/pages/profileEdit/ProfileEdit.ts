@@ -1,10 +1,10 @@
 import template from './template.pug';
 import { userData, fieldsNaming } from '../../utils/projectVariables';
 import Block from '../../components/Block/Block';
-import Photo from '../../components/Photo1/Photo';
-import Button from '../../components/Button1/Button';
+import Photo from '../../components/Photo/Photo';
+import Button from '../../components/Button/Button';
 import Form from '../../components/Form/Form';
-import Input from '../../components/Input1/Input';
+import Input from '../../components/Input/Input';
 
 type ProfileEditProps = {
   user?: Record<string, string | null>,

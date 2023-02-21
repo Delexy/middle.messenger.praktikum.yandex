@@ -1,6 +1,6 @@
 import template from "./template.pug";
 import Block from "../Block/Block";
-import Input from "../Input1/Input";
+import Input from "../Input/Input";
 
 type FormProps = {
   title?: string;
