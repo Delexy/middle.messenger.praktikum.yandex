@@ -6,6 +6,7 @@ type FileInputProps = {
   name: string;
   currentImg?: string;
   imgName?: string;
+  accept?: string;
   attributes: {
     class: string;
   };
@@ -16,9 +17,9 @@ class FileInput extends Block {
   value: File;
 
   constructor(props: FileInputProps) {
-		if(!props.events) {
-			props.events = {};
-		}
+    if (!props.events) {
+      props.events = {};
+    }
 
     props.events.change = (event: Event) => {
       const input = event.target as HTMLInputElement;
@@ -26,21 +27,21 @@ class FileInput extends Block {
         const file = input.files[0];
         this.value = file;
 
-        if(file.type.startsWith('image')) {
+        if (file.type.startsWith("image")) {
           let fileBase64 = null;
           const reader = new FileReader();
           reader.onload = (e) => {
             fileBase64 = e.target ? e.target.result : null;
             this.setProps({
               imgName: file.name,
-              currentImg: fileBase64
+              currentImg: fileBase64,
             });
           };
           reader.readAsDataURL(file);
         }
       }
     };
-		
+
     super(props);
   }
 

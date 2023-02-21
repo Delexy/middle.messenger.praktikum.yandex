@@ -1,5 +1,6 @@
 import template from "./template.pug";
 import Block from "../Block/Block";
+import { INPUT_VALIDATION_REGEXP, INPUT_ERRORS } from "../../utils/projectVariables";
 
 interface InputProps {
   label?: string;
@@ -17,12 +18,34 @@ class Input extends Block {
     this.value = this.props.attributes.value || "";
   }
 
+  validation(): boolean {
+    let inputIsValid = true;
+    if (this.props.attributes.name) {
+      inputIsValid = !!`${this.value}`.match(INPUT_VALIDATION_REGEXP[this.props.attributes.name]);
+
+      if (!inputIsValid) {
+        if(!this.props.className.includes("input_error")) {
+          this.props.className = `${this.props.className || ""} input_error`;
+          this.props.error = INPUT_ERRORS[this.props.attributes.name];
+        }
+        inputIsValid = false;
+      } else {
+        if(this.props.className) {
+          this.props.className = this.props.className.replace(" input_error", "");
+        }
+      }
+    }
+
+    return inputIsValid;
+  }
+
   init() {
     const blurEvent: (e: InputEvent) => void = (event: InputEvent) => {
       if (event.target && (event.target as Element).nodeName === "INPUT") {
         this.value = (event.target as HTMLInputElement).value;
         this.props.attributes.value = this.value;
       }
+      this.validation();
     };
     const clickEvent = (event: MouseEvent) => {
       const target = event.target as Element;
@@ -33,20 +56,21 @@ class Input extends Block {
     };
 
     this.props.events = this.props.events || {};
-    if(this.props.events.change) {
+    if (this.props.events.change) {
       this.props.events.change = Array.isArray(this.props.events.change) ? [...this.props.events.change, blurEvent] : [this.props.events.change, blurEvent];
     } else {
       this.props.events.change = blurEvent;
     }
 
-    if(this.props.events.focusout) {
-      this.props.events.focusout = Array.isArray(this.props.events.focusout) ? [...this.props.events.focusout, blurEvent] : [this.props.events.focusout, blurEvent];
+    if (this.props.events.focusout) {
+      this.props.events.focusout = Array.isArray(this.props.events.focusout)
+        ? [...this.props.events.focusout, blurEvent]
+        : [this.props.events.focusout, blurEvent];
     } else {
       this.props.events.focusout = blurEvent;
     }
 
-    
-    if(this.props.events.click) {
+    if (this.props.events.click) {
       this.props.events.click = Array.isArray(this.props.events.click) ? [...this.props.events.click, clickEvent] : [this.props.events.click, clickEvent];
     } else {
       this.props.events.click = clickEvent;

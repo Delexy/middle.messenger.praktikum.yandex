@@ -27,6 +27,7 @@ class Photo extends Block {
         title: "Изменить аватар",
         isModal: true,
         currentImg: this.props.photoSrc,
+        accept: "image/*",
         attributes: { class: "", id: "" },
         events: {
           submit: (event: Event) => {
@@ -45,9 +46,9 @@ class Photo extends Block {
           },
           click: (event: Event) => {
             event.stopPropagation();
-						const target = event.target as HTMLElement;
+            const target = event.target as HTMLElement;
             if (target && target?.classList.contains("form__close")) {
-							const ModalEl = this.children.ChangePhotoModal as FormImage;
+              const ModalEl = this.children.ChangePhotoModal as FormImage;
               ModalEl.element.classList.toggle("is-active");
             }
           },

@@ -10,10 +10,11 @@ type FormFileProps = {
   currentImg?: string;
   events?: Record<string, unknown>;
   name?: string;
+  accept?: string;
   attributes: {
-    class: string,
-    id: string,
-  }
+    class: string;
+    id: string;
+  };
   [key: string]: any;
 };
 
@@ -24,13 +25,13 @@ class FormFile extends Block {
 
   init(): void {
     this.children = {
-      FileInput: new FileInput({ title: "Выбрать файл на компьютере", name: this.props.name || "avatar", attributes: { class: "form-image__input" } }),
-      SaveBtn: new Button({ text: "Поменять", attributes: { class: "form-image__btn" } })
+      FileInput: new FileInput({ title: "Выбрать файл на компьютере", accept: this.props.accept || '', name: this.props.name || "avatar", attributes: { class: "form-image__input" } }),
+      SaveBtn: new Button({ text: "Поменять", attributes: { class: "form-image__btn" } }),
     };
   }
 
   validation(): boolean {
-    if(!(this.children.FileInput as FileInput).value) {
+    if (!(this.children.FileInput as FileInput).value) {
       return false;
     }
     return true;

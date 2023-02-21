@@ -24,6 +24,7 @@ class ActiveChatPage extends Block {
     const changePhotoModal = new FormFile({
       isModal: true,
       title: "Изменить изображение",
+      accept: "image/*",
       attributes: { id: "change-photo-modal", class: "" },
       events: {
         change: () => {
@@ -41,6 +42,7 @@ class ActiveChatPage extends Block {
       isModal: true,
       title: "Добавить изображение",
       name: "file",
+      accept: "image/*,video/*",
       attributes: { id: "add-photo-modal", class: "" },
       events: {
         change: () => {
@@ -98,9 +100,9 @@ class ActiveChatPage extends Block {
         submit: (event: Event) => {
           event.preventDefault();
           MessageFormElement.submit();
-        }
-      }
-    })
+        },
+      },
+    });
 
     this.children = {
       UserPhoto: new Photo({ photoSrc: this.props.user.avatar, attributes: { class: "chat-profile__img", alt: this.props.user.display_name } }),
