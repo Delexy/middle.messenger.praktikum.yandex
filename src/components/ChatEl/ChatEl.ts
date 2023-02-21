@@ -1,6 +1,6 @@
 import template from "./template.pug";
 import Block from "../Block/Block";
-import Photo from "../Photo/Photo";
+import Photo from "../Photo1/Photo";
 import { userData } from "../../utils/projectVariables";
 
 type ChatElProps = {

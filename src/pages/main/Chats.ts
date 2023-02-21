@@ -1,12 +1,12 @@
 import template from "./template.pug";
 import { userData } from "../../utils/projectVariables";
 import Block from "../../components/Block/Block";
-import Photo from "../../components/Photo/Photo";
+import Photo from "../../components/Photo1/Photo";
 import ChatEl from "../../components/ChatEl/ChatEl";
 import ActiveChatPage from "../../components/ActiveChat/ActiveChat";
 import SmallForm from "../../components/SmallForm/SmallForm";
-import Input from "../../components/Input/Input";
-import Button from "../../components/Button/Button";
+import Input from "../../components/Input1/Input";
+import Button from "../../components/Button1/Button";
 
 type ChatsPageProps = {
   profileUrl: string;

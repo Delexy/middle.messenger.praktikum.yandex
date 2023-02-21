@@ -1,11 +1,11 @@
 import template from "./template.pug";
 import { userData } from "../../utils/projectVariables";
 import Block from "../../components/Block/Block";
-import Photo from "../Photo/Photo";
-import Message from "../Message/Message";
+import Photo from "../Photo1/Photo";
+import Message from "../Message1/Message";
 import SmallForm from "../SmallForm/SmallForm";
-import Button from "../Button/Button";
-import Input from "../Input/Input";
+import Button from "../Button1/Button";
+import Input from "../Input1/Input";
 import FormFile from "../FormFile/FormFile";
 import MessageForm from "../MessageForm/MessageForm";
 

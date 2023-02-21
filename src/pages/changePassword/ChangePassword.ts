@@ -1,8 +1,8 @@
 import template from './template.pug';
 import { userData, fieldsNaming, INPUT_VALIDATION_REGEXP } from '../../utils/projectVariables';
 import Block from '../../components/Block/Block';
-import Photo from '../../components/Photo/Photo';
-import Button from '../../components/Button/Button';
+import Photo from '../../components/Photo1/Photo';
+import Button from '../../components/Button1/Button';
 
 type ChangePasswordProps = {
   user?: Record<string, string | null>,

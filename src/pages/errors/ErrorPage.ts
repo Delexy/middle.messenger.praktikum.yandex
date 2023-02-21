@@ -1,6 +1,6 @@
 import template from "./template.pug";
 import Block from "../../components/Block/Block";
-import Button from "../../components/Button/Button";
+import Button from "../../components/Button1/Button";
 import { PAGES } from "../../utils/renderDOM"
 
 type ErrorPageProps = {

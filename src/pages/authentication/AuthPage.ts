@@ -1,9 +1,9 @@
 import template from "./template.pug";
 import Block from "../../components/Block/Block";
 import { PAGES } from "../../utils/renderDOM"
-import Input from "../../components/Input/Input";
+import Input from "../../components/Input1/Input";
 import Form from "../../components/Form/Form";
-import Button from "../../components/Button/Button";
+import Button from "../../components/Button1/Button";
 
 const INPUT_CLASS = "auth-form__input";
 
