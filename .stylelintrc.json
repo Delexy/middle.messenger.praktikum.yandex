@@ -1,0 +1,17 @@
+{
+  "extends": "stylelint-config-standard-scss",
+  "rules": {
+    "scss/at-mixin-pattern": [
+			"([A-Z][a-z0-9]+)+",
+			{
+				"message": "Expected mixin name to be camelCase"
+			}
+		],
+		"scss/dollar-variable-pattern": [
+			"([A-Z][a-z0-9]+)+",
+			{
+				"message": "Expected mixin name to be camelCase"
+			}
+    ]
+  }
+}

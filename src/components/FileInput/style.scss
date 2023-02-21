@@ -1,0 +1,32 @@
+.photo-input {
+  display: inline-block;
+  cursor: pointer;
+
+  &__input {
+    display: none;
+  }
+
+  &__title {
+    display: block;
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-align: center;
+  }
+
+  &__img {
+    display: block;
+    margin: 0 auto;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+  }
+
+  &__img-name {
+    display: block;
+    text-align: center;
+    margin-top: .5rem;
+    color: var(--color-light-text);
+  }
+}

@@ -1,0 +1,7 @@
+.profile-page 
+	a.profile-page__back(href=backUrl)
+		include ../../imgs/icons/arrow-back.svg
+	.profile-page__content
+		| !{Photo}
+		p.profile-page__name #{user.first_name}
+		| !{ EditForm }

@@ -1,6 +1,9 @@
 # sprint_2
 ## Ссылка на PR: https://github.com/Delexy/middle.messenger.praktikum.yandex/pull/3
 
+## Описание  
+Проект подразумевает под собой чат, с кастомной реактивностью.
+
 ## Команды проекта:
 - npm start (npm run start) - Запуск проекта Express.js
 - npm run dev - Запуск проекта с помощью Parcel

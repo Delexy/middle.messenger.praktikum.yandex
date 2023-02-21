@@ -1,0 +1,24 @@
+:root {
+	// Colors
+	--color-light: #FFF;
+	--color-primary: #3369F3;
+	--color-light-primary: #E4EDFD;
+	--color-error: #FF2F2F;
+	--color-text: #1E1E1E;
+	--color-light-text: #999;
+	--color-light-bg: #FBFBFB;
+	--color-dark-bg: #EAEAEA;
+	--color-notuser-message: #F8F8F8;
+	--color-backdrop: #00000040;
+
+	// Animation speed
+	--anim-speed-fast: 0.3s;
+	--anim-speed-medium: 0.6s;
+	--anim-speed-slow: 0.9s;
+
+	// Animation preset
+	--anim-fast: var(--anim-speed-fast) ease-out;
+	--anim-medium: var(--anim-speed-medium) ease-out;
+	--anim-slow: var(--anim-speed-slow) ease-out;
+	--anim-transform-opacity: transform var(--anim-fast), opacity var(--anim-fast);
+}
