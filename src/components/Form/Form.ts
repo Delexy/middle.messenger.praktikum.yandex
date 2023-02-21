@@ -13,10 +13,12 @@ type FormProps = {
 };
 
 const INPUT_ERRORS: Record<string, string> = {
-  text: "Поле не должно быть пустым",
-  password: "Пароль должен быть не менее 8 символов",
-  email: "Email введён неверно",
-  tel: "Телефон введён неверно",
+  login: "Длина от 3 до 20 символов, первая буква заглавная",
+  first_name: "Поле введено неверно",
+  second_name: "Поле введено неверно",
+  email: "Email введён неверно",  
+  password: "Пароль должен быть от 8 до 40 символов",
+  phone: "Телефон введён неверно",
 };
 
 class Form extends Block {
@@ -30,12 +32,12 @@ class Form extends Block {
     this.isValid = true;
     const inputs = Array.isArray(this.children.inputs) ? [...this.children.inputs] : [this.children.inputs];
     inputs.forEach((input: Input) => {
-      const currentType: string = input.props.attributes.type;
-      const inputIsValid = !!`${input.value}`.match(INPUT_VALIDATION_REGEXP[currentType]);
+      const currentName: string = input.props.attributes.name;
+      const inputIsValid = !!`${input.value}`.match(INPUT_VALIDATION_REGEXP[currentName]);
 
       if (!inputIsValid) {
         input.props.className = `${input.props.className} input_error`;
-        input.props.error = INPUT_ERRORS[currentType];
+        input.props.error = INPUT_ERRORS[currentName];
         this.isValid = false;
       } else {
         input.props.className = input.props.className.replace(" input_error", "");

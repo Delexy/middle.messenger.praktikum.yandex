@@ -20,8 +20,10 @@ export const fieldsNaming = {
 }
 
 export const INPUT_VALIDATION_REGEXP: Record<string, RegExp> = {
-  text: new RegExp(/.+/gi),
-  password: new RegExp(/.{8,}/g),
-  email: new RegExp(/^\S+@\S+\.\S+$/gi),
-  tel: new RegExp(/^\+?[1-9][0-9]{7,14}$/gi),
+  login: new RegExp(/^([A-Z]|[А-Я])([^.^$*+?()[{\|\/]+?){3,19}/gm),
+  first_name: new RegExp(/^([A-Z]|[А-Я])[^.^$*+?()[{\|\/]+/gm),
+  second_name: new RegExp(/^([A-Z]|[А-Я])[^.^$*+?()[{\|\/]+/gm),
+  email: new RegExp(/^\S+@\S+\.\S+$/gi),  
+  password: new RegExp(/.{8,40}/g),
+  phone: new RegExp(/^\+?[1-9][0-9]{10,15}$/gi),
 };

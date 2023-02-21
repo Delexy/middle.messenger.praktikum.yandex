@@ -1,5 +1,5 @@
 import template from './template.pug';
-import { userData, fieldsNaming, INPUT_VALIDATION_REGEXP } from '../../utils/projectVariables';
+import { userData, fieldsNaming } from '../../utils/projectVariables';
 import Block from '../../components/Block/Block';
 import Photo from '../../components/Photo/Photo';
 import Button from '../../components/Button/Button';

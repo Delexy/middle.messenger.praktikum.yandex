@@ -29,7 +29,7 @@
 				span.chat-messages__date  19 июня
 			| !{Messages}
 
-		form.chat-message
+		.chat-message
 			.chat-message__menu 
 				.chat-message__icon
 					include ../../imgs/icons/clip.svg
@@ -42,7 +42,5 @@
 						span.chat-message__action-image 
 							include ../../imgs/icons/file.svg
 						span.chat-message__action-text Файл
-			input.chat-message__input(name="message")
-			button.chat-message__submit(type="submit")
-				include ../../imgs/icons/send.svg
+			| !{MessageFormEl}
 	| !{Modals}

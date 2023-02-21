@@ -22,6 +22,18 @@ class ChatsPage extends Block {
 
   init() {
     this.props.user = userData;
+    
+    const addChatModal = new SmallForm({
+      title: "Добавить чат",
+      id: "add-chat-modal",
+      input: new Input({ label: "Название чата", attributes: { type: "text" } }),
+      Button: new Button({ text: "Добавить", attributes: { class: "form-user__btn" } }),
+      events: {
+        submit: (event: Event) => {
+          addChatModal.submit(event);
+        }
+      }
+    });
 
     this.children = {
       UserPhoto: new Photo({ photoSrc: this.props.user.avatar, attributes: { class: "chat-profile__img", alt: this.props.user.first_name } }),
@@ -44,69 +56,8 @@ class ChatsPage extends Block {
           text: chatText,
           events: { click: this.chooseChat.bind(this) },
         }),
-        new ChatEl({
-          isActive: false,
-          user: userData,
-          isUserMessageLast: false,
-          time: "16:45",
-          messageCount: 0,
-          text: chatText,
-          events: { click: this.chooseChat.bind(this) },
-        }),
-        new ChatEl({
-          isActive: false,
-          user: userData,
-          isUserMessageLast: false,
-          time: "16:45",
-          messageCount: 3,
-          text: chatText,
-          events: { click: this.chooseChat.bind(this) },
-        }),
-        new ChatEl({
-          isActive: false,
-          user: userData,
-          isUserMessageLast: false,
-          time: "16:45",
-          messageCount: 0,
-          text: chatText,
-          events: { click: this.chooseChat.bind(this) },
-        }),
-        new ChatEl({
-          isActive: false,
-          user: userData,
-          isUserMessageLast: false,
-          time: "16:45",
-          messageCount: 2,
-          text: chatText,
-          events: { click: this.chooseChat.bind(this) },
-        }),
-        new ChatEl({
-          isActive: false,
-          user: userData,
-          isUserMessageLast: false,
-          time: "16:45",
-          messageCount: 0,
-          text: chatText,
-          events: { click: this.chooseChat.bind(this) },
-        }),
-        new ChatEl({
-          isActive: false,
-          user: userData,
-          isUserMessageLast: false,
-          time: "16:45",
-          messageCount: 1,
-          text: chatText,
-          events: { click: this.chooseChat.bind(this) },
-        }),
       ],
-      Modals: [
-        new SmallForm({
-          title: "Добавить чат",
-          id: "add-chat-modal",
-          input: new Input({ label: "Название чата", attributes: { type: "text" } }),
-          Button: new Button({ text: "Добавить", attributes: { class: "form-user__btn" } }),
-        }),
-      ],
+      Modals: [addChatModal],
     };
 
     if (!this.props.events) {
@@ -146,9 +97,11 @@ class ChatsPage extends Block {
   openMenu(event: Event): void {
     let target = event.target as HTMLElement;
     target = target.closest(".chat-message__menu") || target.closest(".chat-user__menu") || target;
-    const menuBtn = target.querySelector(`.${Array.from(target.classList).join(".")} > [class*=actions]`) || null;
-    if (menuBtn) {
-      menuBtn.classList.toggle("is-active");
+    if(target.classList.length > 0) {
+      const menuBtn = target.querySelector(`.${Array.from(target.classList).join(".")} > [class*=actions]`) || null;
+      if (menuBtn) {
+        menuBtn.classList.toggle("is-active");
+      }
     }
   }
 

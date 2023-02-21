@@ -6,7 +6,8 @@ import Message from "../Message/Message";
 import SmallForm from "../SmallForm/SmallForm";
 import Button from "../Button/Button";
 import Input from "../Input/Input";
-import FormImage from "../FormFile/FormFile";
+import FormFile from "../FormFile/FormFile";
+import MessageForm from "../MessageForm/MessageForm";
 
 type ActiveChatProps = {
   profileUrl?: string;
@@ -20,7 +21,7 @@ class ActiveChatPage extends Block {
   init() {
     this.props.user = userData;
 
-    const changePhotoModal = new FormImage({
+    const changePhotoModal = new FormFile({
       isModal: true,
       title: "Изменить изображение",
       attributes: { id: "change-photo-modal", class: "" },
@@ -32,22 +33,14 @@ class ActiveChatPage extends Block {
           }
         },
         submit: (event: Event) => {
-          event.preventDefault();
-          changePhotoModal.props.attributes.class = "is-active";
-          if (changePhotoModal.validation()) {
-            const formData = new FormData();
-            formData.append("avatar", changePhotoModal.getFile());
-            console.log(Object.fromEntries(formData));
-            changePhotoModal.props.errorText = "";
-          } else {
-            changePhotoModal.props.errorText = "Нужно выбрать файл";
-          }
+          changePhotoModal.submit(event);
         },
       },
     });
-    const addPhotoModal = new FormImage({
+    const addPhotoModal = new FormFile({
       isModal: true,
       title: "Добавить изображение",
+      name: "file",
       attributes: { id: "add-photo-modal", class: "" },
       events: {
         change: () => {
@@ -57,23 +50,15 @@ class ActiveChatPage extends Block {
           }
         },
         submit: (event: Event) => {
-          event.preventDefault();
-          addPhotoModal.props.attributes.class = "is-active";
-          if (addPhotoModal.validation()) {
-            const formData = new FormData();
-            formData.append("photo", addPhotoModal.getFile());
-            console.log(Object.fromEntries(formData));
-            addPhotoModal.props.errorText = "";
-          } else {
-            addPhotoModal.props.errorText = "Нужно выбрать файл";
-          }
+          addPhotoModal.submit(event);
         },
       },
     });
-    const addFileModal = new FormImage({
+    const addFileModal = new FormFile({
       isModal: true,
       title: "Добавить файл",
       attributes: { id: "add-file-modal", class: "" },
+      name: "file",
       events: {
         change: () => {
           if (addFileModal.validation()) {
@@ -82,19 +67,40 @@ class ActiveChatPage extends Block {
           }
         },
         submit: (event: Event) => {
-          event.preventDefault();
-          addFileModal.props.attributes.class = "is-active";
-          if (addFileModal.validation()) {
-            const formData = new FormData();
-            formData.append("photo", addFileModal.getFile());
-            console.log(Object.fromEntries(formData));
-            addFileModal.props.errorText = "";
-          } else {
-            addFileModal.props.errorText = "Нужно выбрать файл";
-          }
+          addFileModal.submit(event);
         },
       },
     });
+    const addUserModal = new SmallForm({
+      title: "Добавить пользователя",
+      id: "add-user-modal",
+      input: new Input({ label: "Логин", attributes: { type: "text", name: "users" } }),
+      Button: new Button({ text: "Добавить", attributes: { class: "form-user__btn" } }),
+      events: {
+        submit: (event: Event) => {
+          addUserModal.submit(event);
+        },
+      },
+    });
+    const removeUserModal = new SmallForm({
+      title: "Удалить пользователя",
+      id: "remove-user-modal",
+      input: new Input({ label: "Логин", attributes: { type: "text", name: "users" } }),
+      Button: new Button({ text: "Удалить", attributes: { class: "form-user__btn btn_cancel" } }),
+      events: {
+        submit: (event: Event) => {
+          removeUserModal.submit(event);
+        },
+      },
+    });
+    const MessageFormElement = new MessageForm({
+      events: {
+        submit: (event: Event) => {
+          event.preventDefault();
+          MessageFormElement.submit();
+        }
+      }
+    })
 
     this.children = {
       UserPhoto: new Photo({ photoSrc: this.props.user.avatar, attributes: { class: "chat-profile__img", alt: this.props.user.display_name } }),
@@ -126,22 +132,13 @@ class ActiveChatPage extends Block {
         </div>
         `,
         }),
-        new SmallForm({
-          title: "Добавить пользователя",
-          id: "add-user-modal",
-          input: new Input({ label: "Логин", attributes: { type: "text" } }),
-          Button: new Button({ text: "Добавить", attributes: { class: "form-user__btn" } }),
-        }),
-        new SmallForm({
-          title: "Удалить пользователя",
-          id: "remove-user-modal",
-          input: new Input({ label: "Логин", attributes: { type: "text" } }),
-          Button: new Button({ text: "Удалить", attributes: { class: "form-user__btn btn_cancel" } }),
-        }),
+        removeUserModal,
+        addUserModal,
         changePhotoModal,
         addPhotoModal,
-        addFileModal
+        addFileModal,
       ],
+      MessageFormEl: MessageFormElement,
     };
   }
 

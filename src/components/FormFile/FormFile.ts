@@ -9,6 +9,7 @@ type FormFileProps = {
   errorText?: string;
   currentImg?: string;
   events?: Record<string, unknown>;
+  name?: string;
   attributes: {
     class: string,
     id: string,
@@ -23,7 +24,7 @@ class FormFile extends Block {
 
   init(): void {
     this.children = {
-      FileInput: new FileInput({ title: "Выбрать файл на компьютере", name: "avatar", attributes: { class: "form-image__input" } }),
+      FileInput: new FileInput({ title: "Выбрать файл на компьютере", name: this.props.name || "avatar", attributes: { class: "form-image__input" } }),
       SaveBtn: new Button({ text: "Поменять", attributes: { class: "form-image__btn" } })
     };
   }
@@ -33,6 +34,20 @@ class FormFile extends Block {
       return false;
     }
     return true;
+  }
+
+  submit(event: Event): void {
+    event.preventDefault();
+    const form = this.element as HTMLFormElement;
+    this.props.attributes.class = "is-active";
+    if (this.validation()) {
+      const formData = new FormData(form);
+      console.log(Object.fromEntries(formData));
+      this.props.errorText = "";
+      form.reset();
+    } else {
+      this.props.errorText = "Нужно выбрать файл";
+    }
   }
 
   getFile() {
