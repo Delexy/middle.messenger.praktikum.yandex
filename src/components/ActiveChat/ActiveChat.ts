@@ -1,7 +1,7 @@
 import template from "./template.pug";
 import { userData } from "../../utils/projectVariables";
 import Block from "../../components/Block/Block";
-import Photo from "../../components/Photo/Photo";
+import Photo from "../Photo/Photo";
 import Message from "../Message/Message";
 import SmallForm from "../SmallForm/SmallForm";
 import Button from "../Button/Button";
