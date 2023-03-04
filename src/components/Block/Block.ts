@@ -6,8 +6,9 @@ enum EVENTS {
   INIT = "init",
   FLOW_CDM = "flow:component-did-mount",
   FLOW_CDU = "flow:component-did-update",
-  FLOW_CU = "flow:compoenent-updated",
+  FLOW_CU = "flow:component-updated",
   FLOW_RENDER = "flow:render",
+  FLOW_UM = "flow:component-unmount"
 }
 
 interface BlockProps {
@@ -48,6 +49,7 @@ class Block {
     eventBus.on(EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     eventBus.on(EVENTS.FLOW_CU, this._componentUpdated.bind(this));
     eventBus.on(EVENTS.FLOW_RENDER, this._render.bind(this));
+    eventBus.on(EVENTS.FLOW_UM, this._render.bind(this));
   }
 
   private _addEvents() {
@@ -152,6 +154,15 @@ class Block {
     // Может переопределять пользователь, необязательно трогать
   }
 
+  _componentBeforeUnmount(): void {
+    this._removeEvents();
+    this.componentBeforeUnmount();
+  }
+
+  componentBeforeUnmount(): void {
+
+  }
+
   setProps = (nextProps: BlockProps) => {
     if (!nextProps) {
       return;
@@ -252,6 +263,11 @@ class Block {
     if (this.element) {
       this.element.style.display = "none";
     }
+  }
+
+  unmount() {
+    this.eventBus().emit(EVENTS.FLOW_UM);
+    this._element.outerHTML = "";
   }
 }
 
