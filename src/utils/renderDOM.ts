@@ -6,9 +6,10 @@ import ProfilePage from '../pages/profile/Profile';
 import ProfileEditPage from '../pages/profileEdit/ProfileEdit';
 import ChangePasswordPage from '../pages/changePassword/ChangePassword';
 import ChatsPage from '../pages/main/Chats';
+import Block from '../components/Block/Block';
 
 export const enum PAGES {
-  index = '/index',
+  index = '/',
   unknown = '/404',
   serverError = '/500',
   auth = '/auth',
@@ -19,7 +20,7 @@ export const enum PAGES {
   changePassword = '/change-password'
 }
 
-const PAGES_ROUTES: Record<string, any> = {
+export const PAGES_ROUTES: Record<string, Block> = {
   [PAGES.index]: new ChatsPage({ profileUrl: PAGES["profile"] }),
   [PAGES.unknown]: new ErrorPage({ status: 404, statusText: "Страница ушла, но обещала вернуться"}), 
   [PAGES.serverError]: new ErrorPage({ status: 500, statusText: "У нас что-то поломалось, уже чиним"}), 
@@ -31,9 +32,11 @@ const PAGES_ROUTES: Record<string, any> = {
   [PAGES.changePassword]: new ChangePasswordPage({ backUrl: PAGES.index }),
 }
 
-export default function renderDOM(root: Element, pageName: string): void {
-  root.innerHTML = "";
-  const Component = PAGES_ROUTES[pageName];
-  root.appendChild(Component.getContent());
-  Component.dispatchComponentDidMount();
+export default function renderDOM(rootQuery: string, Component: Block): void {
+  const root = document.querySelector(rootQuery);
+
+  if(root) {
+    root.appendChild(Component.getContent());
+    Component.dispatchComponentDidMount();
+  }
 }

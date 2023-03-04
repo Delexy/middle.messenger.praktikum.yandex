@@ -244,7 +244,7 @@ class Block {
 
   show() {
     if (this.element) {
-      this.element.style.display = "block";
+      this.element.style.display = "";
     }
   }
 

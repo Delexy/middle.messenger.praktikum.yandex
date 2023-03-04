@@ -1,8 +1,13 @@
-import { PAGES, default as renderDOM } from "../utils/renderDOM"
+import { default as Router } from "../Modules/Router/Router";
+import { PAGES_ROUTES } from "../utils/renderDOM"
 
-const globalRoot = document.querySelector("#app") as HTMLElement;
+const router = new Router("#app");
 
-renderDOM(globalRoot, PAGES.pagination);
+Object.keys(PAGES_ROUTES).forEach((pathname: string) => {
+  router.use(pathname, PAGES_ROUTES[pathname]);
+});
+
+router.start();
 
 document.addEventListener("click", function(event: Event) {
   let target = event.target as HTMLElement;
@@ -12,6 +17,6 @@ document.addEventListener("click", function(event: Event) {
   const link = target.getAttribute('href');
   if(target && (target.closest("a") || target.nodeName === "A") &&  link !== null) {
     event.preventDefault();
-    renderDOM(globalRoot, link);
+    router.go(link);
   }
 });
