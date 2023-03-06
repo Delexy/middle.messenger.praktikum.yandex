@@ -3,6 +3,8 @@ import { userData, fieldsNaming } from "../../utils/projectVariables";
 import Block from "../../components/Block/Block";
 import Photo from "../../components/Photo/Photo";
 import ProfileController from "./ProfileController";
+import Store from "../../Modules/Store/Store";
+import { isPlainObject } from "../../utils/isArrayOrObject";
 
 type ProfileProps = {
   user?: Record<string, string | null>;
@@ -37,28 +39,33 @@ class ProfilePage extends Block {
       click: (event: Event) => {
         event.preventDefault();
         const eTarget = event.target as HTMLElement | null;
-        if(eTarget && eTarget?.id === 'logout') {
+        if (eTarget && eTarget?.id === "logout") {
           ProfileController.logout();
         }
-      }
-    }
-
-    ProfileController.getUser().then((user) => {
-      if (user) {
-        if (user.avatar) {
-          const avatarComponent = this.children.Photo as Photo;
-          avatarComponent.props.photoSrc = user.avatar;
-          avatarComponent.props.attributes.alt = user.first_name;
-        }
-
-        delete user["avatar"];
-        this.props.user = user;
-      }
-    });
+      },
+    };
   }
 
   render() {
     return this.compile(template, this.props);
+  }
+
+  componentDidMount(): void {
+    const user = ProfileController.getUser();
+    if (user) {
+      const avatarComponent = this.children.Photo as Photo;
+      if ("avatar" in user) {
+        if (user.avatar) {
+          avatarComponent.props.photoSrc = user.avatar;
+        }
+        delete user["avatar"];
+      }
+      if ("first_name" in user) {
+        avatarComponent.props.attributes.alt = user.first_name;
+      }
+
+      this.props.user = user;
+    }
   }
 }
 

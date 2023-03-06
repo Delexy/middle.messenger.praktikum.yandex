@@ -14,7 +14,13 @@ class AuthAPI extends BaseAPI {
   }
 
   async getUser() {
-    return this.HTTPEntity.get("/user");
+    const { status, response } = await this.HTTPEntity.get("/user");
+
+    if(status === 200) {
+      return response;
+    } else {
+      return null;
+    }
   }
 
   logout() {

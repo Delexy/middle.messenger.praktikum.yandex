@@ -5,6 +5,7 @@ import Input from "../../components/Input/Input";
 import Form from "../../components/Form/Form";
 import Button from "../../components/Button/Button";
 import AuthController from "./AuthController";
+import Store from "../../Modules/Store/Store";
 
 const INPUT_CLASS = "auth-form__input";
 
@@ -48,12 +49,9 @@ class AuthPage extends Block {
   }
 
   componentDidMount(): void {
-    AuthController.getUser().then((user) => {
-      console.log(user);
-      if (user) {
-        AuthController.redirectToIndex();
-      }
-    });
+    if(AuthController.isAuthed()){
+      AuthController.redirectToIndex();
+    }
   }
 }
 

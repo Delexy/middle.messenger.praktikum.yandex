@@ -1,6 +1,6 @@
 import template from "./template.pug";
 import Block from "../../components/Block/Block";
-import { PAGES } from "../../utils/renderDOM"
+import { PAGES } from "../../utils/renderDOM";
 import Input from "../../components/Input/Input";
 import Form from "../../components/Form/Form";
 import Button from "../../components/Button/Button";
@@ -31,13 +31,13 @@ class RegistrationPage extends Block {
         events: {
           submit: async (event: SubmitEvent) => {
             event.preventDefault();
-            const currentForm = (this.children.RegistrationForm as Form);
+            const currentForm = this.children.RegistrationForm as Form;
             if (currentForm.validation()) {
               const data = new FormData(event.target as HTMLFormElement);
               const response = await AuthController.signup(data);
-              
+
               currentForm.props.error = "";
-              if(response && response.error) {
+              if (response && response.error) {
                 currentForm.props.error = response.error;
               }
             }
@@ -52,7 +52,7 @@ class RegistrationPage extends Block {
   }
 
   componentDidMount(): void {
-    if(AuthController.checkAuth()) {
+    if (AuthController.isAuthed()) {
       AuthController.redirectToIndex();
     }
   }

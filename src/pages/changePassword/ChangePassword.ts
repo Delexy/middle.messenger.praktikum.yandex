@@ -3,6 +3,7 @@ import { userData, fieldsNaming, INPUT_VALIDATION_REGEXP } from '../../utils/pro
 import Block from '../../components/Block/Block';
 import Photo from '../../components/Photo/Photo';
 import Button from '../../components/Button/Button';
+import AuthController from '../authentication/AuthController';
 
 type ChangePasswordProps = {
   user?: Record<string, string | null>,
@@ -74,6 +75,12 @@ class ChangePasswordPage extends Block {
 	render() {
 		return this.compile(template, this.props);
 	}
+
+  componentDidMount(): void {
+    if(!AuthController.isAuthed()){
+      AuthController.redirectToLogin();
+    }
+  }
 }
 
 export default ChangePasswordPage;

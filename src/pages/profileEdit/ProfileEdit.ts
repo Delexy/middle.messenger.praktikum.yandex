@@ -5,6 +5,7 @@ import Photo from '../../components/Photo/Photo';
 import Button from '../../components/Button/Button';
 import Form from '../../components/Form/Form';
 import Input from '../../components/Input/Input';
+import AuthController from '../authentication/AuthController';
 
 type ProfileEditProps = {
   user?: Record<string, string | null>,
@@ -67,6 +68,12 @@ class ProfileEditPage extends Block {
 	render() {
 		return this.compile(template, this.props);
 	}
+
+  componentDidMount(): void {
+    if(!AuthController.isAuthed()){
+      AuthController.redirectToLogin();
+    }
+  }
 }
 
 export default ProfileEditPage;

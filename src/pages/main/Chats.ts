@@ -7,6 +7,7 @@ import ActiveChatPage from "../../components/ActiveChat/ActiveChat";
 import SmallForm from "../../components/SmallForm/SmallForm";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
+import AuthController from "../authentication/AuthController";
 
 type ChatsPageProps = {
   profileUrl: string;
@@ -107,6 +108,12 @@ class ChatsPage extends Block {
 
   render() {
     return this.compile(template, this.props);
+  }
+
+  componentDidMount(): void {
+    if(!AuthController.isAuthed()){
+      AuthController.redirectToLogin();
+    }
   }
 }
 
