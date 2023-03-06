@@ -160,7 +160,7 @@ class Block {
   }
 
   componentBeforeUnmount(): void {
-
+    // Может переопределять пользователь, необязательно трогать
   }
 
   setProps = (nextProps: BlockProps) => {
@@ -267,7 +267,9 @@ class Block {
 
   unmount() {
     this.eventBus().emit(EVENTS.FLOW_UM);
-    this._element.outerHTML = "";
+    if(this._element) {
+      this._element.outerHTML = "";
+    }
   }
 }
 

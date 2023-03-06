@@ -1,74 +1,65 @@
-import template from './template.pug';
-import { userData, fieldsNaming } from '../../utils/projectVariables';
-import Block from '../../components/Block/Block';
-import Photo from '../../components/Photo/Photo';
-
+import template from "./template.pug";
+import { userData, fieldsNaming } from "../../utils/projectVariables";
+import Block from "../../components/Block/Block";
+import Photo from "../../components/Photo/Photo";
+import ProfileController from "./ProfileController";
 
 type ProfileProps = {
-  user?: Record<string, string | null>,
-  userData?: string
-  backUrl: string,
-  changeProfileUrl: string,
-  changePasswordUrl: string,
-  fieldsNaming?: Record<string, string>
-}
+  user?: Record<string, string | null>;
+  userData?: string;
+  backUrl: string;
+  changeProfileUrl: string;
+  changePasswordUrl: string;
+  fieldsNaming?: Record<string, string>;
+};
 
 class ProfilePage extends Block {
-	constructor(props?: ProfileProps) {
-    if(props) {
+  constructor(props?: ProfileProps) {
+    if (props) {
       props.user = userData;
       props.fieldsNaming = fieldsNaming;
     }
 
-		super(props);
-    
-	}
+    super(props);
+  }
 
   init() {
-    delete userData['avatar'];
-    
     this.children = {
       Photo: new Photo({
-        photoSrc: this.props.user.avatar,
+        photoSrc: "",
         attributes: {
-          alt: this.props.user.first_name
-        }
+          alt: "",
+        },
       }),
+    };
+
+    this.props.events = {
+      click: (event: Event) => {
+        event.preventDefault();
+        const eTarget = event.target as HTMLElement | null;
+        if(eTarget && eTarget?.id === 'logout') {
+          ProfileController.logout();
+        }
+      }
     }
+
+    ProfileController.getUser().then((user) => {
+      if (user) {
+        if (user.avatar) {
+          const avatarComponent = this.children.Photo as Photo;
+          avatarComponent.props.photoSrc = user.avatar;
+          avatarComponent.props.attributes.alt = user.first_name;
+        }
+
+        delete user["avatar"];
+        this.props.user = user;
+      }
+    });
   }
 
-  compileUserData(): string {
-    return `
-      <div class = "profile-list__el">
-        <p class = "profile-list__name">Почта</p>
-        <p class = "profile-list__value">${this.props.fieldsNaming.email}</p>
-      </div>
-      <div class = "profile-list__el">
-        <p class = "profile-list__name">Логин</p>
-        <p class = "profile-list__value">${this.props.fieldsNaming.login}</p>
-      </div>
-      <div class = "profile-list__el">
-        <p class = "profile-list__name">Имя</p>
-        <p class = "profile-list__value">${this.props.fieldsNaming.first_name}</p>
-      </div>
-      <div class = "profile-list__el">
-        <p class = "profile-list__name">Фамилия</p>
-        <p class = "profile-list__value">${this.props.fieldsNaming.second_name}</p>
-      </div>
-      <div class = "profile-list__el">
-        <p class = "profile-list__name">Имя в чате</p>
-        <p class = "profile-list__value">${this.props.fieldsNaming.login}</p>
-      </div>
-      <div class = "profile-list__el">
-        <p class = "profile-list__name">Телефон</p>
-        <p class = "profile-list__value">${this.props.fieldsNaming.phone}</p>
-      </div>
-    `;
+  render() {
+    return this.compile(template, this.props);
   }
-
-	render() {
-		return this.compile(template, this.props);
-	}
 }
 
 export default ProfilePage;

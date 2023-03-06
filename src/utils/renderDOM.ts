@@ -9,14 +9,14 @@ import ChatsPage from '../pages/main/Chats';
 import Block from '../components/Block/Block';
 
 export const enum PAGES {
-  index = '/',
+  index = '/messenger',
   unknown = '/404',
   serverError = '/500',
-  auth = '/auth',
-  registration = '/registration',
+  auth = '/',
+  registration = '/sign-up',
   pagination = '/pagination',
-  profile = '/profile',
-  profileEdit = '/profile/edit',
+  profile = '/settings',
+  profileEdit = '/settings/edit',
   changePassword = '/change-password'
 }
 

@@ -42,8 +42,6 @@ class Route {
       this._isRendered = true;
       return;
     }
-
-    this._block.show();
   }
 }
 
