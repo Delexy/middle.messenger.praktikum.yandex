@@ -1,6 +1,7 @@
 import EventBus from "../EventBus/EventBus";
 import { v4 as createId } from "uuid";
 import { compileTemplate } from "pug";
+import deepEqual from "../../utils/deepEqual";
 
 enum EVENTS {
   INIT = "init",
@@ -139,8 +140,7 @@ class Block {
   }
 
   componentDidUpdate(oldProps?: BlockProps | unknown, newProps?: BlockProps | unknown): boolean {
-    // Может переопределять пользователь, необязательно трогать
-    if (oldProps == newProps) {
+    if (deepEqual(oldProps as Record<string, unknown>, newProps as Record<string, unknown>)) {
       return false;
     }
     return true;
@@ -237,9 +237,10 @@ class Block {
         return typeof target[property] === "function" ? target[property].bind(target) : target[property];
       },
       set: (target: BlockProps, property: string, value, receiver) => {
+        const oldProps = JSON.parse(JSON.stringify(target));
         const isUpdated = Reflect.set(target, property, value, receiver);
 
-        this.eventBus().emit(EVENTS.FLOW_CDU, this.props, target);
+        this.eventBus().emit(EVENTS.FLOW_CDU, oldProps, target);
 
         return isUpdated;
       },

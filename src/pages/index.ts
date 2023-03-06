@@ -3,17 +3,18 @@ import { Router } from "../Modules/Router/Router";
 import Store from "../Modules/Store/Store";
 import { PAGES, PAGES_ROUTES } from "../utils/renderDOM"
 
+const AuthAPIEntity = new AuthAPI();
 
 Object.keys(PAGES_ROUTES).forEach((pathname: string) => {
   Router.use(pathname, PAGES_ROUTES[pathname]);
 });
 
-AuthAPI.getUser().then(user => {
+AuthAPIEntity.getUser().then(user => {
   if(user) {
     Store.set('user', user);
     
     setInterval(() => {
-      AuthAPI.getUser().then(user => {
+      AuthAPIEntity.getUser().then(user => {
         if(!user) {
           Store.delete('user');
           Router.go(PAGES['auth'])

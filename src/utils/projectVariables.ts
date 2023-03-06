@@ -1,10 +1,10 @@
 export const userData: Record<string, string | null> = {
-  email: "pochta@yandex.ru",
-  login: "ivanivanov",
-  first_name: "Иван",
-  display_name: "Иван",
-  second_name: "Иванов",
-  phone: "+79099673030",
+  email: "",
+  login: "",
+  first_name: "",
+  display_name: "",
+  second_name: "",
+  phone: "",
   avatar: "",
 };
 

@@ -3,8 +3,7 @@ import { userData, fieldsNaming } from "../../utils/projectVariables";
 import Block from "../../components/Block/Block";
 import Photo from "../../components/Photo/Photo";
 import ProfileController from "./ProfileController";
-import Store from "../../Modules/Store/Store";
-import { isPlainObject } from "../../utils/isArrayOrObject";
+import { default as Store, StoreEvents } from "../../Modules/Store/Store";
 
 type ProfileProps = {
   user?: Record<string, string | null>;
@@ -44,6 +43,12 @@ class ProfilePage extends Block {
         }
       },
     };
+
+    Store.on(StoreEvents.Updated, (path, newValue) => {
+      if(path === "user") {
+        this.props.user = newValue;
+      }
+    });
   }
 
   render() {

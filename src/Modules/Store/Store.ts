@@ -18,7 +18,7 @@ class Store extends EventBus {
     set(this.state, path, value);
 
     try {
-      this.emit(StoreEvents["Updated"], path);
+      this.emit(StoreEvents["Updated"], path, value);
     } catch(err) {
       // err
     }

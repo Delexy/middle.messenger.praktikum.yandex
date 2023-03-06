@@ -1,3 +1,4 @@
+import ErrorHandler from "../../components/ErrorHandler/ErrorHandler";
 import { Router } from "../../Modules/Router/Router";
 import Store from "../../Modules/Store/Store";
 import { PAGES } from "../../utils/renderDOM";
@@ -8,9 +9,13 @@ class ProfileController {
 		const { status, response } = await ProfileAPI.logout();
 		if(status === 200) {
 			Store.delete('user');
-			Router.go(PAGES['auth']);
+      setTimeout(() => {
+        Router.go(PAGES['auth']);
+      });
 		} else {
-			alert(response);
+      if(response) {
+        new ErrorHandler(response.toString()).show();
+      }
 		}
 	}
 	getUser() {

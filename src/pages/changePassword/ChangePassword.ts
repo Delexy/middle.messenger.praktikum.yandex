@@ -5,6 +5,8 @@ import Photo from '../../components/Photo/Photo';
 import Button from '../../components/Button/Button';
 import AuthController from '../authentication/AuthController';
 
+const AuthControllerEntity = new AuthController();
+
 type ChangePasswordProps = {
   user?: Record<string, string | null>,
   userData?: string
@@ -77,8 +79,8 @@ class ChangePasswordPage extends Block {
 	}
 
   componentDidMount(): void {
-    if(!AuthController.isAuthed()){
-      AuthController.redirectToLogin();
+    if(!AuthControllerEntity.isAuthed()){
+      AuthControllerEntity.redirectToLogin();
     }
   }
 }

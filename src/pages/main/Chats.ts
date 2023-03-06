@@ -9,6 +9,8 @@ import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import AuthController from "../authentication/AuthController";
 
+const AuthControllerEntity = new AuthController();
+
 type ChatsPageProps = {
   profileUrl: string;
 };
@@ -111,8 +113,8 @@ class ChatsPage extends Block {
   }
 
   componentDidMount(): void {
-    if(!AuthController.isAuthed()){
-      AuthController.redirectToLogin();
+    if(!AuthControllerEntity.isAuthed()){
+      AuthControllerEntity.redirectToLogin();
     }
   }
 }

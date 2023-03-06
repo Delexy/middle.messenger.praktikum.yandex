@@ -1,23 +1,13 @@
-import AuthAPIEntity from "../../API/AuthAPI";
 import { default as Store } from "../../Modules/Store/Store";
 import { Router } from "../../Modules/Router/Router";
 import { getFormData } from "../../utils/dataPrepare";
 import { PAGES } from "../../utils/renderDOM";
+import AuthPageAPI from "./AuthPageAPI";
+import globalAuthController from "../../Controllers/AuthController";
 
-class AuthController {
-  isAuthed() {
-    const isAuthed = !!Store.getState().user;
-    return isAuthed;
-  }
+const AuthAPIEntity = new AuthPageAPI();
 
-  redirectToIndex() {
-    Router.go(PAGES.index);
-  }
-
-  redirectToLogin() {
-    Router.go(PAGES['auth']);
-  }
-
+class AuthController extends globalAuthController {
   async signin(data: FormData) {
     const { login, password } = getFormData(data);
     if (login && password) {
@@ -33,21 +23,6 @@ class AuthController {
     }
   }
 
-  async signup(data: FormData) {
-    const registrationData = getFormData(data);
-    const response = await AuthAPIEntity.signup(registrationData);
-    if (response.status === 200) {
-      this.getUser();
-      return this.redirectToIndex();
-    } else {
-      return { error: response.response?.reason };
-    }
-  }
-
-  async getUser() {
-    return Store.getState().user;
-  }
-
   async logout() {
     const { status, response } = await AuthAPIEntity.logout();
 
@@ -59,4 +34,4 @@ class AuthController {
   }
 }
 
-export default new AuthController();
+export default AuthController;

@@ -28,8 +28,8 @@ export const PAGES_ROUTES: Record<string, Block> = {
   [PAGES.registration]: new RegistrationPage(),
   [PAGES.pagination]: new PaginationPage(),
   [PAGES.profile]: new ProfilePage({backUrl: PAGES.index, changeProfileUrl: PAGES.profileEdit, changePasswordUrl: PAGES.changePassword}),
-  [PAGES.profileEdit]: new ProfileEditPage({ backUrl: PAGES.index }),
-  [PAGES.changePassword]: new ChangePasswordPage({ backUrl: PAGES.index }),
+  [PAGES.profileEdit]: new ProfileEditPage({ backUrl: PAGES.profile }),
+  [PAGES.changePassword]: new ChangePasswordPage({ backUrl: PAGES.profile }),
 }
 
 export default function renderDOM(rootQuery: string, Component: Block): void {

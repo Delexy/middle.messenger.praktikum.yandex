@@ -1,5 +1,7 @@
 import BaseAPI from "../../API/BaseAPI";
-import AuthAPIEntity from "../../API/AuthAPI"
+import AuthAPI from "../../API/AuthAPI"
+
+const AuthAPIEntity = new AuthAPI();
 
 class ProfileAPI extends BaseAPI {
 	logout() {

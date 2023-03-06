@@ -4,7 +4,9 @@ import { PAGES } from "../../utils/renderDOM";
 import Input from "../../components/Input/Input";
 import Form from "../../components/Form/Form";
 import Button from "../../components/Button/Button";
-import AuthController from "../authentication/AuthController";
+import RegistrationController from "./RegistrationController";
+
+const RegistrationControllerEntity = new RegistrationController();
 
 const INPUT_CLASS = "auth-form__input";
 
@@ -34,7 +36,7 @@ class RegistrationPage extends Block {
             const currentForm = this.children.RegistrationForm as Form;
             if (currentForm.validation()) {
               const data = new FormData(event.target as HTMLFormElement);
-              const response = await AuthController.signup(data);
+              const response = await RegistrationControllerEntity.signup(data);
 
               currentForm.props.error = "";
               if (response && response.error) {
@@ -52,8 +54,8 @@ class RegistrationPage extends Block {
   }
 
   componentDidMount(): void {
-    if (AuthController.isAuthed()) {
-      AuthController.redirectToIndex();
+    if (RegistrationControllerEntity.isAuthed()) {
+      RegistrationControllerEntity.redirectToIndex();
     }
   }
 }

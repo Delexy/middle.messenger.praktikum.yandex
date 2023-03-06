@@ -5,7 +5,8 @@ import Input from "../../components/Input/Input";
 import Form from "../../components/Form/Form";
 import Button from "../../components/Button/Button";
 import AuthController from "./AuthController";
-import Store from "../../Modules/Store/Store";
+
+const AuthControllerEntity = new AuthController();
 
 const INPUT_CLASS = "auth-form__input";
 
@@ -31,7 +32,7 @@ class AuthPage extends Block {
             const currentForm = this.children.AuthForm as Form;
             if (currentForm.validation()) {
               const data = new FormData(event.target as HTMLFormElement);
-              const response = await AuthController.signin(data);
+              const response = await AuthControllerEntity.signin(data);
 
               currentForm.props.error = "";
               if (response && response.error) {
@@ -49,8 +50,8 @@ class AuthPage extends Block {
   }
 
   componentDidMount(): void {
-    if(AuthController.isAuthed()){
-      AuthController.redirectToIndex();
+    if(AuthControllerEntity.isAuthed()){
+      AuthControllerEntity.redirectToIndex();
     }
   }
 }
