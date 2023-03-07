@@ -7,15 +7,15 @@ function isEqual(lhs: string, rhs: string): boolean {
 
 class Route {
   _pathname: string;
-  _block: Block;
+  _block: Block | null;
+  _blockClass: typeof Block;
   _props: Record<string, any>;
-  _isRendered: boolean;
 
-  constructor(pathname: string, view: Block, props: Record<string, any>) {
+  constructor(pathname: string, blockClass: typeof Block, props: Record<string, any>) {
     this._pathname = pathname;
-    this._block = view;
+    this._block = null;
+    this._blockClass = blockClass;
     this._props = props;
-    this._isRendered = false;
   }
 
   navigate(pathname: string) {
@@ -27,7 +27,6 @@ class Route {
 
   leave() {
     if (this._block) {
-      this._isRendered = false;
       this._block.unmount();
     }
   }
@@ -37,11 +36,11 @@ class Route {
   }
 
   render() {
-    if (!this._isRendered) {
-      renderDOM(this._props.rootQuery, this._block);
-      this._isRendered = true;
-      return;
+    if (!this._block) {
+      this._block = new this._blockClass();
     }
+
+    renderDOM("#app", this._block);
   }
 }
 

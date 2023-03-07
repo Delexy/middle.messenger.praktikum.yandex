@@ -8,6 +8,7 @@ import SmallForm from "../../components/SmallForm/SmallForm";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import AuthController from "../authentication/AuthController";
+import { PAGES } from "../../utils/renderDOM";
 
 const AuthControllerEntity = new AuthController();
 
@@ -25,6 +26,7 @@ class ChatsPage extends Block {
 
   init() {
     this.props.user = userData;
+    this.props.profileUrl = PAGES['profile'];
 
     const addChatModal = new SmallForm({
       title: "Добавить чат",

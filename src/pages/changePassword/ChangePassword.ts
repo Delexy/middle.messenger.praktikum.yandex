@@ -4,6 +4,7 @@ import Block from '../../components/Block/Block';
 import Photo from '../../components/Photo/Photo';
 import Button from '../../components/Button/Button';
 import AuthController from '../authentication/AuthController';
+import { PAGES } from '../../utils/renderDOM';
 
 const AuthControllerEntity = new AuthController();
 
@@ -18,8 +19,7 @@ type ChangePasswordProps = {
 class ChangePasswordPage extends Block {
 	constructor(props?: ChangePasswordProps) {
     if(props) {
-      props.user = userData;
-      props.fieldsNaming = fieldsNaming;
+      props.user = AuthControllerEntity.getUser();
       props.events = {
         submit: (event: Event) => {
           event.preventDefault();
@@ -35,12 +35,14 @@ class ChangePasswordPage extends Block {
 	}
 
   init() {
+    this.props.backUrl = PAGES['profile'];
+
     this.children = {
       Photo: new Photo({
-        photoSrc: this.props.user.avatar,
+        photoSrc: this.props.user?.avatar || null,
         canChange: false,
         attributes: {
-          alt: this.props.user.first_name
+          alt: this.props.user?.first_name || ''
         }
       }),
       SaveBtn: new Button({ text: 'Сохранить', attributes: { class: "profile-page__btn-save", type: "submit" }})

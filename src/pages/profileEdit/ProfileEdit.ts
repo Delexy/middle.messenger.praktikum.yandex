@@ -8,14 +8,14 @@ import Input from "../../components/Input/Input";
 import AuthController from "../authentication/AuthController";
 import ProfileEditController from "./ProfileEditController";
 import { default as Store, StoreEvents } from "../../Modules/Store/Store";
+import { PAGES } from "../../utils/renderDOM";
 
 const AuthControllerEntity = new AuthController();
 const ProfileEditControllerE = new ProfileEditController();
 
 type ProfileEditProps = {
   user?: Record<string, string | null>;
-  userData?: string;
-  backUrl: string;
+  backUrl?: string;
   fieldsNaming?: Record<string, string>;
   events?: any;
 };
@@ -24,20 +24,24 @@ const INPUT_CLASS = "auth-form__input";
 
 class ProfileEditPage extends Block {
   constructor(props?: ProfileEditProps) {
-    if (props) {
-      props.user = userData;
-      props.fieldsNaming = fieldsNaming;
+    if (!props) {
+      props = {};
     }
+    props.user = AuthControllerEntity.getUser();
+    props.fieldsNaming = fieldsNaming;
+
     super(props);
   }
 
   init() {
+    this.props.backUrl = PAGES['profile'];
+
     this.children = {
       Photo: new Photo({
-        photoSrc: "",
+        photoSrc: this.props.user?.avatar || null,
         canChange: true,
         attributes: {
-          alt: "",
+          alt: this.props.user?.first_name || '',
         },
       }),
       EditForm: new Form({
@@ -52,7 +56,7 @@ class ProfileEditPage extends Block {
           new Input({
             label: "Имя в чате",
             className: INPUT_CLASS,
-            attributes: { value: this.props.user.first_name, placeholder: "Имя", name: "display_name" },
+            attributes: { value: this.props.user.display_name, placeholder: "Имя", name: "display_name" },
           }),
           new Input({
             label: "Фамилия",
@@ -73,23 +77,23 @@ class ProfileEditPage extends Block {
         }),
         Link: ``,
         events: {
-          submit: (event: SubmitEvent) => {
+          submit: async (event: SubmitEvent) => {
             event.preventDefault();
-            if ((this.children.EditForm as Form).validation()) {
-              const data = new FormData(event.target as HTMLFormElement);
-              ProfileEditControllerE.changeData(data);
+            const currentForm = (this.children.EditForm as Form);
+            if (currentForm.validation()) {
+              const formData = new FormData(event.target as HTMLFormElement);
+              const response = await ProfileEditControllerE.changeData(formData);
+
+              currentForm.props.error = "";
+              if (response && response.error) {
+                currentForm.props.error = response.error;
+              }
             }
           },
         },
       }),
       SaveBtn: new Button({ text: "Сохранить", attributes: { class: "profile-page__btn-save", type: "submit" } }),
     };
-
-    Store.on(StoreEvents.Updated, (path, newValue) => {
-      if (path === "user") {
-        this.props.user = newValue;
-      }
-    });
   }
 
   render() {
@@ -99,22 +103,6 @@ class ProfileEditPage extends Block {
   componentDidMount(): void {
     if (!AuthControllerEntity.isAuthed()) {
       AuthControllerEntity.redirectToLogin();
-    }
-
-    const user = AuthControllerEntity.getUser();
-    if (user) {
-      const avatarComponent = this.children.Photo as Photo;
-      if ("avatar" in user) {
-        if (user.avatar) {
-          avatarComponent.props.photoSrc = user.avatar;
-        }
-        delete user["avatar"];
-      }
-      if ("first_name" in user) {
-        avatarComponent.props.attributes.alt = user.first_name;
-      }
-
-      this.props.user = user;
     }
   }
 }

@@ -11,7 +11,7 @@ class ProfileEditController {
     const userData = getFormData(data);
     const { status, response } = await ProfileEditAPIEntity.changeUser(userData);
       if (status === 200) {
-        Store.set('user', {...response});
+        Store.set('user', response);
         Router.go(PAGES['profile']);
       } else {
         return { error: response?.reason };

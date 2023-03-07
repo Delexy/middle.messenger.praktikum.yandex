@@ -62,14 +62,6 @@ class Input extends Block {
       this.props.events.change = blurEvent;
     }
 
-    if (this.props.events.focusout) {
-      this.props.events.focusout = Array.isArray(this.props.events.focusout)
-        ? [...this.props.events.focusout, blurEvent]
-        : [this.props.events.focusout, blurEvent];
-    } else {
-      this.props.events.focusout = blurEvent;
-    }
-
     if (this.props.events.click) {
       this.props.events.click = Array.isArray(this.props.events.click) ? [...this.props.events.click, clickEvent] : [this.props.events.click, clickEvent];
     } else {
