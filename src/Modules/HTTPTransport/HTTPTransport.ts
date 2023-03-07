@@ -55,10 +55,6 @@ class HTTPTransport<T = ResponseType> {
         data = queryStringify(data);
         url += `?${data}`;
       }
-      if (method !== METHODS.GET && data) {
-        data = dataToJSON(data);
-        xhr.setRequestHeader("Content-type", "application/json; charset=utf-8");
-      }
 
       // Headers
       if (headers) {

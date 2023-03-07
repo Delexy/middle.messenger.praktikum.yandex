@@ -2,6 +2,7 @@ import template from "./template.pug";
 import Block from "../Block/Block";
 import FileInput from "../FileInput/FileInput";
 import Button from "../Button/Button";
+import ProfileEditController from "../../pages/profileEdit/ProfileEditController";
 
 type FormFileProps = {
   title: string;
@@ -37,18 +38,8 @@ class FormFile extends Block {
     return true;
   }
 
-  submit(event: Event): void {
-    event.preventDefault();
-    const form = this.element as HTMLFormElement;
-    this.props.attributes.class = "is-active";
-    if (this.validation()) {
-      const formData = new FormData(form);
-      console.log(Object.fromEntries(formData));
-      this.props.errorText = "";
-      form.reset();
-    } else {
-      this.props.errorText = "Нужно выбрать файл";
-    }
+  submit(): void {
+    // Переопределение пользователем
   }
 
   getFile() {

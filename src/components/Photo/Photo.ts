@@ -10,6 +10,7 @@ type PhotoProps = {
     class?: string;
     alt: string;
   };
+  formSubmitCallback?: (data: FormData) => void;
   events?: any;
 };
 
@@ -38,8 +39,9 @@ class Photo extends Block {
             if (ModalEl.validation()) {
               const formData = new FormData();
               formData.append("avatar", ModalEl.getFile());
-              console.log(Object.fromEntries(formData));
+              this.props.formSubmitCallback(formData);
               ModalEl.props.errorText = "";
+              ModalEl.element.classList.toggle("is-active");
             } else {
               ModalEl.props.errorText = "Нужно выбрать файл";
             }

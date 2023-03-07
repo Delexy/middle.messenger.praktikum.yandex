@@ -43,6 +43,9 @@ class ProfileEditPage extends Block {
         attributes: {
           alt: this.props.user?.first_name || '',
         },
+        formSubmitCallback: (data) => {
+          ProfileEditControllerE.changeAvatar(data);
+        }
       }),
       EditForm: new Form({
         inputs: [

@@ -17,6 +17,15 @@ class ProfileEditController {
         return { error: response?.reason };
       }
   }
+  async changeAvatar(data: FormData) {
+    const { status, response } = await ProfileEditAPIEntity.changePhoto(data);
+      if (status === 200) {
+        Store.set('user', response);
+        Router.go(PAGES['profile']);
+      } else {
+        return { error: response?.reason };
+      }
+  }
 }
 
 export default ProfileEditController;

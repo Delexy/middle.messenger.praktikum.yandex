@@ -1,4 +1,4 @@
-form.form.from-image(class=isModal ? 'form_modal' : '' class=attributes.class id=attributes.id)
+form.form.from-image(class=isModal ? 'form_modal' : '' class=attributes.class id=attributes.id enctype="multipart/form-data")
   if isModal 
     button.form__close(type="button" data-close="true")
   p.form__title= title

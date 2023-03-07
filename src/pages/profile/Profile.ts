@@ -33,9 +33,9 @@ class ProfilePage extends Block {
     
     this.children = {
       Photo: new Photo({
-        photoSrc: "",
+        photoSrc: this.props.user?.avatar || null,
         attributes: {
-          alt: "",
+          alt: this.props.user?.first_name || '',
         },
       }),
     };
