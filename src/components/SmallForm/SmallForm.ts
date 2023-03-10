@@ -15,18 +15,30 @@ class SmallForm extends Block {
     super(props);
   }
 
-  submit(event: Event): void {
+  getData(event?: Event): FormData | undefined {
+    event!.preventDefault();
     if (this.children.input) {
-      event.preventDefault();
-      if(this.children.input) {
+      if (this.children.input) {
         const formData = new FormData(this.element as HTMLFormElement);
-        console.log(Object.fromEntries(formData));
+        return formData;
       }
     }
   }
 
   render() {
     return this.compile(template, this.props);
+  }
+
+  reset() {
+    (this.element as HTMLFormElement).reset();
+  }
+
+  show() {
+    this.element.classList.add("is-active");
+  }
+
+  hide() {
+    this.element.classList.remove("is-active");
   }
 }
 

@@ -8,9 +8,12 @@ import Button from "../Button/Button";
 import Input from "../Input/Input";
 import FormFile from "../FormFile/FormFile";
 import MessageForm from "../MessageForm/MessageForm";
+import ActiveChatController from "./ActiveChatController";
 
 type ActiveChatProps = {
-  profileUrl?: string;
+  avatar?: string;
+  title?: string;
+  id?: number;
 };
 
 class ActiveChatPage extends Block {
@@ -19,8 +22,6 @@ class ActiveChatPage extends Block {
   }
 
   init() {
-    this.props.user = userData;
-
     const changePhotoModal = new FormFile({
       isModal: true,
       title: "Изменить изображение",
@@ -52,7 +53,7 @@ class ActiveChatPage extends Block {
           }
         },
         submit: (event: Event) => {
-          addPhotoModal.submit(event);
+          addPhotoModal.submit();
         },
       },
     });
@@ -69,7 +70,7 @@ class ActiveChatPage extends Block {
           }
         },
         submit: (event: Event) => {
-          addFileModal.submit(event);
+          addFileModal.submit();
         },
       },
     });
@@ -103,9 +104,32 @@ class ActiveChatPage extends Block {
         },
       },
     });
+    const removeChatModal = new SmallForm({
+      title: "Подтвердите действие",
+      id: "confirm-modal",
+      content: `
+    <div class = "form-confirm__btns">
+      <button class = "btn btn_cancel form-confirm__btn">Удалить</button>
+      <button class = "btn form-confirm__btn">Оставить</button>
+    </div>
+    `,
+    events: {
+      click: (event?: Event) => {
+        event?.preventDefault();
+        const target = event!.target as HTMLElement | null;
+        if(target && target.classList.contains('btn_cancel')) {
+          ActiveChatController.removeChat(this.props.id);
+          return removeChatModal.hide();
+        }
+        if(target && target.classList.contains('form-confirm__btn')) {
+          removeChatModal.hide();
+        }
+      }
+    }
+    });
 
     this.children = {
-      UserPhoto: new Photo({ photoSrc: this.props.user.avatar, attributes: { class: "chat-profile__img", alt: this.props.user.display_name } }),
+      UserPhoto: new Photo({ photoSrc: this.props.avatar, attributes: { class: "chat-profile__img", alt: this.props.title } }),
       Messages: [
         new Message({ text: "Hello Hello Hello Hello Hello", time: "16:45", isIncoming: true }),
         new Message({
@@ -124,16 +148,7 @@ class ActiveChatPage extends Block {
         }),
       ],
       Modals: [
-        new SmallForm({
-          title: "Подтвердите действие",
-          id: "confirm-modal",
-          content: `
-        <div class = "form-confirm__btns">
-          <button class = "btn btn_cancel form-confirm__btn">Удалить</button>
-          <button class = "btn form-confirm__btn">Оставить</button>
-        </div>
-        `,
-        }),
+        removeChatModal,
         removeUserModal,
         addUserModal,
         changePhotoModal,
@@ -146,6 +161,10 @@ class ActiveChatPage extends Block {
 
   render() {
     return this.compile(template, this.props);
+  }
+
+  componentDidMount(): void {
+    console.log(this.props);
   }
 }
 

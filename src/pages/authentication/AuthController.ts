@@ -29,7 +29,7 @@ class AuthController extends globalAuthController {
     if (status !== 200) {
       return response?.reason;
     }
-    Store.delete("user");
+    Store.set("user", undefined);
     Router.go(PAGES.auth);
   }
 }

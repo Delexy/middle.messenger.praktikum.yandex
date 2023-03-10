@@ -1,4 +1,3 @@
-import { dataToJSON } from "../../utils/dataPrepare";
 import queryStringify from "../../utils/queryStringify";
 
 const METHODS: Record<string, string> = {

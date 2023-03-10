@@ -8,7 +8,7 @@ class ProfileController {
 	async logout() {
 		const { status, response } = await ProfileAPI.logout();
 		if(status === 200) {
-			Store.delete('user');
+			Store.set('user', undefined);
       setTimeout(() => {
         Router.go(PAGES['auth']);
       });
@@ -16,17 +16,6 @@ class ProfileController {
       if(response) {
         new ErrorHandler(response.toString()).show();
       }
-		}
-	}
-	getUser() {
-		const user = Store.getState().user;
-		if(user && typeof user === 'object') {
-			if('id' in user) {
-				delete user['id'];
-			}
-			return user;
-		} else {
-			Router.go(PAGES['auth']);
 		}
 	}
 }

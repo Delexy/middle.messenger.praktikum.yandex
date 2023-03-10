@@ -19,6 +19,8 @@ class Photo extends Block {
     super(props);
     if (!this.props.photoSrc) {
       this.props.photoSrc = defaultSrc;
+    } else {
+      this.props.photoSrc = `https://ya-praktikum.tech/api/v2/resources${this.props.photoSrc}`;
     }
   }
 

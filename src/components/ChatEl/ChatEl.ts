@@ -1,27 +1,25 @@
 import template from "./template.pug";
 import Block from "../Block/Block";
 import Photo from "../Photo/Photo";
-import { userData } from "../../utils/projectVariables";
 
 type ChatElProps = {
+  id: number;
+  title: string;
+  avatar: string;
   isActive?: boolean;
-  user: Record<string, string | null>;
-  isUserMessageLast: boolean;
-  time: string;
-  text: string;
+  lastMessage: string;
   messageCount: number;
-  events?: Record<string, (() => void)>
+  events?: Record<string, () => void>;
 };
 
 class ChatEl extends Block {
   constructor(props: ChatElProps) {
-    props.user = userData;
     super(props);
   }
 
   init(): void {
     this.children = {
-      UserPhoto: new Photo({ photoSrc: this.props.user.avatar, attributes: { class: 'chat-el__img', alt: this.props.user.first_name } }),
+      UserPhoto: new Photo({ photoSrc: this.props.avatar, attributes: { class: "chat-el__img", alt: this.props.title } }),
     };
   }
 

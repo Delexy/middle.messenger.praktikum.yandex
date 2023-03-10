@@ -1,5 +1,5 @@
 import template from "./template.pug";
-import { userData, fieldsNaming } from "../../utils/projectVariables";
+import { fieldsNaming } from "../../utils/projectVariables";
 import Block from "../../components/Block/Block";
 import Photo from "../../components/Photo/Photo";
 import Button from "../../components/Button/Button";
@@ -7,8 +7,8 @@ import Form from "../../components/Form/Form";
 import Input from "../../components/Input/Input";
 import AuthController from "../authentication/AuthController";
 import ProfileEditController from "./ProfileEditController";
-import { default as Store, StoreEvents } from "../../Modules/Store/Store";
 import { PAGES } from "../../utils/renderDOM";
+import { connect } from "../../Modules/Store/Store";
 
 const AuthControllerEntity = new AuthController();
 const ProfileEditControllerE = new ProfileEditController();
@@ -22,30 +22,35 @@ type ProfileEditProps = {
 
 const INPUT_CLASS = "auth-form__input";
 
+let userMapping = (state: Record<string, unknown>) => {
+  return {
+    user: { ...state.user! },
+  };
+};
+
 class ProfileEditPage extends Block {
   constructor(props?: ProfileEditProps) {
     if (!props) {
       props = {};
     }
-    props.user = AuthControllerEntity.getUser();
     props.fieldsNaming = fieldsNaming;
 
     super(props);
   }
 
   init() {
-    this.props.backUrl = PAGES['profile'];
+    this.props.backUrl = PAGES["profile"];
 
     this.children = {
       Photo: new Photo({
         photoSrc: this.props.user?.avatar || null,
         canChange: true,
         attributes: {
-          alt: this.props.user?.first_name || '',
+          alt: this.props.user?.first_name || "",
         },
         formSubmitCallback: (data) => {
           ProfileEditControllerE.changeAvatar(data);
-        }
+        },
       }),
       EditForm: new Form({
         inputs: [
@@ -82,7 +87,7 @@ class ProfileEditPage extends Block {
         events: {
           submit: async (event: SubmitEvent) => {
             event.preventDefault();
-            const currentForm = (this.children.EditForm as Form);
+            const currentForm = this.children.EditForm as Form;
             if (currentForm.validation()) {
               const formData = new FormData(event.target as HTMLFormElement);
               const response = await ProfileEditControllerE.changeData(formData);
@@ -110,4 +115,4 @@ class ProfileEditPage extends Block {
   }
 }
 
-export default ProfileEditPage;
+export default connect(ProfileEditPage, userMapping);

@@ -1,5 +1,4 @@
 import template from "./template.pug";
-import { userData } from "../../utils/projectVariables";
 import Block from "../../components/Block/Block";
 import Photo from "../../components/Photo/Photo";
 import ChatEl from "../../components/ChatEl/ChatEl";
@@ -9,59 +8,43 @@ import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import AuthController from "../authentication/AuthController";
 import { PAGES } from "../../utils/renderDOM";
+import { connect } from "../../Modules/Store/Store";
+import ChatsController from "./ChatsController";
 
 const AuthControllerEntity = new AuthController();
 
 type ChatsPageProps = {
   profileUrl: string;
+  chats?: ChatEl[];
 };
-
-const chatText =
-  "Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello ";
 
 class ChatsPage extends Block {
   constructor(props: ChatsPageProps) {
     super(props);
   }
 
-  init() {
-    this.props.user = userData;
-    this.props.profileUrl = PAGES['profile'];
+  async init() {
+    this.props.profileUrl = PAGES["profile"];
 
     const addChatModal = new SmallForm({
       title: "Добавить чат",
       id: "add-chat-modal",
-      input: new Input({ label: "Название чата", attributes: { type: "text" } }),
+      input: new Input({ label: "Название чата", attributes: { type: "text", name: "title" } }),
       Button: new Button({ text: "Добавить", attributes: { class: "form-user__btn" } }),
       events: {
-        submit: (event: Event) => {
-          addChatModal.submit(event);
+        submit: async (event: Event) => {
+          if (await ChatsController.addChat(addChatModal.getData(event))) {
+            addChatModal.reset();
+            addChatModal.hide();
+            this.updateChats();
+          }
         },
       },
     });
 
     this.children = {
       UserPhoto: new Photo({ photoSrc: this.props.user.avatar, attributes: { class: "chat-profile__img", alt: this.props.user.first_name } }),
-      ChatsList: [
-        new ChatEl({
-          isActive: false,
-          user: userData,
-          isUserMessageLast: false,
-          time: "16:45",
-          messageCount: 0,
-          text: chatText,
-          events: { click: this.chooseChat.bind(this) },
-        }),
-        new ChatEl({
-          isActive: false,
-          user: userData,
-          isUserMessageLast: false,
-          time: "16:45",
-          messageCount: 5,
-          text: chatText,
-          events: { click: this.chooseChat.bind(this) },
-        }),
-      ],
+      ChatsList: [],
       Modals: [addChatModal],
     };
 
@@ -86,7 +69,27 @@ class ChatsPage extends Block {
     ];
   }
 
-  chooseChat(event: Event): void {
+  async updateChats() {
+    await ChatsController.updateChats();
+    this.children.ChatsList = [];
+
+    for (const key in this.props.chats) {
+      const chat = this.props.chats[key];
+      this.children.ChatsList.push(
+        new ChatEl({
+          ...chat,
+          isActive: (this.children.ActiveChat as Block)?.props.id === chat.id,
+          events: {
+            click: this.chooseChat.bind(this, chat),
+          },
+        })
+      );
+    }
+
+    this._render();
+  }
+
+  chooseChat(chat: Record<string, unknown>, event: Event): void {
     let target = event.target as HTMLElement;
     target = target.closest(".chat-el") || target;
     if (target.classList.contains("is-active")) {
@@ -95,8 +98,9 @@ class ChatsPage extends Block {
     this.element.querySelector(".chat-el.is-active")?.classList.remove("is-active");
     target.classList.add("is-active");
 
-    this.children.ActiveChat = new ActiveChatPage();
+    this.children.ActiveChat = new ActiveChatPage({ ...chat });
     this.props.ActiveChat = this.children.ActiveChat;
+    this.children.ActiveChat.dispatchComponentDidMount();
   }
 
   openMenu(event: Event): void {
@@ -114,11 +118,14 @@ class ChatsPage extends Block {
     return this.compile(template, this.props);
   }
 
-  componentDidMount(): void {
-    if(!AuthControllerEntity.isAuthed()){
-      AuthControllerEntity.redirectToLogin();
+  async componentDidMount() {
+    if (!AuthControllerEntity.isAuthed()) {
+      return AuthControllerEntity.redirectToLogin();
     }
+    this.updateChats();
   }
 }
 
-export default ChatsPage;
+export default connect(ChatsPage, (state) => {
+  return { user: { ...state.user! }, chats: { ...state.chats! } };
+});

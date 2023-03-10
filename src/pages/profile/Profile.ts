@@ -3,8 +3,9 @@ import { fieldsNaming } from "../../utils/projectVariables";
 import Block from "../../components/Block/Block";
 import Photo from "../../components/Photo/Photo";
 import ProfileController from "./ProfileController";
-import { default as Store, StoreEvents } from "../../Modules/Store/Store";
+import { connect } from "../../Modules/Store/Store";
 import { PAGES } from "../../utils/renderDOM";
+import deepEqual from "../../utils/deepEqual";
 
 type ProfileProps = {
   user?: Record<string, string | null>;
@@ -20,22 +21,21 @@ class ProfilePage extends Block {
     if (!props) {
       props = {};
     }
-    props.user = ProfileController.getUser() as Record<string, string>;
     props.fieldsNaming = fieldsNaming;
 
     super(props);
   }
 
   init() {
-    this.props.backUrl = PAGES['index'];
-    this.props.changeProfileUrl = PAGES['profileEdit'];
-    this.props.changePasswordUrl = PAGES['changePassword'];
-    
+    this.props.backUrl = PAGES["index"];
+    this.props.changeProfileUrl = PAGES["profileEdit"];
+    this.props.changePasswordUrl = PAGES["changePassword"];
+
     this.children = {
       Photo: new Photo({
         photoSrc: this.props.user?.avatar || null,
         attributes: {
-          alt: this.props.user?.first_name || '',
+          alt: this.props.user?.first_name || "",
         },
       }),
     };
@@ -56,4 +56,6 @@ class ProfilePage extends Block {
   }
 }
 
-export default ProfilePage;
+export default connect(ProfilePage, (state) => {
+  return { user: { ...state.user! } };
+});

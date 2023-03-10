@@ -1,15 +1,9 @@
-import BaseAPI from "../../API/BaseAPI";
 import AuthAPI from "../../API/AuthAPI"
 
-const AuthAPIEntity = new AuthAPI();
-
-class ProfileAPI extends BaseAPI {
+class ProfileAPI extends AuthAPI {
 	logout() {
-		return AuthAPIEntity.logout();
-	}
-	getUser() {
-		return AuthAPIEntity.getUser();
+		return super.logout();
 	}
 }
 
-export default new ProfileAPI('');
+export default new ProfileAPI();
