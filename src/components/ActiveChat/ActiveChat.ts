@@ -1,5 +1,4 @@
 import template from "./template.pug";
-import { userData } from "../../utils/projectVariables";
 import Block from "../../components/Block/Block";
 import Photo from "../Photo/Photo";
 import Message from "../Message/Message";
@@ -14,6 +13,7 @@ type ActiveChatProps = {
   avatar?: string;
   title?: string;
   id?: number;
+  events?: Record<string, (...args: any[]) => void>;
 };
 
 class ActiveChatPage extends Block {
@@ -35,7 +35,7 @@ class ActiveChatPage extends Block {
           }
         },
         submit: (event: Event) => {
-          changePhotoModal.submit(event);
+          // changePhotoModal.submit(event);
         },
       },
     });
@@ -53,7 +53,7 @@ class ActiveChatPage extends Block {
           }
         },
         submit: (event: Event) => {
-          addPhotoModal.submit();
+          // addPhotoModal.submit();
         },
       },
     });
@@ -70,29 +70,39 @@ class ActiveChatPage extends Block {
           }
         },
         submit: (event: Event) => {
-          addFileModal.submit();
+          // addFileModal.submit();
         },
       },
     });
     const addUserModal = new SmallForm({
       title: "Добавить пользователя",
       id: "add-user-modal",
-      input: new Input({ label: "Логин", attributes: { type: "text", name: "users" } }),
+      input: new Input({ label: "Логин", attributes: { type: "text", name: "user-login" } }),
       Button: new Button({ text: "Добавить", attributes: { class: "form-user__btn" } }),
       events: {
         submit: (event: Event) => {
-          addUserModal.submit(event);
+          const data = addUserModal.getData(event);
+          this.element.dispatchEvent(new CustomEvent('add-user', {
+            detail: data?.get('user-login'),
+          }));
+          addUserModal.reset();
+          addUserModal.hide();
         },
       },
     });
     const removeUserModal = new SmallForm({
       title: "Удалить пользователя",
       id: "remove-user-modal",
-      input: new Input({ label: "Логин", attributes: { type: "text", name: "users" } }),
+      input: new Input({ label: "Логин", attributes: { type: "text", name: "user-login" } }),
       Button: new Button({ text: "Удалить", attributes: { class: "form-user__btn btn_cancel" } }),
       events: {
         submit: (event: Event) => {
-          removeUserModal.submit(event);
+          const data = removeUserModal.getData(event);
+          this.element.dispatchEvent(new CustomEvent('remove-user', {
+            detail: data?.get('user-login'),
+          }));
+          removeUserModal.reset();
+          removeUserModal.hide();
         },
       },
     });
@@ -118,7 +128,7 @@ class ActiveChatPage extends Block {
         event?.preventDefault();
         const target = event!.target as HTMLElement | null;
         if(target && target.classList.contains('btn_cancel')) {
-          ActiveChatController.removeChat(this.props.id);
+          this.element.dispatchEvent(new Event('remove-chat'));
           return removeChatModal.hide();
         }
         if(target && target.classList.contains('form-confirm__btn')) {

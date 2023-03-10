@@ -51,6 +51,17 @@ class ProfilePage extends Block {
     };
   }
 
+  componentDidUpdate(oldProps?: unknown, newProps?: unknown): boolean {
+    if(deepEqual(oldProps as Record<string, any>, newProps)) {
+      return false;
+    }
+
+    if(this.children.Photo && this.props.user?.avatar) {
+      (this.children.Photo as Photo).props.photoSrc = `https://ya-praktikum.tech/api/v2/resources${this.props.user?.avatar}`;
+    }
+    return true;
+  }
+
   render() {
     return this.compile(template, this.props);
   }

@@ -7,6 +7,7 @@ import Form from "../../components/Form/Form";
 import Input from "../../components/Input/Input";
 import AuthController from "../authentication/AuthController";
 import ProfileEditController from "./ProfileEditController";
+import deepEqual from "../../utils/deepEqual";
 import { PAGES } from "../../utils/renderDOM";
 import { connect } from "../../Modules/Store/Store";
 
@@ -112,6 +113,17 @@ class ProfileEditPage extends Block {
     if (!AuthControllerEntity.isAuthed()) {
       AuthControllerEntity.redirectToLogin();
     }
+  }
+
+  componentDidUpdate(oldProps?: unknown, newProps?: unknown): boolean {
+    if(deepEqual(oldProps as Record<string, any>, newProps)) {
+      return false;
+    }
+
+    if(this.children.Photo && this.props.user?.avatar) {
+      (this.children.Photo as Photo).props.photoSrc = `https://ya-praktikum.tech/api/v2/resources${this.props.user?.avatar}`;
+    }
+    return true;
   }
 }
 

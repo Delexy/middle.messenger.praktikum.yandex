@@ -10,6 +10,7 @@ import AuthController from "../authentication/AuthController";
 import { PAGES } from "../../utils/renderDOM";
 import { connect } from "../../Modules/Store/Store";
 import ChatsController from "./ChatsController";
+import ErrorHandler from "../../components/ErrorHandler/ErrorHandler";
 
 const AuthControllerEntity = new AuthController();
 
@@ -98,7 +99,32 @@ class ChatsPage extends Block {
     this.element.querySelector(".chat-el.is-active")?.classList.remove("is-active");
     target.classList.add("is-active");
 
-    this.children.ActiveChat = new ActiveChatPage({ ...chat });
+    this.children.ActiveChat = new ActiveChatPage({
+      ...chat,
+      events: {
+        "remove-chat": async () => {
+          if (await ChatsController.removeChat(Number(chat.id))) {
+            delete this.children.ActiveChat;
+            delete this.props.ActiveChat;
+            this.updateChats();
+          }
+        },
+        "add-user": async (event: CustomEvent) => {
+          const userLogin = event.detail;
+          const { error } = await ChatsController.addUser(Number(chat.id), userLogin);
+          if (error) {
+            return new ErrorHandler(error).show();
+          }
+        },
+        "remove-user": async (event: CustomEvent) => {
+          const userLogin = event.detail;
+          const { error } = await ChatsController.removeUser(Number(chat.id), userLogin);
+          if (error) {
+            return new ErrorHandler(error).show();
+          }
+        },
+      },
+    });
     this.props.ActiveChat = this.children.ActiveChat;
     this.children.ActiveChat.dispatchComponentDidMount();
   }
