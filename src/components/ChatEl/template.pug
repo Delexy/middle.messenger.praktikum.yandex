@@ -2,9 +2,9 @@
   | !{UserPhoto}
   .chat-el__content 
     span.chat-el__name= title
-      if lastMessage
-        span.chat-el__text(class=(isUserMessageLast ? 'chat-el__text_last-user' : ''))= lastMessage.content || '' 
-    if lastMessage
-      span.chat-el__time= lastMessage.time
+      if last_message
+        span.chat-el__text(class=(isUserMessageLast ? 'chat-el__text_last-user' : ''))= last_message.content || '' 
+    if last_message
+      span.chat-el__time= date
   if messageCount > 0
     span.chat-el__msg-count= messageCount

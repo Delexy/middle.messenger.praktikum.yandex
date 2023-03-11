@@ -52,7 +52,7 @@ class ProfilePage extends Block {
   }
 
   componentDidUpdate(oldProps?: unknown, newProps?: unknown): boolean {
-    if(deepEqual(oldProps as Record<string, any>, newProps)) {
+    if(deepEqual(oldProps as Record<string, any>, newProps as Record<string, any>)) {
       return false;
     }
 

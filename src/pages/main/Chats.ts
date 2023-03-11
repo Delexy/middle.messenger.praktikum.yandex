@@ -90,7 +90,7 @@ class ChatsPage extends Block {
     this._render();
   }
 
-  chooseChat(chat: Record<string, unknown>, event: Event): void {
+  async chooseChat(chat: Record<string, unknown>, event: Event) {
     let target = event.target as HTMLElement;
     target = target.closest(".chat-el") || target;
     if (target.classList.contains("is-active")) {
@@ -98,7 +98,9 @@ class ChatsPage extends Block {
     }
     this.element.querySelector(".chat-el.is-active")?.classList.remove("is-active");
     target.classList.add("is-active");
-
+    
+    await ChatsController.connectToChat(Number(chat.id));
+    
     this.children.ActiveChat = new ActiveChatPage({
       ...chat,
       events: {
@@ -123,6 +125,13 @@ class ChatsPage extends Block {
             return new ErrorHandler(error).show();
           }
         },
+        "send-message": (event: CustomEvent) => {
+          const message = event.detail;
+          ChatsController.sendMessage(message);
+        },
+        "updated": () => {
+          this.updateChats();
+        }
       },
     });
     this.props.ActiveChat = this.children.ActiveChat;

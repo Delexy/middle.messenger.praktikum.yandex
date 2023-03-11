@@ -1,5 +1,4 @@
-import BaseAPI from "../../API/BaseAPI";
-import { default as UserAPI } from "../../API/UserAPI";
+import BaseAPI from "../../API/BaseAPI";  
 import { dataToJSON } from "../../utils/dataPrepare";
 
 class ChatsAPI extends BaseAPI {
@@ -41,6 +40,10 @@ class ChatsAPI extends BaseAPI {
         'Content-type': 'application/json; charset=UTF-8'
       }
     });
+  }
+
+  getToken(chatId: number) {
+    return this.HTTPEntity.post(`/token/${chatId}`);
   }
 }
 

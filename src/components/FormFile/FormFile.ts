@@ -2,7 +2,6 @@ import template from "./template.pug";
 import Block from "../Block/Block";
 import FileInput from "../FileInput/FileInput";
 import Button from "../Button/Button";
-import ProfileEditController from "../../pages/profileEdit/ProfileEditController";
 
 type FormFileProps = {
   title: string;

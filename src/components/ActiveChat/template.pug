@@ -26,21 +26,21 @@
 						span.chat-user__action-text Удалить чат
 		.chat-messages
 			div.chat-messages__row
-				span.chat-messages__date  19 июня
+				//- span.chat-messages__date  19 июня
 			| !{Messages}
 
 		.chat-message
 			.chat-message__menu 
-				.chat-message__icon
-					include ../../imgs/icons/clip.svg
-				.chat-message__actions   
-					button.chat-message__action(type="button" data-modal="add-photo-modal")
-						span.chat-message__action-image 
-							include ../../imgs/icons/image.svg
-						span.chat-message__action-text Фото или видео
-					button.chat-message__action(type="button" data-modal="add-file-modal")
-						span.chat-message__action-image 
-							include ../../imgs/icons/file.svg
-						span.chat-message__action-text Файл
+				//- .chat-message__icon
+				//- 	include ../../imgs/icons/clip.svg
+				//- .chat-message__actions   
+				//- 	button.chat-message__action(type="button" data-modal="add-photo-modal")
+				//- 		span.chat-message__action-image 
+				//- 			include ../../imgs/icons/image.svg
+				//- 		span.chat-message__action-text Фото или видео
+				//- 	button.chat-message__action(type="button" data-modal="add-file-modal")
+				//- 		span.chat-message__action-image 
+				//- 			include ../../imgs/icons/file.svg
+				//- 		span.chat-message__action-text Файл
 			| !{MessageFormEl}
 	| !{Modals}

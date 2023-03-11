@@ -1,6 +1,5 @@
 import RegistrationPage from '../pages/registration/RegistrationPage';
 import AuthPage from '../pages/authentication/AuthPage';
-import ErrorPage from '../pages/errors/ErrorPage';
 import PaginationPage from '../pages/pagination/Pagination';
 import ProfilePage from '../pages/profile/Profile';
 import ProfileEditPage from '../pages/profileEdit/ProfileEdit';
@@ -21,18 +20,6 @@ export const enum PAGES {
   profileEdit = '/settings/edit',
   changePassword = '/change-password'
 }
-
-// export const PAGES_ROUTES: Record<string, Block> = {
-//   [PAGES.index]: new ChatsPage({ profileUrl: PAGES["profile"] }),
-//   [PAGES.unknown]: new ErrorPage({ status: 404, statusText: "Страница ушла, но обещала вернуться"}), 
-//   [PAGES.serverError]: new ErrorPage({ status: 500, statusText: "У нас что-то поломалось, уже чиним"}), 
-// 	[PAGES.auth]: new AuthPage(),
-//   [PAGES.registration]: new RegistrationPage(),
-//   [PAGES.pagination]: new PaginationPage(),
-//   [PAGES.profile]: new ProfilePage({backUrl: PAGES.index, changeProfileUrl: PAGES.profileEdit, changePasswordUrl: PAGES.changePassword}),
-//   [PAGES.profileEdit]: new ProfileEditPage({ backUrl: PAGES.profile }),
-//   [PAGES.changePassword]: new ChangePasswordPage({ backUrl: PAGES.profile }),
-// }
 
 export const PAGES_ROUTES: Record<string, typeof Block> = {
   [PAGES.index]: ChatsPage,

@@ -134,9 +134,8 @@ class Block {
 
     if (response) {
       this.eventBus().emit(EVENTS.FLOW_RENDER);
+      this.eventBus().emit(EVENTS.FLOW_CU);
     }
-
-    this.eventBus().emit(EVENTS.FLOW_CU);
   }
 
   componentDidUpdate(oldProps?: BlockProps | unknown, newProps?: BlockProps | unknown): boolean {

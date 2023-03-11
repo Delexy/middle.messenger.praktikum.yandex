@@ -7,7 +7,7 @@ import Button from "../Button/Button";
 import Input from "../Input/Input";
 import FormFile from "../FormFile/FormFile";
 import MessageForm from "../MessageForm/MessageForm";
-import ActiveChatController from "./ActiveChatController";
+import store, { connect } from "../../Modules/Store/Store";
 
 type ActiveChatProps = {
   avatar?: string;
@@ -34,7 +34,7 @@ class ActiveChatPage extends Block {
             changePhotoModal.props.title = "Файл загружен";
           }
         },
-        submit: (event: Event) => {
+        submit: () => {
           // changePhotoModal.submit(event);
         },
       },
@@ -52,7 +52,7 @@ class ActiveChatPage extends Block {
             addPhotoModal.props.title = "Файл загружен";
           }
         },
-        submit: (event: Event) => {
+        submit: () => {
           // addPhotoModal.submit();
         },
       },
@@ -69,7 +69,7 @@ class ActiveChatPage extends Block {
             addFileModal.props.title = "Файл загружен";
           }
         },
-        submit: (event: Event) => {
+        submit: () => {
           // addFileModal.submit();
         },
       },
@@ -82,9 +82,11 @@ class ActiveChatPage extends Block {
       events: {
         submit: (event: Event) => {
           const data = addUserModal.getData(event);
-          this.element.dispatchEvent(new CustomEvent('add-user', {
-            detail: data?.get('user-login'),
-          }));
+          this.element.dispatchEvent(
+            new CustomEvent("add-user", {
+              detail: data?.get("user-login"),
+            })
+          );
           addUserModal.reset();
           addUserModal.hide();
         },
@@ -98,9 +100,11 @@ class ActiveChatPage extends Block {
       events: {
         submit: (event: Event) => {
           const data = removeUserModal.getData(event);
-          this.element.dispatchEvent(new CustomEvent('remove-user', {
-            detail: data?.get('user-login'),
-          }));
+          this.element.dispatchEvent(
+            new CustomEvent("remove-user", {
+              detail: data?.get("user-login"),
+            })
+          );
           removeUserModal.reset();
           removeUserModal.hide();
         },
@@ -123,59 +127,63 @@ class ActiveChatPage extends Block {
       <button class = "btn form-confirm__btn">Оставить</button>
     </div>
     `,
-    events: {
-      click: (event?: Event) => {
-        event?.preventDefault();
-        const target = event!.target as HTMLElement | null;
-        if(target && target.classList.contains('btn_cancel')) {
-          this.element.dispatchEvent(new Event('remove-chat'));
-          return removeChatModal.hide();
-        }
-        if(target && target.classList.contains('form-confirm__btn')) {
-          removeChatModal.hide();
-        }
-      }
-    }
+      events: {
+        click: (event?: Event) => {
+          event?.preventDefault();
+          const target = event!.target as HTMLElement | null;
+          if (target && target.classList.contains("btn_cancel")) {
+            this.element.dispatchEvent(new Event("remove-chat"));
+            return removeChatModal.hide();
+          }
+          if (target && target.classList.contains("form-confirm__btn")) {
+            removeChatModal.hide();
+          }
+        },
+      },
     });
 
     this.children = {
       UserPhoto: new Photo({ photoSrc: this.props.avatar, attributes: { class: "chat-profile__img", alt: this.props.title } }),
-      Messages: [
-        new Message({ text: "Hello Hello Hello Hello Hello", time: "16:45", isIncoming: true }),
-        new Message({
-          text: "Hello Hello Hello Hello Hello",
-          time: "16:45",
-          isIncoming: true,
-          isMedia: true,
-          src: "https://funik.ru/wp-content/uploads/2018/10/27c13f31829a137aca6f.jpg",
-        }),
-        new Message({ text: "Hello Hello Hello Hello Hello", time: "16:45" }),
-        new Message({
-          text: "Hello Hello Hello Hello Hello",
-          time: "16:45",
-          isMedia: true,
-          src: "https://funik.ru/wp-content/uploads/2018/10/27c13f31829a137aca6f.jpg",
-        }),
-      ],
-      Modals: [
-        removeChatModal,
-        removeUserModal,
-        addUserModal,
-        changePhotoModal,
-        addPhotoModal,
-        addFileModal,
-      ],
+      Messages: [],
+      Modals: [removeChatModal, removeUserModal, addUserModal, changePhotoModal, addPhotoModal, addFileModal],
       MessageFormEl: MessageFormElement,
     };
+  }
+
+  componentDidUpdate(oldProps: any, newProps: any): boolean {
+    if (!oldProps.activeChat?.messages || oldProps.activeChat?.messages.length !== newProps.activeChat?.messages.length) {
+      this.fillMessages();
+      this.element.dispatchEvent(new CustomEvent("updated"));
+      return true;
+    }
+
+    return false;
+  }
+
+  fillMessages() {
+    if (this.props.activeChat?.messages) {
+      this.children.Messages = [];
+      const currentUser = store.getState().user as Record<string, unknown>;
+      this.props.activeChat.messages.forEach((message: Record<string, unknown>) => {
+        const isCurrentUser = currentUser.id === message.user_id;
+        const messageTime = new Date(`${message.time}`);
+        const messageBlock = new Message({
+          text: `${message.content}`,
+          time: `${messageTime.getHours()}:${messageTime.getMinutes() < 10 ? "0" : ""}${messageTime.getMinutes()}`,
+          isIncoming: !isCurrentUser,
+        });
+        (this.children.Messages as Block[]).push(messageBlock);
+      });
+    }
   }
 
   render() {
     return this.compile(template, this.props);
   }
-
-  componentDidMount(): void {
-    console.log(this.props);
-  }
 }
 
-export default ActiveChatPage;
+export default connect(ActiveChatPage, (state) => {
+  return {
+    activeChat: { ...state.activeChat! },
+  };
+});

@@ -2,8 +2,12 @@ import { getFormData } from "../../utils/dataPrepare";
 import { default as Store } from "../../Modules/Store/Store";
 import ChatsAPI from "./ChatsAPI";
 import { default as UserAPI, UserType } from "../../API/UserAPI";
+import ChatAPI from "../../API/ChatAPI";
+import escapeHtml from "../../utils/escape";
 
 class ChatsController {
+  private activeChat: ChatAPI;
+
   async updateChats() {
     const { response, status } = await ChatsAPI.getChats();
     if (status === 200) {
@@ -62,6 +66,19 @@ class ChatsController {
       return { error: "Ошибка на сервере!" };
     }
     return { error: "Пользователь не найден!" };
+  }
+
+  async connectToChat(chatId: number) {
+    const { status, response } = await ChatsAPI.getToken(chatId);
+    if (status === 200 && response) {
+      const token = `${response["token"]}`;
+      this.activeChat = new ChatAPI(token, chatId);
+      this.activeChat.connect();
+    }
+  }
+
+  sendMessage(message: string) {
+    this.activeChat.sendMessage(escapeHtml(message));
   }
 }
 
