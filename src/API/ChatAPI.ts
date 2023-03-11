@@ -40,9 +40,11 @@ class ChatController {
 
   supportConnecting() {
     setInterval(() => {
-      this.socket?.send(JSON.stringify({
-        type: 'ping'
-      }))
+      this.socket?.send(
+        JSON.stringify({
+          type: "ping",
+        })
+      );
     }, 10000);
   }
 
@@ -58,12 +60,12 @@ class ChatController {
 
   onMessage(event: MessageEvent) {
     const data = JSON.parse(event.data);
-    switch(data?.type) {
-      case 'message':
+    switch (data?.type) {
+      case "message":
         this.processNewMessage(data);
-      break;
-      case 'pong':
-      break;
+        break;
+      case "pong":
+        break;
       default:
         this.processOldMessages(data);
     }
@@ -89,19 +91,21 @@ class ChatController {
   }
 
   getOld() {
-    if(this.socket) {
-      this.socket.send(JSON.stringify({
-        content: `${this.messageAmount}`,
-        type: 'get old',
-      }));
+    if (this.socket) {
+      this.socket.send(
+        JSON.stringify({
+          content: `${this.messageAmount}`,
+          type: "get old",
+        })
+      );
     }
   }
 
   processOldMessages(messages: any[]) {
-    if(messages?.length) {
+    if (messages?.length) {
       const oldMessages = ((Store.getState()?.activeChat as Record<string, unknown>)?.messages as any[]) || [];
       const allMessages = [...oldMessages, ...messages.reverse()];
-      Store.set('activeChat.messages', allMessages);
+      Store.set("activeChat.messages", allMessages);
       this.messageAmount += messages.length;
     }
   }
@@ -109,8 +113,8 @@ class ChatController {
   processNewMessage(message: Record<string, unknown>) {
     const oldMessages = ((Store.getState()?.activeChat as Record<string, unknown>)?.messages as any[]) || [];
     const allMessages = [...oldMessages, message];
-    Store.set('activeChat.messages', allMessages);
-    this.messageAmount++;;
+    Store.set("activeChat.messages", allMessages);
+    this.messageAmount++;
   }
 }
 

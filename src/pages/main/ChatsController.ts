@@ -12,7 +12,6 @@ class ChatsController {
     const { response, status } = await ChatsAPI.getChats();
     if (status === 200) {
       Store.set("chats", response);
-    } else {
     }
   }
 

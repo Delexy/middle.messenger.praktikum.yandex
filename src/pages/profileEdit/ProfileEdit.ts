@@ -23,7 +23,7 @@ type ProfileEditProps = {
 
 const INPUT_CLASS = "auth-form__input";
 
-let userMapping = (state: Record<string, unknown>) => {
+const userMapping = (state: Record<string, unknown>) => {
   return {
     user: { ...state.user! },
   };
