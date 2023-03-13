@@ -1,6 +1,10 @@
 import { isArrayOrObject } from "./isArrayOrObject";
 
 function deepEqual(lhs: Record<string, any>, rhs: Record<string, any>): boolean {
+  if(lhs == undefined || rhs == undefined) {
+    return false;
+  } 
+  
   if (Object.keys(lhs).length !== Object.keys(rhs).length) {
     return false;
   }

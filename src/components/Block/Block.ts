@@ -249,7 +249,9 @@ class Block {
         const oldProps = JSON.parse(JSON.stringify(target));
         const isUpdated = Reflect.set(target, property, value, receiver);
 
-        this.eventBus().emit(EVENTS.FLOW_CDU, oldProps, target);
+        if(!deepEqual(oldProps[property], target[property])) {
+          this.eventBus().emit(EVENTS.FLOW_CDU, oldProps, target);
+        }
 
         return isUpdated;
       },

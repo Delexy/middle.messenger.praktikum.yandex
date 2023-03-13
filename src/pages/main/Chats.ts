@@ -92,7 +92,6 @@ class ChatsPage extends Block {
   closeChat() {
     if(this.children.ActiveChat) {
       this.element.querySelector(".chat-el.is-active")?.classList.remove("is-active");
-      (this.children.ActiveChat as Block).unmount();
       ChatsController.closeChat();
     }
   }
@@ -108,8 +107,8 @@ class ChatsPage extends Block {
 
     
     await ChatsController.connectToChat(Number(chat.id));
-    console.log(this.children.ActiveChat);
-    this.children.ActiveChat = new ActiveChatPage({
+
+    const activeChatOptions = {
       ...chat,
       events: {
         "remove-chat": async () => {
@@ -137,13 +136,20 @@ class ChatsPage extends Block {
           const message = event.detail;
           ChatsController.sendMessage(message);
         },
-        updated: () => {
+        "updated": () => {
           this.updateChats();
         },
       },
-    });
-    this.props.ActiveChat = this.children.ActiveChat;
-    this.children.ActiveChat.dispatchComponentDidMount();
+    };
+
+    if(this.children.ActiveChat) {
+      (this.children.ActiveChat as Block).setProps(activeChatOptions);
+    } else {
+      this.children.ActiveChat = new ActiveChatPage(activeChatOptions);
+      this.props.ActiveChat = this.children.ActiveChat;
+      this.children.ActiveChat.dispatchComponentDidMount();
+    }
+  
   }
 
   openMenu(event: Event): void {
