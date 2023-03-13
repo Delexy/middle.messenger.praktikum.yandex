@@ -8,6 +8,7 @@ import Input from "../Input/Input";
 import FormFile from "../FormFile/FormFile";
 import MessageForm from "../MessageForm/MessageForm";
 import store, { connect } from "../../Modules/Store/Store";
+import deepEqual from "../../utils/deepEqual";
 
 type ActiveChatProps = {
   avatar?: string;
@@ -141,7 +142,7 @@ class ActiveChatPage extends Block {
         },
       },
     });
-
+    
     this.children = {
       UserPhoto: new Photo({ photoSrc: this.props.avatar, attributes: { class: "chat-profile__img", alt: this.props.title } }),
       Messages: [],
@@ -151,7 +152,7 @@ class ActiveChatPage extends Block {
   }
 
   componentDidUpdate(oldProps: any, newProps: any): boolean {
-    if (!oldProps.activeChat?.messages || oldProps.activeChat?.messages.length !== newProps.activeChat?.messages.length) {
+    if (!deepEqual(oldProps, newProps)) {
       this.fillMessages();
       this.element.dispatchEvent(new CustomEvent("updated"));
       return true;
@@ -178,7 +179,7 @@ class ActiveChatPage extends Block {
   }
 
   render() {
-    return this.compile(template, this.props);
+    return this.compile(template, this.props); 
   }
 }
 

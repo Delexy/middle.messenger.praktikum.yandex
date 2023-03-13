@@ -1,10 +1,11 @@
 import Store from "../Modules/Store/Store";
 
-class ChatController {
+class ChatAPI {
   private token: string;
   private chatId: number;
   private socket: WebSocket | null;
   private messageAmount: number;
+  private supportInterval: number;
 
   constructor(token: string, chatId: number) {
     this.token = token;
@@ -30,6 +31,11 @@ class ChatController {
     return null;
   }
 
+  close() {
+    this.socket?.close();
+    clearInterval(this.supportInterval);
+  }
+
   addEvents() {
     if (this.socket) {
       this.socket.addEventListener("close", this.onClose.bind(this));
@@ -39,7 +45,7 @@ class ChatController {
   }
 
   supportConnecting() {
-    setInterval(() => {
+    this.supportInterval = setInterval(() => {
       this.socket?.send(
         JSON.stringify({
           type: "ping",
@@ -118,4 +124,4 @@ class ChatController {
   }
 }
 
-export default ChatController;
+export default ChatAPI;

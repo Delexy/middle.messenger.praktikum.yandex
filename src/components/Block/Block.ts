@@ -50,7 +50,16 @@ class Block {
     eventBus.on(EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     eventBus.on(EVENTS.FLOW_CU, this._componentUpdated.bind(this));
     eventBus.on(EVENTS.FLOW_RENDER, this._render.bind(this));
-    eventBus.on(EVENTS.FLOW_UM, this._render.bind(this));
+    eventBus.on(EVENTS.FLOW_UM, this._unmount.bind(this));
+  }
+
+  private _unregisterEvents() {
+    this.eventBus().off(EVENTS.INIT, this._init.bind(this));
+    this.eventBus().off(EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
+    this.eventBus().off(EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+    this.eventBus().off(EVENTS.FLOW_CU, this._componentUpdated.bind(this));
+    this.eventBus().off(EVENTS.FLOW_RENDER, this._render.bind(this));
+    this.eventBus().off(EVENTS.FLOW_UM, this._unmount.bind(this));
   }
 
   private _addEvents() {
@@ -155,6 +164,7 @@ class Block {
 
   _componentBeforeUnmount(): void {
     this._removeEvents();
+    this._unregisterEvents();
     this.componentBeforeUnmount();
   }
 
@@ -265,11 +275,15 @@ class Block {
     }
   }
 
-  unmount() {
-    this.eventBus().emit(EVENTS.FLOW_UM);
+  _unmount() {
+    this._componentBeforeUnmount();
     if(this._element) {
       this._element.outerHTML = "";
     }
+  }
+
+  unmount() {
+    this.eventBus().emit(EVENTS.FLOW_UM);
   }
 }
 

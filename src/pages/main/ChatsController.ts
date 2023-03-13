@@ -79,6 +79,15 @@ class ChatsController {
   sendMessage(message: string) {
     this.activeChat.sendMessage(escapeHtml(message));
   }
+
+  removeMessagesStory() {
+    Store.set("activeChat.messages", []);
+  }
+
+  closeChat() {
+    this.activeChat?.close();
+    this.removeMessagesStory();
+  }
 }
 
 export default new ChatsController();

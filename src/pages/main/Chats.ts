@@ -86,21 +86,29 @@ class ChatsPage extends Block {
         })
       );
     }
+    this.props.ChatsList = this.children.ChatsList;
+  }
 
-    this._render();
+  closeChat() {
+    if(this.children.ActiveChat) {
+      this.element.querySelector(".chat-el.is-active")?.classList.remove("is-active");
+      (this.children.ActiveChat as Block).unmount();
+      ChatsController.closeChat();
+    }
   }
 
   async chooseChat(chat: Record<string, unknown>, event: Event) {
+    this.closeChat();
     let target = event.target as HTMLElement;
     target = target.closest(".chat-el") || target;
     if (target.classList.contains("is-active")) {
       return;
     }
-    this.element.querySelector(".chat-el.is-active")?.classList.remove("is-active");
     target.classList.add("is-active");
+
     
     await ChatsController.connectToChat(Number(chat.id));
-    
+    console.log(this.children.ActiveChat);
     this.children.ActiveChat = new ActiveChatPage({
       ...chat,
       events: {
@@ -129,9 +137,9 @@ class ChatsPage extends Block {
           const message = event.detail;
           ChatsController.sendMessage(message);
         },
-        "updated": () => {
+        updated: () => {
           this.updateChats();
-        }
+        },
       },
     });
     this.props.ActiveChat = this.children.ActiveChat;
