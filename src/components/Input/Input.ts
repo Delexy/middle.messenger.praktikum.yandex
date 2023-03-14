@@ -5,7 +5,7 @@ import { INPUT_VALIDATION_REGEXP, INPUT_ERRORS } from "../../utils/projectVariab
 interface InputProps {
   label?: string;
   className?: string;
-  attributes?: any;
+  attributes?: Record<string, unknown>;
   error?: string;
 }
 
@@ -14,7 +14,7 @@ class Input extends Block {
 
   constructor(props: InputProps) {
     super(props);
-    this.props.attributes.type = props.attributes.type || "text";
+    this.props.attributes.type = props.attributes?.type || "text";
     this.value = this.props.attributes.value || "";
   }
 

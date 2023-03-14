@@ -30,6 +30,7 @@ class ChatsController {
   async removeChat(id: number): Promise<boolean> {
     const { status } = await ChatsAPI.removeChat(id);
     if (status === 200) {
+      this.closeChat();
       return true;
     }
     return false;

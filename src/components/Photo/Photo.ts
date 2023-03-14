@@ -2,6 +2,8 @@ import template from "./template.pug";
 import Block from "../Block/Block";
 import defaultSrc from "../../utils/defaultPhoto";
 import FormImage from "../FormFile/FormFile";
+import { apiBaseUrl } from "../../utils/projectVariables";
+
 
 type PhotoProps = {
   photoSrc?: string;
@@ -20,7 +22,7 @@ class Photo extends Block {
     if (!this.props.photoSrc) {
       this.props.photoSrc = defaultSrc;
     } else {
-      this.props.photoSrc = `https://ya-praktikum.tech/api/v2/resources${this.props.photoSrc}`;
+      this.props.photoSrc = `${apiBaseUrl}/resources${this.props.photoSrc}`;
     }
   }
 

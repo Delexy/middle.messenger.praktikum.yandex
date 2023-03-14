@@ -1,5 +1,5 @@
 import template from "./template.pug";
-import { fieldsNaming } from "../../utils/projectVariables";
+import { apiBaseUrl, fieldsNaming } from "../../utils/projectVariables";
 import Block from "../../components/Block/Block";
 import Photo from "../../components/Photo/Photo";
 import Button from "../../components/Button/Button";
@@ -10,6 +10,7 @@ import ProfileEditController from "./ProfileEditController";
 import deepEqual from "../../utils/deepEqual";
 import { PAGES } from "../../utils/renderDOM";
 import { connect } from "../../Modules/Store/Store";
+
 
 const AuthControllerEntity = new AuthController();
 const ProfileEditControllerE = new ProfileEditController();
@@ -121,7 +122,7 @@ class ProfileEditPage extends Block {
     }
 
     if(this.children.Photo && this.props.user?.avatar) {
-      (this.children.Photo as Photo).props.photoSrc = `https://ya-praktikum.tech/api/v2/resources${this.props.user?.avatar}`;
+      (this.children.Photo as Photo).props.photoSrc = `${apiBaseUrl}/resources${this.props.user?.avatar}`;
     }
     return true;
   }

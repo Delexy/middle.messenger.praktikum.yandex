@@ -1,11 +1,12 @@
 import template from "./template.pug";
-import { fieldsNaming } from "../../utils/projectVariables";
+import { apiBaseUrl, fieldsNaming } from "../../utils/projectVariables";
 import Block from "../../components/Block/Block";
 import Photo from "../../components/Photo/Photo";
 import ProfileController from "./ProfileController";
 import { connect } from "../../Modules/Store/Store";
 import { PAGES } from "../../utils/renderDOM";
 import deepEqual from "../../utils/deepEqual";
+
 
 type ProfileProps = {
   user?: Record<string, string | null>;
@@ -57,7 +58,7 @@ class ProfilePage extends Block {
     }
 
     if(this.children.Photo && this.props.user?.avatar) {
-      (this.children.Photo as Photo).props.photoSrc = `https://ya-praktikum.tech/api/v2/resources${this.props.user?.avatar}`;
+      (this.children.Photo as Photo).props.photoSrc = `${apiBaseUrl}/resources${this.props.user?.avatar}`;
     }
     return true;
   }

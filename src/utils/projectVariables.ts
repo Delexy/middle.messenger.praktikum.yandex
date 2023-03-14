@@ -1,3 +1,5 @@
+export const apiBaseUrl = `https://ya-praktikum.tech/api/v2`;
+
 export const userData: Record<string, string | null> = {
   email: "",
   login: "",

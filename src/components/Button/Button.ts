@@ -4,7 +4,7 @@ import Block from "../Block/Block";
 type ButtonProps = {
 	text: string,
 	href?: string,
-	attributes?: any
+	attributes?: Record<string, unknown>;
 }
 
 class Button extends Block {

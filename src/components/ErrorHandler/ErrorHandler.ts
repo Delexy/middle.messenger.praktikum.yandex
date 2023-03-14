@@ -3,7 +3,11 @@ class ErrorHandler {
   constructor(public message: string, public title?:string) {}
 
   show() {
-    console.log(this.message);
+    console.error(this.message);
+  }
+
+  returnErrorResponse() {
+    return { status: 0, response: null, error: this.message }
   }
 }
 

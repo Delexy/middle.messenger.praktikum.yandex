@@ -1,3 +1,4 @@
+import ErrorHandler from "../components/ErrorHandler/ErrorHandler";
 import { dataToJSON } from "../utils/dataPrepare";
 import BaseAPI from "./BaseAPI";
 
@@ -21,8 +22,10 @@ class UserAPI extends BaseAPI {
     return this.HTTPEntity.post("/search", {
       data: dataToJSON({ login }),
       headers: {
-        'Content-type': 'application/json; charset=UTF-8'
-      }
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }).catch((err) => {
+      return new ErrorHandler(err.message).returnErrorResponse();
     });
   }
 }

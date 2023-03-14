@@ -1,4 +1,5 @@
 import AuthAPI from "../../API/AuthAPI";
+import ErrorHandler from "../../components/ErrorHandler/ErrorHandler";
 import { dataToJSON } from "../../utils/dataPrepare";
 
 class AuthPageAPI extends AuthAPI {
@@ -6,8 +7,10 @@ class AuthPageAPI extends AuthAPI {
     return this.HTTPEntity.post("/signin", {
       data: dataToJSON({ login, password }),
       headers: {
-        'Content-type': 'application/json; charset=UTF-8'
-      }
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }).catch((err) => {
+      return new ErrorHandler(err.message).returnErrorResponse();
     });
   }
 }

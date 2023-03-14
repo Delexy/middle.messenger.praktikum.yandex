@@ -3,7 +3,7 @@ import { v4 as createId } from "uuid";
 import { compileTemplate } from "pug";
 import deepEqual from "../../utils/deepEqual";
 
-enum EVENTS {
+export enum EVENTS {
   INIT = "init",
   FLOW_CDM = "flow:component-did-mount",
   FLOW_CDU = "flow:component-did-update",

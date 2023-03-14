@@ -1,3 +1,4 @@
+import ErrorHandler from "../components/ErrorHandler/ErrorHandler";
 import Store from "../Modules/Store/Store";
 
 class ChatAPI {
@@ -65,7 +66,13 @@ class ChatAPI {
   }
 
   onMessage(event: MessageEvent) {
-    const data = JSON.parse(event.data);
+    let data: Record<string, unknown> = {};
+    try {
+      data = JSON.parse(event.data);
+    } catch(err) {
+      new ErrorHandler(err.message).show();
+    }
+
     switch (data?.type) {
       case "message":
         this.processNewMessage(data);
@@ -73,7 +80,9 @@ class ChatAPI {
       case "pong":
         break;
       default:
-        this.processOldMessages(data);
+        if(Array.isArray(data)) {
+          this.processOldMessages(data);
+        }
     }
   }
 
@@ -107,9 +116,9 @@ class ChatAPI {
     }
   }
 
-  processOldMessages(messages: any[]) {
+  processOldMessages(messages: unknown[]) {
     if (messages?.length) {
-      const oldMessages = ((Store.getState()?.activeChat as Record<string, unknown>)?.messages as any[]) || [];
+      const oldMessages = ((Store.getState()?.activeChat as Record<string, unknown>)?.messages as unknown[]) || [];
       const allMessages = [...oldMessages, ...messages.reverse()];
       Store.set("activeChat.messages", allMessages);
       this.messageAmount += messages.length;
@@ -117,7 +126,7 @@ class ChatAPI {
   }
 
   processNewMessage(message: Record<string, unknown>) {
-    const oldMessages = ((Store.getState()?.activeChat as Record<string, unknown>)?.messages as any[]) || [];
+    const oldMessages = ((Store.getState()?.activeChat as Record<string, unknown>)?.messages as unknown[]) || [];
     const allMessages = [...oldMessages, message];
     Store.set("activeChat.messages", allMessages);
     this.messageAmount++;

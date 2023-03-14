@@ -93,16 +93,19 @@ class ChatsPage extends Block {
     if(this.children.ActiveChat) {
       this.element.querySelector(".chat-el.is-active")?.classList.remove("is-active");
       ChatsController.closeChat();
+      (this.children.ActiveChat as Block).unmount();
+      delete this.children.ActiveChat;
+      delete this.props.ActiveChat;
     }
   }
 
   async chooseChat(chat: Record<string, unknown>, event: Event) {
-    this.closeChat();
     let target = event.target as HTMLElement;
     target = target.closest(".chat-el") || target;
     if (target.classList.contains("is-active")) {
       return;
     }
+    this.closeChat();
     target.classList.add("is-active");
 
     
@@ -113,8 +116,7 @@ class ChatsPage extends Block {
       events: {
         "remove-chat": async () => {
           if (await ChatsController.removeChat(Number(chat.id))) {
-            delete this.children.ActiveChat;
-            delete this.props.ActiveChat;
+            this.closeChat();
             this.updateChats();
           }
         },
@@ -141,6 +143,7 @@ class ChatsPage extends Block {
         },
       },
     };
+
 
     if(this.children.ActiveChat) {
       (this.children.ActiveChat as Block).setProps(activeChatOptions);

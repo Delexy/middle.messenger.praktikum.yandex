@@ -1,4 +1,4 @@
-type StringIndexed = Record<string, any>;
+type StringIndexed = Record<string, unknown>;
 
 function isPlainObject(value: unknown): value is StringIndexed {
     return typeof value === 'object'
@@ -18,8 +18,9 @@ function isArrayOrObject(value: unknown): value is [] | StringIndexed {
 function queryStringify(data: StringIndexed): string | never {
   const resultStr = [];
   for (const key in data) {
-    if (isArrayOrObject(data[key])) {
-      Object.entries(data[key]).forEach(([subkey, subval]) => {
+    const el = data[key];
+    if (isArrayOrObject(el)) {
+      Object.entries(el).forEach(([subkey, subval]) => {
         if(isArrayOrObject(subval)) {
           resultStr.push(`${key}[${subkey}]${queryStringify({'': subval})}`);
         } else {

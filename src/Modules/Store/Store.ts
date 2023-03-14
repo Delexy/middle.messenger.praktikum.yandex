@@ -1,4 +1,4 @@
-import Block from "../../components/Block/Block";
+import Block, { EVENTS } from "../../components/Block/Block";
 import EventBus from "../../components/EventBus/EventBus";
 import set from "../../utils/set";
 
@@ -32,13 +32,15 @@ export function connect(Component: typeof Block, mapStateToProps: (state: Indexe
   let lastComponentState = {};
 
   return class extends Component {
+    storeUpdateHandler;
+    
     constructor(props: any) {
       const componentProps = { ...props, ...mapStateToProps(store.getState()) };
       super(componentProps);
 
       lastComponentState = { ...mapStateToProps(store.getState()) };
 
-      store.on(StoreEvents.Updated, () => {
+      this.storeUpdateHandler = () => {
         if (!this.componentDidUpdate(lastComponentState, { ...mapStateToProps(store.getState()) })) {
           return;
         }
@@ -46,6 +48,12 @@ export function connect(Component: typeof Block, mapStateToProps: (state: Indexe
         lastComponentState = { ...mapStateToProps(store.getState()) };
 
         this.setProps({ ...mapStateToProps(store.getState()) });
+      };
+
+      store.on(StoreEvents.Updated, this.storeUpdateHandler);
+
+      this.eventBus().on(EVENTS.FLOW_UM, () => {
+        store.off(StoreEvents.Updated, this.storeUpdateHandler);
       });
     }
   };

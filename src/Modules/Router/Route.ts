@@ -9,9 +9,9 @@ class Route {
   _pathname: string;
   _block: Block | null;
   _blockClass: typeof Block;
-  _props: Record<string, any>;
+  _props: Record<string, unknown>;
 
-  constructor(pathname: string, blockClass: typeof Block, props: Record<string, any>) {
+  constructor(pathname: string, blockClass: typeof Block, props: Record<string, unknown>) {
     this._pathname = pathname;
     this._block = null;
     this._blockClass = blockClass;

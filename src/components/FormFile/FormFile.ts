@@ -15,7 +15,7 @@ type FormFileProps = {
     class: string;
     id: string;
   };
-  [key: string]: any;
+  [key: string]: unknown;
 };
 
 class FormFile extends Block {

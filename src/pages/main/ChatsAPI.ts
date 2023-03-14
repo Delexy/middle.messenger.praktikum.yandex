@@ -1,9 +1,12 @@
-import BaseAPI from "../../API/BaseAPI";  
+import BaseAPI from "../../API/BaseAPI";
+import ErrorHandler from "../../components/ErrorHandler/ErrorHandler";
 import { dataToJSON } from "../../utils/dataPrepare";
 
 class ChatsAPI extends BaseAPI {
   getChats() {
-    return this.HTTPEntity.get("");
+    return this.HTTPEntity.get("").catch((err) => {
+      return new ErrorHandler(err.message).returnErrorResponse();
+    });
   }
 
   addChat(data: Record<string, unknown>) {
@@ -12,6 +15,8 @@ class ChatsAPI extends BaseAPI {
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
+    }).catch((err) => {
+      return new ErrorHandler(err.message).returnErrorResponse();
     });
   }
 
@@ -21,6 +26,8 @@ class ChatsAPI extends BaseAPI {
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
+    }).catch((err) => {
+      return new ErrorHandler(err.message).returnErrorResponse();
     });
   }
 
@@ -28,8 +35,10 @@ class ChatsAPI extends BaseAPI {
     return this.HTTPEntity.put("/users", {
       data: dataToJSON({ chatId, users: [userId] }),
       headers: {
-        'Content-type': 'application/json; charset=UTF-8'
-      }
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }).catch((err) => {
+      return new ErrorHandler(err.message).returnErrorResponse();
     });
   }
 
@@ -37,13 +46,17 @@ class ChatsAPI extends BaseAPI {
     return this.HTTPEntity.delete("/users", {
       data: dataToJSON({ chatId, users: [userId] }),
       headers: {
-        'Content-type': 'application/json; charset=UTF-8'
-      }
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }).catch((err) => {
+      return new ErrorHandler(err.message).returnErrorResponse();
     });
   }
 
   getToken(chatId: number) {
-    return this.HTTPEntity.post(`/token/${chatId}`);
+    return this.HTTPEntity.post(`/token/${chatId}`).catch((err) => {
+      return new ErrorHandler(err.message).returnErrorResponse();
+    });
   }
 }
 

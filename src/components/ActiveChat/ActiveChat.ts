@@ -14,7 +14,7 @@ type ActiveChatProps = {
   avatar?: string;
   title?: string;
   id?: number;
-  events?: Record<string, (...args: any[]) => void>;
+  events?: Record<string, (...args: unknown[]) => void>;
 };
 
 class ActiveChatPage extends Block {
@@ -142,7 +142,7 @@ class ActiveChatPage extends Block {
         },
       },
     });
-    
+
     this.children = {
       UserPhoto: new Photo({ photoSrc: this.props.avatar, attributes: { class: "chat-profile__img", alt: this.props.title } }),
       Messages: [],
@@ -152,6 +152,7 @@ class ActiveChatPage extends Block {
   }
 
   componentDidUpdate(oldProps: any, newProps: any): boolean {
+    console.log(this.props.activeChat);
     if (!deepEqual(oldProps, newProps)) {
       this.fillMessages();
       this.element.dispatchEvent(new CustomEvent("updated"));
@@ -179,7 +180,11 @@ class ActiveChatPage extends Block {
   }
 
   render() {
-    return this.compile(template, this.props); 
+    return this.compile(template, this.props);
+  }
+
+  componentDidMount(): void {
+    console.log(this.props.activeChat);
   }
 }
 

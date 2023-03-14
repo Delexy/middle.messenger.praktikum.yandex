@@ -1,11 +1,11 @@
 import queryStringify from "../../utils/queryStringify";
 
-const METHODS: Record<string, string> = {
-  GET: "GET",
-  PUT: "PUT",
-  POST: "POST",
-  DELETE: "DELETE",
-};
+enum METHODS {
+  GET = "GET",
+  PUT = "PUT",
+  POST = "POST",
+  DELETE = "DELETE",
+}
 
 type ResponseType = {
   status: number;
@@ -15,27 +15,37 @@ type ResponseType = {
   };
 };
 
-class HTTPTransport<T = ResponseType> {
+type Options = {
+  timeout?: number;
+  method?: string;
+  headers?: Record<string, string>;
+  data?: string | Record<string, unknown> | FormData;
+  [key: string]: unknown;
+};
+
+type HTTPMethod<T = ResponseType> = (url: string, options?: Options, timeout?: number) => Promise<T>;
+
+class HTTPTransport {
   private _baseUrl: string;
 
   constructor(baseUrl = "") {
     this._baseUrl = baseUrl;
   }
 
-  get = (url: string, options: Record<string, any> = { timeout: 5000 }): Promise<T> => {
+  get: HTTPMethod = (url, options = { timeout: 5000 }) => {
     return this.request(this._baseUrl + url, { ...options, method: METHODS.GET }, options.timeout);
   };
-  put = (url: string, options: Record<string, any> = { timeout: 5000 }): Promise<T> => {
+  put: HTTPMethod = (url, options = { timeout: 5000 }) => {
     return this.request(this._baseUrl + url, { ...options, method: METHODS.PUT }, options.timeout);
   };
-  post = (url: string, options: Record<string, any> = { timeout: 5000 }): Promise<T> => {
+  post: HTTPMethod = (url, options = { timeout: 5000 }) => {
     return this.request(this._baseUrl + url, { ...options, method: METHODS.POST }, options.timeout);
   };
-  delete = (url: string, options: Record<string, any> = { timeout: 5000 }): Promise<T> => {
+  delete: HTTPMethod = (url, options = { timeout: 5000 }) => {
     return this.request(this._baseUrl + url, { ...options, method: METHODS.DELETE }, options.timeout);
   };
 
-  request = (url: string, options: Record<string, any> = { method: METHODS.GET, data: "" }, timeout = 5000): Promise<T> => {
+  request: HTTPMethod = (url, options = { method: METHODS.GET, data: "" }, timeout = 5000) => {
     return new Promise((resolve, reject) => {
       const { headers } = options;
       let { method, data } = options;
@@ -51,7 +61,10 @@ class HTTPTransport<T = ResponseType> {
       };
 
       if (method === METHODS.GET && data) {
-        data = queryStringify(data);
+        if(typeof data !== 'string' && !(data instanceof FormData)) {
+          data = queryStringify(data);
+        }
+
         url += `?${data}`;
       }
 
@@ -76,9 +89,13 @@ class HTTPTransport<T = ResponseType> {
       // Send request
       xhr.onload = function () {
         try {
-          resolve({ status: xhr.status, response: JSON.parse(xhr.response) } as T);
+          try {
+            resolve({ status: xhr.status, response: JSON.parse(xhr.response) });
+          } catch (err) {
+            resolve({ status: xhr.status, response: xhr.response });
+          }
         } catch (err) {
-          resolve({ status: xhr.status, response: xhr.response } as T);
+          resolve({ status: xhr.status, response: xhr.response });
         }
         clearTimeout(timer);
       };
@@ -86,7 +103,7 @@ class HTTPTransport<T = ResponseType> {
       if (method === METHODS.GET || !data) {
         xhr.send();
       } else {
-        xhr.send(data);
+        xhr.send(data as XMLHttpRequestBodyInit);
       }
     });
   };
