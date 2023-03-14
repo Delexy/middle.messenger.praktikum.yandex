@@ -1,13 +1,15 @@
 import EventBus from "../EventBus/EventBus";
 import { v4 as createId } from "uuid";
 import { compileTemplate } from "pug";
+import deepEqual from "../../utils/deepEqual";
 
-enum EVENTS {
+export enum EVENTS {
   INIT = "init",
   FLOW_CDM = "flow:component-did-mount",
   FLOW_CDU = "flow:component-did-update",
-  FLOW_CU = "flow:compoenent-updated",
+  FLOW_CU = "flow:component-updated",
   FLOW_RENDER = "flow:render",
+  FLOW_UM = "flow:component-unmount"
 }
 
 interface BlockProps {
@@ -48,6 +50,16 @@ class Block {
     eventBus.on(EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     eventBus.on(EVENTS.FLOW_CU, this._componentUpdated.bind(this));
     eventBus.on(EVENTS.FLOW_RENDER, this._render.bind(this));
+    eventBus.on(EVENTS.FLOW_UM, this._unmount.bind(this));
+  }
+
+  private _unregisterEvents() {
+    this.eventBus().off(EVENTS.INIT, this._init.bind(this));
+    this.eventBus().off(EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
+    this.eventBus().off(EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+    this.eventBus().off(EVENTS.FLOW_CU, this._componentUpdated.bind(this));
+    this.eventBus().off(EVENTS.FLOW_RENDER, this._render.bind(this));
+    this.eventBus().off(EVENTS.FLOW_UM, this._unmount.bind(this));
   }
 
   private _addEvents() {
@@ -131,14 +143,12 @@ class Block {
 
     if (response) {
       this.eventBus().emit(EVENTS.FLOW_RENDER);
+      this.eventBus().emit(EVENTS.FLOW_CU);
     }
-
-    this.eventBus().emit(EVENTS.FLOW_CU);
   }
 
   componentDidUpdate(oldProps?: BlockProps | unknown, newProps?: BlockProps | unknown): boolean {
-    // Может переопределять пользователь, необязательно трогать
-    if (oldProps == newProps) {
+    if (deepEqual(oldProps as Record<string, unknown>, newProps as Record<string, unknown>)) {
       return false;
     }
     return true;
@@ -149,6 +159,16 @@ class Block {
   }
 
   componentUpdated(): void {
+    // Может переопределять пользователь, необязательно трогать
+  }
+
+  _componentBeforeUnmount(): void {
+    this._removeEvents();
+    this._unregisterEvents();
+    this.componentBeforeUnmount();
+  }
+
+  componentBeforeUnmount(): void {
     // Может переопределять пользователь, необязательно трогать
   }
 
@@ -226,9 +246,12 @@ class Block {
         return typeof target[property] === "function" ? target[property].bind(target) : target[property];
       },
       set: (target: BlockProps, property: string, value, receiver) => {
+        const oldProps = JSON.parse(JSON.stringify(target));
         const isUpdated = Reflect.set(target, property, value, receiver);
 
-        this.eventBus().emit(EVENTS.FLOW_CDU, this.props, target);
+        if(!deepEqual(oldProps[property], target[property])) {
+          this.eventBus().emit(EVENTS.FLOW_CDU, oldProps, target);
+        }
 
         return isUpdated;
       },
@@ -244,7 +267,7 @@ class Block {
 
   show() {
     if (this.element) {
-      this.element.style.display = "block";
+      this.element.style.display = "";
     }
   }
 
@@ -252,6 +275,24 @@ class Block {
     if (this.element) {
       this.element.style.display = "none";
     }
+  }
+
+  _unmount() {
+    this._componentBeforeUnmount();
+    if(this._element) {
+      Object.values(this.children).forEach((child) => {
+        if (Array.isArray(child)) {
+          child.forEach((subChild) => subChild.unmount());
+        } else {
+          child.unmount();
+        }
+      });
+      this._element.replaceWith("");
+    }
+  }
+
+  unmount() {
+    this.eventBus().emit(EVENTS.FLOW_UM);
   }
 }
 

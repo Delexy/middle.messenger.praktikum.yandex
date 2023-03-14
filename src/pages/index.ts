@@ -1,8 +1,31 @@
-import { PAGES, default as renderDOM } from "../utils/renderDOM"
+import AuthAPI from "../API/AuthAPI";
+import { Router } from "../Modules/Router/Router";
+import Store from "../Modules/Store/Store";
+import { PAGES, PAGES_ROUTES } from "../utils/renderDOM"
 
-const globalRoot = document.querySelector("#app") as HTMLElement;
+const AuthAPIEntity = new AuthAPI();
 
-renderDOM(globalRoot, PAGES.pagination);
+Object.keys(PAGES_ROUTES).forEach((pathname: string) => {
+  Router.use(pathname, PAGES_ROUTES[pathname]);
+});
+
+AuthAPIEntity.getUser().then(user => {
+  if(user) {
+    Store.set('user', user);
+    
+    setInterval(() => {
+      AuthAPIEntity.getUser().then(user => {
+        if(!user) {
+          Store.set('user', undefined);
+          Router.go(PAGES['auth'])
+        } else {
+          Store.set('user', {...user});
+        }
+      });
+    }, 5000);
+  }
+  Router.start();
+});
 
 document.addEventListener("click", function(event: Event) {
   let target = event.target as HTMLElement;
@@ -12,6 +35,6 @@ document.addEventListener("click", function(event: Event) {
   const link = target.getAttribute('href');
   if(target && (target.closest("a") || target.nodeName === "A") &&  link !== null) {
     event.preventDefault();
-    renderDOM(globalRoot, link);
+    Router.go(link);
   }
 });

@@ -15,7 +15,7 @@ type FormFileProps = {
     class: string;
     id: string;
   };
-  [key: string]: any;
+  [key: string]: unknown;
 };
 
 class FormFile extends Block {
@@ -37,18 +37,8 @@ class FormFile extends Block {
     return true;
   }
 
-  submit(event: Event): void {
-    event.preventDefault();
-    const form = this.element as HTMLFormElement;
-    this.props.attributes.class = "is-active";
-    if (this.validation()) {
-      const formData = new FormData(form);
-      console.log(Object.fromEntries(formData));
-      this.props.errorText = "";
-      form.reset();
-    } else {
-      this.props.errorText = "Нужно выбрать файл";
-    }
+  submit(): void {
+    // Переопределение пользователем
   }
 
   getFile() {

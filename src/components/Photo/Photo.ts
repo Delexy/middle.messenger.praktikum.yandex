@@ -2,6 +2,8 @@ import template from "./template.pug";
 import Block from "../Block/Block";
 import defaultSrc from "../../utils/defaultPhoto";
 import FormImage from "../FormFile/FormFile";
+import { apiBaseUrl } from "../../utils/projectVariables";
+
 
 type PhotoProps = {
   photoSrc?: string;
@@ -10,6 +12,7 @@ type PhotoProps = {
     class?: string;
     alt: string;
   };
+  formSubmitCallback?: (data: FormData) => void;
   events?: any;
 };
 
@@ -18,6 +21,8 @@ class Photo extends Block {
     super(props);
     if (!this.props.photoSrc) {
       this.props.photoSrc = defaultSrc;
+    } else {
+      this.props.photoSrc = `${apiBaseUrl}/resources${this.props.photoSrc}`;
     }
   }
 
@@ -38,8 +43,9 @@ class Photo extends Block {
             if (ModalEl.validation()) {
               const formData = new FormData();
               formData.append("avatar", ModalEl.getFile());
-              console.log(Object.fromEntries(formData));
+              this.props.formSubmitCallback(formData);
               ModalEl.props.errorText = "";
+              ModalEl.element.classList.toggle("is-active");
             } else {
               ModalEl.props.errorText = "Нужно выбрать файл";
             }
