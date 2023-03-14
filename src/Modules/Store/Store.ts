@@ -30,7 +30,7 @@ const store = new Store();
 
 export function connect(Component: typeof Block, mapStateToProps: (state: Indexed) => Indexed) {
   let lastComponentState = {};
-
+  
   return class extends Component {
     storeUpdateHandler;
     

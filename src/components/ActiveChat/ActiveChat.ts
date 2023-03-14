@@ -152,7 +152,6 @@ class ActiveChatPage extends Block {
   }
 
   componentDidUpdate(oldProps: any, newProps: any): boolean {
-    console.log(this.props.activeChat);
     if (!deepEqual(oldProps, newProps)) {
       this.fillMessages();
       this.element.dispatchEvent(new CustomEvent("updated"));
@@ -181,10 +180,6 @@ class ActiveChatPage extends Block {
 
   render() {
     return this.compile(template, this.props);
-  }
-
-  componentDidMount(): void {
-    console.log(this.props.activeChat);
   }
 }
 

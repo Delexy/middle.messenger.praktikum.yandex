@@ -28,6 +28,7 @@ class Route {
   leave() {
     if (this._block) {
       this._block.unmount();
+      this._block = null;
     }
   }
 

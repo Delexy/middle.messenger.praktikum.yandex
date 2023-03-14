@@ -108,7 +108,7 @@ class ChatsPage extends Block {
     this.closeChat();
     target.classList.add("is-active");
 
-    
+    ChatsController.removeMessagesStory();
     await ChatsController.connectToChat(Number(chat.id));
 
     const activeChatOptions = {

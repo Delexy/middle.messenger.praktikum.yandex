@@ -280,7 +280,14 @@ class Block {
   _unmount() {
     this._componentBeforeUnmount();
     if(this._element) {
-      this._element.outerHTML = "";
+      Object.values(this.children).forEach((child) => {
+        if (Array.isArray(child)) {
+          child.forEach((subChild) => subChild.unmount());
+        } else {
+          child.unmount();
+        }
+      });
+      this._element.replaceWith("");
     }
   }
 
