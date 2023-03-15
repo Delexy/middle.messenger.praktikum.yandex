@@ -14,7 +14,10 @@ class MessageForm extends Block {
     const form = this.element as HTMLFormElement;
     const formData = new FormData(form);
     if(formData.get('message')) {
-      console.log(Object.fromEntries(formData));
+      this.element.dispatchEvent(new CustomEvent('send-message', {
+        detail: formData.get('message'),
+        bubbles: true
+      }))
       form.reset();
     }
   }

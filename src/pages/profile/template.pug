@@ -6,13 +6,14 @@
     p.profile-page__name #{user.first_name}
     .profile-list.profile-page__data
       each val, key in user
-        .profile-list__el
-          p.profile-list__name #{fieldsNaming[key]}
-          | !{val}
+        if !(key==='avatar' || key==='id')
+          .profile-list__el
+            p.profile-list__name #{fieldsNaming[key]}
+            | !{val}
     nav.profile-list.profile-page__links
       .profile-list__el
         a(href=changeProfileUrl) Изменить данные
       .profile-list__el
         a(href=changePasswordUrl) Изменить пароль
       .profile-list__el
-        a.profile-page__exit Выйти
+        a.profile-page__exit#logout Выйти

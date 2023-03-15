@@ -2,7 +2,7 @@
     .chats-sidebar
       a.chat-profile(href=profileUrl)
         | !{UserPhoto}
-        p.chat-profile__name #{user.first_name}
+        p.chat-profile__name #{user.display_name || user.first_name}
       label.chat-search
         .chat-search__icon
           include ../../imgs/icons/search.svg

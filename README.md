@@ -1,5 +1,5 @@
-# sprint_2
-## Ссылка на PR: https://github.com/Delexy/middle.messenger.praktikum.yandex/pull/3
+# sprint_3
+## Ссылка на PR: https://github.com/Delexy/middle.messenger.praktikum.yandex/pull/4
 
 ## Описание  
 Проект подразумевает под собой чат, с кастомной реактивностью.
@@ -9,6 +9,12 @@
 - npm run dev - Запуск проекта с помощью Parcel
 - npm build - Билдинг проекта с помощью Parcel
 - npm run lint - Билдинг проекта с помощью Parcel
+
+## Что реализовано в текущий момент:
+- Роутинг;
+- Минимальная (согласно чек-листу) поддержка API чата;
+- Обмен сообщениями по WS;
+- Минимальная защита от XSS, DOS;
 
 ## Ссылка на проект Netlify: https://lucky-stardust-b64383.netlify.app/
 

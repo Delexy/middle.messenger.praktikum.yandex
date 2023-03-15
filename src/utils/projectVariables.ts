@@ -1,10 +1,12 @@
+export const apiBaseUrl = `https://ya-praktikum.tech/api/v2`;
+
 export const userData: Record<string, string | null> = {
-  email: "pochta@yandex.ru",
-  login: "ivanivanov",
-  first_name: "Иван",
-  display_name: "Иван",
-  second_name: "Иванов",
-  phone: "+79099673030",
+  email: "",
+  login: "",
+  first_name: "",
+  display_name: "",
+  second_name: "",
+  phone: "",
   avatar: "",
 };
 
@@ -20,7 +22,7 @@ export const fieldsNaming = {
 };
 
 export const INPUT_VALIDATION_REGEXP: Record<string, RegExp> = {
-  login: new RegExp(/^(?=.*[A-Za-z])([A-Za-z0-9-_]{3,20})$/gm),
+  login: new RegExp(/^([A-Za-z0-9-_]{3,20})$/gm),
   first_name: new RegExp(/^([A-ZА-Я]){1}([A-Za-zА-Яа-я-])+$/gm),
   second_name: new RegExp(/^([A-ZА-Я]){1}([A-Za-zА-Яа-я-])+$/gm),
   email: new RegExp(/^\S+@\S+\.\S+$/gi),
@@ -30,7 +32,7 @@ export const INPUT_VALIDATION_REGEXP: Record<string, RegExp> = {
 };
 
 export const INPUT_ERRORS: Record<string, string> = {
-  login: "Длина от 3 до 20 символов, первая буква заглавная",
+  login: "Длина от 3 до 20 символов",
   first_name: "Поле введено неверно",
   second_name: "Поле введено неверно",
   email: "Email введён неверно",

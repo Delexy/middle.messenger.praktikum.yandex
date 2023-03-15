@@ -1,9 +1,12 @@
 import template from "./template.pug";
 import Block from "../../components/Block/Block";
-import { PAGES } from "../../utils/renderDOM"
+import { PAGES } from "../../utils/renderDOM";
 import Input from "../../components/Input/Input";
 import Form from "../../components/Form/Form";
 import Button from "../../components/Button/Button";
+import RegistrationController from "./RegistrationController";
+
+const RegistrationControllerEntity = new RegistrationController();
 
 const INPUT_CLASS = "auth-form__input";
 
@@ -28,11 +31,17 @@ class RegistrationPage extends Block {
         }),
         Link: `<a class="auth-form__register" href="${PAGES.auth}">Войти</a>`,
         events: {
-          submit: (event: SubmitEvent) => {
+          submit: async (event: SubmitEvent) => {
             event.preventDefault();
-            if ((this.children.RegistrationForm as Form).validation()) {
+            const currentForm = this.children.RegistrationForm as Form;
+            if (currentForm.validation()) {
               const data = new FormData(event.target as HTMLFormElement);
-              console.log(Object.fromEntries(data));
+              const response = await RegistrationControllerEntity.signup(data);
+
+              currentForm.props.error = "";
+              if (response && response.error) {
+                currentForm.props.error = response.error;
+              }
             }
           },
         },
@@ -42,6 +51,12 @@ class RegistrationPage extends Block {
 
   render() {
     return this.compile(template, this.props);
+  }
+
+  componentDidMount(): void {
+    if (RegistrationControllerEntity.isAuthed()) {
+      RegistrationControllerEntity.redirectToIndex();
+    }
   }
 }
 

@@ -5,7 +5,7 @@ import { INPUT_VALIDATION_REGEXP, INPUT_ERRORS } from "../../utils/projectVariab
 interface InputProps {
   label?: string;
   className?: string;
-  attributes?: any;
+  attributes?: Record<string, unknown>;
   error?: string;
 }
 
@@ -14,7 +14,7 @@ class Input extends Block {
 
   constructor(props: InputProps) {
     super(props);
-    this.props.attributes.type = props.attributes.type || "text";
+    this.props.attributes.type = props.attributes?.type || "text";
     this.value = this.props.attributes.value || "";
   }
 
@@ -60,14 +60,6 @@ class Input extends Block {
       this.props.events.change = Array.isArray(this.props.events.change) ? [...this.props.events.change, blurEvent] : [this.props.events.change, blurEvent];
     } else {
       this.props.events.change = blurEvent;
-    }
-
-    if (this.props.events.focusout) {
-      this.props.events.focusout = Array.isArray(this.props.events.focusout)
-        ? [...this.props.events.focusout, blurEvent]
-        : [this.props.events.focusout, blurEvent];
-    } else {
-      this.props.events.focusout = blurEvent;
     }
 
     if (this.props.events.click) {
