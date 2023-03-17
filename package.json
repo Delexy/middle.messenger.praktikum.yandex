@@ -2,7 +2,7 @@
   "name": "first-sprint",
   "version": "1.0.0",
   "description": "Yandex education project",
-  "engine": "14.19.1",
+  "engine": "18.12.1",
   "scripts": {
     "start": "node server.js",
     "build": "webpack --mode production",
