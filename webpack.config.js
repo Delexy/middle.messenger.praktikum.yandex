@@ -47,7 +47,7 @@ module.exports = {
         test: /\.pug$/,
         use: [
           {
-            loader: "pug-loader",
+            loader: "@webdiscus/pug-loader",
           },
         ],
         exclude: /(node_modules)/,
