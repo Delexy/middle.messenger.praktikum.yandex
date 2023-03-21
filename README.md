@@ -1,5 +1,5 @@
 # sprint_4
-## Ссылка на PR: https://github.com/Delexy/middle.messenger.praktikum.yandex/pull/4
+## Ссылка на PR: https://github.com/Delexy/middle.messenger.praktikum.yandex/pull/5
 
 ## Описание  
 Проект подразумевает под собой чат, с кастомной реактивностью.
