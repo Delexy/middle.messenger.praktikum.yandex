@@ -6,7 +6,7 @@ class ChatAPI {
   private chatId: number;
   private socket: WebSocket | null;
   private messageAmount: number;
-  private supportInterval: number;
+  private supportInterval: NodeJS.Timer;
 
   constructor(token: string, chatId: number) {
     this.token = token;

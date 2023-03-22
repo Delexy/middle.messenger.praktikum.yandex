@@ -2,6 +2,7 @@ import AuthAPI from "../API/AuthAPI";
 import { Router } from "../Modules/Router/Router";
 import Store from "../Modules/Store/Store";
 import { PAGES, PAGES_ROUTES } from "../utils/renderDOM"
+import './index.scss';
 
 const AuthAPIEntity = new AuthAPI();
 

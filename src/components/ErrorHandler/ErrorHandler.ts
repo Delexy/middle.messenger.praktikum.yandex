@@ -1,6 +1,11 @@
 class ErrorHandler {
+  public message: string;
+  public title?: string;
   
-  constructor(public message: string, public title?:string) {}
+  constructor(message: string, title?: string) {
+    this.message = message;
+    this.title = title;
+  }
 
   show() {
     console.error(this.message);
